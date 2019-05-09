@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+
+    <item
+        android:id="@+id/free_services"
+        android:icon="@drawable/free_services"
+        android:title="Free services" />
+
+    <item
+        android:id="@+id/professional_tools"
+        android:icon="@drawable/extra_ic"
+        android:title="Professional services" />
+
+    <item
+        android:id="@+id/non_professional"
+        android:icon="@drawable/professional"
+        android:title="Technical" />
+    <!--<item-->
+    <!--android:id="@+id/others_tools"-->
+    <!--android:icon="@drawable/ic_notifications_black_24dp"-->
+    <!--android:title="Other Services" />-->
+
+</menu>

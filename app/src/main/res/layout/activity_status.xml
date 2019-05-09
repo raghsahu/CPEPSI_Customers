@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".StatusAct">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:gravity="start"
+                    android:text="Name:"
+                    android:textColor="#000"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/apvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_weight="0.40"
+                    android:editable="false"
+                    android:hint=""
+                    android:background="@color/Grey"
+                    android:padding="10dp"
+                    android:textSize="13dp" />
+
+            </LinearLayout>
+
+            <!---->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:gravity="start"
+                    android:text="Email:"
+                    android:textColor="#000"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/apvEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_weight="0.40"
+                    android:editable="false"
+                    android:hint=""
+                    android:background="@color/Grey"
+                    android:padding="10dp"
+                    android:textSize="13dp" />
+
+            </LinearLayout>
+            <!---->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:gravity="start"
+                    android:text="Mobile:"
+                    android:textColor="#000"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/apvMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_weight="0.40"
+                    android:editable="false"
+                    android:hint=""
+                    android:background="@color/Grey"
+                    android:padding="10dp"
+                    android:textSize="13dp" />
+
+            </LinearLayout>
+            <!---->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:gravity="start"
+                    android:text="Description:"
+                    android:textColor="#000"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/apvDescription"
+                    android:padding="10dp"
+                    android:editable="false"
+                    android:textSize="13dp"
+                    android:background="@color/Grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_weight="0.40"
+                    android:hint="" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:gravity="start"
+                    android:text="Address:"
+                    android:textColor="#000"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/apvAddress"
+                    android:padding="10dp"
+                    android:editable="false"
+                    android:inputType="textMultiLine"
+                    android:textSize="13dp"
+                    android:maxLength="2000"
+                    android:background="@color/Grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.40"
+                    android:hint="" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.85"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/decline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.50"
+            android:background="@drawable/btn_shape"
+            android:text="Decline"
+            android:textAllCaps="false"
+            android:textColor="#fff" />
+
+        <!--<Button-->
+            <!--android:id="@+id/accept"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="0.50"-->
+            <!--android:background="@drawable/btn_shape"-->
+            <!--android:text="Accept"-->
+            <!--android:textAllCaps="false"-->
+            <!--android:textColor="#fff" />-->
+        <Button
+        android:id="@+id/feedback"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.50"
+        android:background="@drawable/btn_shape"
+        android:text="Feedback"
+        android:textAllCaps="false"
+        android:textColor="#fff" />
+
+    </LinearLayout>
+
+</LinearLayout>

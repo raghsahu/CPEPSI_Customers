@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_notification"
+        android:title="Status" />
+    <!--<item-->
+        <!--android:id="@+id/action_feedback"-->
+        <!--android:title="Feedback" />-->
+    <item
+        app:actionViewClass="android.widget.TextView"
+
+        android:id="@+id/action_settings"
+        android:title="Logout" />
+
+    <item
+        android:visible="false"
+        android:id="@+id/action_login"
+        android:title="Login" />
+    <item
+        android:icon="@drawable/prof"
+        app:showAsAction="ifRoom"
+        android:id="@+id/action_prof"
+        android:title="Login" />
+</menu>

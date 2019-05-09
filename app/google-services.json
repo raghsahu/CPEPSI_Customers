@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "591803706977",
+    "firebase_url": "https://cpepsicustomers.firebaseio.com",
+    "project_id": "cpepsicustomers",
+    "storage_bucket": "cpepsicustomers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591803706977:android:f6f4503eb0aecec9",
+        "android_client_info": {
+          "package_name": "com.customer.admin.cpepsi_customers"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591803706977-8gppjqnebe07hdfniogfuei6ok4jo9m6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.customer.admin.cpepsi_customers",
+            "certificate_hash": "51b199f390908541d762752ee2fa35821a69f4d6"
+          }
+        },
+        {
+          "client_id": "591803706977-g2666epkel73ijr0qnuddugoqi8v72gb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkr0ZBN6cajreTz_iiflzN__3Yzc4StGM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591803706977-g2666epkel73ijr0qnuddugoqi8v72gb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
