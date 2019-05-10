@@ -162,6 +162,10 @@ public class Register_Customer extends AppCompatActivity {
             cus_name.setError("Name can not be empty");
             return;
         }
+        if (cus_add.getText().toString().isEmpty()) {
+            cus_add.setError("Address can not be empty");
+            return;
+        }
 
         if (cus_email.getText().toString().isEmpty()) {
             cus_email.setError("Email can not be empty");
@@ -358,34 +362,33 @@ public class Register_Customer extends AppCompatActivity {
             try {
 
                 JSONObject jsonObject = new JSONObject(result);
-                String msg = jsonObject.getString("massage");
                 res = jsonObject.getString("responce");
 
-
-
-                if (msg.equals("OTP Sent Successfully")) {
-                    Intent to_completion = new Intent(Register_Customer.this, OtpActivity.class);
-                   // Intent to_completion = new Intent(Register_Customer.this, OTP_Activity.class);
-                    to_completion.putExtra("otp",res);
-                    to_completion.putExtra("email", email);
-                  //  to_completion.putExtra("password", password);
-                    to_completion.putExtra("contact", mobile_no);
-                    to_completion.putExtra("name", name);
-                    to_completion.putExtra("add",Cus_add);
-                    to_completion.putExtra("city",Spin_distt);
-                    to_completion.putExtra("state",Spin_state);
-
-                    startActivity(to_completion);
-                    Toast.makeText(Register_Customer.this, ""+msg, Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-
-//                    Snackbar.make(snac_v,""+response, Toast.LENGTH_LONG).show();
-                    Toast.makeText(Register_Customer.this, "Otp not sent", Toast.LENGTH_SHORT).show();
-                }
                 if (res.equals("false")){
                     String error = jsonObject.getString("error");
                     Toast.makeText(Register_Customer.this, ""+error, Toast.LENGTH_SHORT).show();
+                }else {
+                    String msg = jsonObject.getString("massage");
+                    if (msg.equals("OTP Sent Successfully")) {
+                        Intent to_completion = new Intent(Register_Customer.this, OtpActivity.class);
+                        // Intent to_completion = new Intent(Register_Customer.this, OTP_Activity.class);
+                        to_completion.putExtra("otp",res);
+                        to_completion.putExtra("email", email);
+                        //  to_completion.putExtra("password", password);
+                        to_completion.putExtra("contact", mobile_no);
+                        to_completion.putExtra("name", name);
+                        to_completion.putExtra("add",Cus_add);
+                        to_completion.putExtra("city",Spin_distt);
+                        to_completion.putExtra("state",Spin_state);
+
+                        startActivity(to_completion);
+                        Toast.makeText(Register_Customer.this, ""+msg, Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+
+//                    Snackbar.make(snac_v,""+response, Toast.LENGTH_LONG).show();
+                        Toast.makeText(Register_Customer.this, "Otp not sent", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             } catch (JSONException e) {

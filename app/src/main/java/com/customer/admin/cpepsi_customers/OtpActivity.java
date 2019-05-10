@@ -1,5 +1,6 @@
 package com.customer.admin.cpepsi_customers;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -83,16 +84,15 @@ public class OtpActivity extends AppCompatActivity {
 
     private class CompleteReg extends AsyncTask<String, Void, String> {
 
-        //  ProgressDialog dialog;
+        ProgressDialog dialog;
 
 
-//        @Override
-//        protected void onPreExecute() {
-//            dialog = new ProgressDialog(getContext());
-//            dialog.show();
-//
-//            super.onPreExecute();
-//        }
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(OtpActivity.this);
+            dialog.show();
+            super.onPreExecute();
+        }
 
 
         @Override
@@ -181,10 +181,9 @@ public class OtpActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            //dialog.dismiss();
-            if (result != null) {
-                //  dialog.dismiss();
 
+            if (result != null) {
+                dialog.dismiss();
 
                 Log.e("PostRegistration", result.toString());
 
@@ -192,22 +191,25 @@ public class OtpActivity extends AppCompatActivity {
                     // Toast.makeText(OtpActivity.this, "reg+"+result, Toast.LENGTH_SHORT).show();
                     JSONObject jsonObject = new JSONObject(result);
                     String res = jsonObject.getString("responce");
-                    JSONObject object = jsonObject.getJSONObject("data");
-                    id = object.getString("id");
-                    name = object.getString("name");
-                    email1 = object.getString("email");
-                    contact = object.getString("contact");
-                   // String password = object.getString("password");
-                    address = object.getString("address");
-                    String status = object.getString("status");
-                    String payment_status = object.getString("payment_status");
-                    String payment_amount = object.getString("payment_amount");
-                    String image = object.getString("image");
-                    String state= object.getString("state");
-                    String district = object.getString("district");
 
 
                     if (res.equals("true")) {
+                        JSONObject object = jsonObject.getJSONObject("data");
+
+                        id = object.getString("id");
+                        name = object.getString("name");
+                        email1 = object.getString("email");
+                        contact = object.getString("contact");
+                        // String password = object.getString("password");
+                        address = object.getString("address");
+                        String status = object.getString("status");
+                        String payment_status = object.getString("payment_status");
+                        String payment_amount = object.getString("payment_amount");
+                        String image = object.getString("image");
+                        String state= object.getString("state");
+                        String district = object.getString("district");
+
+
                         manager.malegaonLogin();
                         AppPreference.setId(OtpActivity.this, id);
                         AppPreference.setName(OtpActivity.this, name);
@@ -230,8 +232,8 @@ public class OtpActivity extends AppCompatActivity {
                         Toast.makeText(OtpActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
 
                     } else {
-                      //  String error = object.getString("error");
-                       // Toast.makeText(OtpActivity.this, ""+error, Toast.LENGTH_SHORT).show();
+                       String error = jsonObject.getString("error");
+                        Toast.makeText(OtpActivity.this, ""+error, Toast.LENGTH_SHORT).show();
                         Toast.makeText(OtpActivity.this, "Could not register the user", Toast.LENGTH_SHORT).show();
                     }
 

@@ -58,11 +58,11 @@
                     android:textColorHint="#000">
 
                     <EditText
-                        android:id="@+id/em_customer"
+                        android:id="@+id/mobile_customer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Mobile no."
-                        android:inputType="text"
+                        android:inputType="number"
                         android:maxLines="1"
                         android:padding="10dp"
                         android:singleLine="true"
@@ -71,6 +71,8 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:visibility="invisible"
+                    android:id="@+id/et_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -80,7 +82,7 @@
                     app:passwordToggleTint="#FFA500">
 
                     <EditText
-                        android:id="@+id/pass_customer"
+                        android:id="@+id/otp_customer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="OTP"
