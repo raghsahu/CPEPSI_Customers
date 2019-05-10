@@ -9,6 +9,7 @@ import android.os.ParcelFileDescriptor;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,9 +21,8 @@ import java.io.OutputStream;
 
 public class PDF_Viewer extends AppCompatActivity {
 
-   // ImageView image_pdf;
     TextView image_pdf;
-
+  WebView webview_terms;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -31,54 +31,36 @@ public class PDF_Viewer extends AppCompatActivity {
         setContentView(R.layout.activity_pdf__viewer);
 
 
-        image_pdf=findViewById(R.id.image_pdf);
+        webview_terms=findViewById(R.id.webview_terms);
 
-        AssetManager assetManager = getAssets();
+        webview_terms.getSettings().setJavaScriptEnabled(true);
+        webview_terms.loadUrl("http://android**********" +
+                "Terms and Conditions");
 
 
-//        try {
-//            String[] files = assetManager.list("Files");
+
+//        image_pdf=findViewById(R.id.image_pdf);
 //
-//            for(int i=0; i<files.length; i++)="" {="" txtfilename.append("\n="" file="" :"+i+"="" name=""> "+files[i]);
-//            }
-//        } catch (IOException e1) {
+//        AssetManager assetManager = getAssets();
+//
+//        InputStream input;
+//        try {
+//            input = assetManager.open("terms_and_conditions.docx");
+//
+//            int size = input.available();
+//            byte[] buffer = new byte[size];
+//            input.read(buffer);
+//            input.close();
+//
+//            // byte buffer into a string
+//            String text = new String(buffer);
+//
+//            image_pdf.setText(text);
+//        } catch (IOException e) {
 //            // TODO Auto-generated catch block
-//            e1.printStackTrace();
+//            e.printStackTrace();
 //        }
 
-        // To load text file
-        InputStream input;
-        try {
-            input = assetManager.open("terms_and_conditions.docx");
-
-            int size = input.available();
-            byte[] buffer = new byte[size];
-            input.read(buffer);
-            input.close();
-
-            // byte buffer into a string
-            String text = new String(buffer);
-
-            image_pdf.setText(text);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-        // To load image
-//        try {
-//            // get input stream
-//            InputStream ims = assetManager.open("android_logo_small.jpg");
-//
-//            // create drawable from stream
-//            Drawable d = Drawable.createFromStream(ims, null);
-//
-//            // set the drawable to imageview
-//            imgAssets.setImageDrawable(d);
-//        }
-//        catch(IOException ex) {
-//            return;
-//        }
     }
 
 

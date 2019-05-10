@@ -7,27 +7,30 @@
     android:orientation="vertical"
     tools:context=".PDF_Viewer">
 
-    <!--<ImageView-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <!--<TextView-->
         <!--android:id="@+id/image_pdf"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_margin="5dp"-->
-        <!--android:src="@drawable/clogo"-->
+       <!--android:text="pdf viewer"-->
+        <!--android:layout_gravity="center"-->
         <!--/>-->
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <WebView
+            android:id="@+id/webview_terms"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </WebView>
 
 
-    <TextView
-        android:id="@+id/image_pdf"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-       android:text="pdf viewer"
-        android:layout_gravity="center"
-        />
 
     </ScrollView>
 
