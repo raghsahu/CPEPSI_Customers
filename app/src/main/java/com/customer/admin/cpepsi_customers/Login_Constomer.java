@@ -47,6 +47,7 @@ public class Login_Constomer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login__constomer);
+
         reg_cp = (TextView) findViewById(R.id.reg_cp);
         emai_cus = findViewById(R.id.em_customer);
         pass_cus = findViewById(R.id.pass_customer);

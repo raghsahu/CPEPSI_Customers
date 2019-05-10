@@ -48,7 +48,7 @@ public class Register_Customer extends AppCompatActivity {
     CheckBox terms_view;
     Button sbmt;
     TextView tx_terms;
-    EditText cus_name, cus_email, cus_num, cus_pass, cus_con,cus_add;
+    EditText cus_name, cus_email, cus_con,cus_add;
     String Cus_add;
     public static String res;
 
@@ -136,6 +136,7 @@ public class Register_Customer extends AppCompatActivity {
 
             }
         });
+
         tx_terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,19 +163,16 @@ public class Register_Customer extends AppCompatActivity {
             return;
         }
 
-        if (cus_pass.getText().toString().isEmpty()) {
-            cus_pass.setError("Password can not be empty");
-            return;
-        }
         if (cus_email.getText().toString().isEmpty()) {
             cus_email.setError("Email can not be empty");
             return;
         }
-        if (!cus_name.getText().toString().isEmpty() && !cus_pass.getText().toString().isEmpty() && !cus_email.getText().toString().isEmpty()) {
-            if (cus_con.getText().toString().isEmpty() && cus_num.getText().toString().isEmpty()) {
-                cus_num.requestFocus();
-                cus_con.setError("Confirm Password can not be empty");
-                cus_num.setError("Specify Contact number or Mobile number");
+        if (!cus_name.getText().toString().isEmpty()  && !cus_email.getText().toString().isEmpty())
+        {
+            if (cus_con.getText().toString().isEmpty() ) {
+                cus_con.requestFocus();
+               // cus_con.setError("Confirm Password can not be empty");
+                cus_con.setError("Specify Mobile number");
 //                if(cus_num.getText().toString().length() ==10){
 //
 //                }
@@ -183,8 +181,8 @@ public class Register_Customer extends AppCompatActivity {
             } else {
 
                 if (terms_view.isChecked()) {
-                    new Check_Log_Infor_Cus(cus_name.getText().toString(), cus_email.getText().toString(), cus_pass.getText().toString(),
-                            cus_con.getText().toString(), cus_con.getText().toString()).execute();
+                    new Check_Log_Infor_Cus(cus_name.getText().toString(), cus_email.getText().toString(),
+                            cus_con.getText().toString()).execute();
                 } else {
                     Toast.makeText(Register_Customer.this, "Please tick on Agree terms and condition of ours or fill all fields", Toast.LENGTH_SHORT).show();
                 }
@@ -208,7 +206,7 @@ public class Register_Customer extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         check_requested_permission();
-                        Toast.makeText(Register_Customer.this, "You clicked yes button", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Register_Customer.this, "Please clicked yes button", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -250,13 +248,11 @@ public class Register_Customer extends AppCompatActivity {
 
     private class Check_Log_Infor_Cus extends AsyncTask<String, Void, String> {
         ProgressDialog Log_in_Progress;
-        String email, password, contact_no, mobile_no, name;
+        String email, mobile_no, name;
 
 
-        public Check_Log_Infor_Cus(String name, String email, String password, String contact_no, String mobile_no) {
+        public Check_Log_Infor_Cus(String name, String email, String mobile_no) {
             this.email = email;
-            this.password = password;
-            this.contact_no = contact_no;
             this.mobile_no = mobile_no;
             this.name = name;
 
@@ -281,10 +277,12 @@ public class Register_Customer extends AppCompatActivity {
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("email", email);
-                postDataParams.put("password", password);
-                postDataParams.put("contact", contact_no);
+               // postDataParams.put("password", password);
+                postDataParams.put("contact", mobile_no);
                 postDataParams.put("name", name);
                 postDataParams.put("address", Cus_add);
+                postDataParams.put("district", Spin_distt);
+                postDataParams.put("state", Spin_state);
 
                 Log.e("postDataParams", postDataParams.toString());
 
@@ -370,10 +368,12 @@ public class Register_Customer extends AppCompatActivity {
                    // Intent to_completion = new Intent(Register_Customer.this, OTP_Activity.class);
                     to_completion.putExtra("otp",res);
                     to_completion.putExtra("email", email);
-                    to_completion.putExtra("password", password);
-                    to_completion.putExtra("contact", contact_no);
+                  //  to_completion.putExtra("password", password);
+                    to_completion.putExtra("contact", mobile_no);
                     to_completion.putExtra("name", name);
                     to_completion.putExtra("add",Cus_add);
+                    to_completion.putExtra("city",Spin_distt);
+                    to_completion.putExtra("state",Spin_state);
 
                     startActivity(to_completion);
                     Toast.makeText(Register_Customer.this, ""+msg, Toast.LENGTH_SHORT).show();
@@ -382,6 +382,10 @@ public class Register_Customer extends AppCompatActivity {
 
 //                    Snackbar.make(snac_v,""+response, Toast.LENGTH_LONG).show();
                     Toast.makeText(Register_Customer.this, "Otp not sent", Toast.LENGTH_SHORT).show();
+                }
+                if (res.equals("false")){
+                    String error = jsonObject.getString("error");
+                    Toast.makeText(Register_Customer.this, ""+error, Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {

@@ -35,7 +35,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class OtpActivity extends AppCompatActivity {
     EditText ed_otp;
-    String Ed_otp, Email, Password, Contact, Name,Add;
+    String Ed_otp, Email, Contact, Name,Add;
     Button btn_verify;
     SessionManager manager;
     String id = "";
@@ -43,6 +43,8 @@ public class OtpActivity extends AppCompatActivity {
     String email1 = "";
     String contact = "";
     String address = "";
+    String City = "";
+    String State = "";
 
 
 
@@ -61,10 +63,12 @@ public class OtpActivity extends AppCompatActivity {
         ed_otp.setText(Ed_otp);
 
         Email = getIntent().getStringExtra("email").toString();
-        Password = getIntent().getStringExtra("password").toString();
+       // Password = getIntent().getStringExtra("password").toString();
         Contact = getIntent().getStringExtra("contact").toString();
         Name = getIntent().getStringExtra("name").toString();
         Add = getIntent().getStringExtra("add");
+        City = getIntent().getStringExtra("city");
+        State = getIntent().getStringExtra("state");
 
         btn_verify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,11 +105,12 @@ public class OtpActivity extends AppCompatActivity {
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("email", Email);
-                postDataParams.put("password", Password);
                 postDataParams.put("contact", Contact);
                 postDataParams.put("name", Name);
                 postDataParams.put("otp", Ed_otp);
                 postDataParams.put("address", Add);
+                postDataParams.put("district", City);
+                postDataParams.put("state", State);
 
 
                 Log.e("postDataParams", postDataParams.toString());
@@ -192,12 +197,14 @@ public class OtpActivity extends AppCompatActivity {
                     name = object.getString("name");
                     email1 = object.getString("email");
                     contact = object.getString("contact");
-                    String password = object.getString("password");
+                   // String password = object.getString("password");
                     address = object.getString("address");
                     String status = object.getString("status");
                     String payment_status = object.getString("payment_status");
                     String payment_amount = object.getString("payment_amount");
                     String image = object.getString("image");
+                    String state= object.getString("state");
+                    String district = object.getString("district");
 
 
                     if (res.equals("true")) {
@@ -223,6 +230,8 @@ public class OtpActivity extends AppCompatActivity {
                         Toast.makeText(OtpActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
 
                     } else {
+                      //  String error = object.getString("error");
+                       // Toast.makeText(OtpActivity.this, ""+error, Toast.LENGTH_SHORT).show();
                         Toast.makeText(OtpActivity.this, "Could not register the user", Toast.LENGTH_SHORT).show();
                     }
 
