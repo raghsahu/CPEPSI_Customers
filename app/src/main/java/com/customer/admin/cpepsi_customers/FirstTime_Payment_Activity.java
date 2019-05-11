@@ -60,7 +60,7 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
         feedRemark = (EditText) findViewById(R.id.feedRemark);
         feedPayment = (EditText) findViewById(R.id.feedPayment);
         first_payment = (Button) findViewById(R.id.feedSubmit);
-        Cash_Payment = (Button) findViewById(R.id.cash_Submit);
+        //Cash_Payment = (Button) findViewById(R.id.cash_Submit);
 
         Id = AppPreference.getId(this);
         FeedName = AppPreference.getName(this);
@@ -94,14 +94,14 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
         });
 //*******************************************************
 
-        Cash_Payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               // new FirstPaymentSucccess().execute();
-
-            }
-        });
+//        Cash_Payment.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//               // new FirstPaymentSucccess().execute();
+//
+//            }
+//        });
 
     }
 

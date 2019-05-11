@@ -115,6 +115,7 @@ public class After_service extends AppCompatActivity {
                     String Type = apiModel.getType();
                     String Status = apiModel.getStatus();
                     Log.e("Rajkumar", "");
+                  //  Toast.makeText(this, ""+strId, Toast.LENGTH_SHORT).show();
 
                     service_ser.setText(SerName);
                     After_SerName = service_ser.getText().toString();

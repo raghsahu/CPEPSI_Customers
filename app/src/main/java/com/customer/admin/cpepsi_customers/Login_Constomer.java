@@ -244,7 +244,7 @@ public class Login_Constomer extends AppCompatActivity {
                     String district = jsonObject1.getString("district");
                     String state = jsonObject1.getString("state");
 
-                  //  Toast.makeText(Login_Constomer.this, "id is" + id, Toast.LENGTH_LONG).show();
+                   Toast.makeText(Login_Constomer.this, "id is" + id, Toast.LENGTH_LONG).show();
                     AppPreference.setId(Login_Constomer.this, id);
                     AppPreference.setName(Login_Constomer.this, name);
                     AppPreference.setEmail(Login_Constomer.this, email1);

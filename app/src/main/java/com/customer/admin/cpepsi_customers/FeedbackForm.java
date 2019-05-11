@@ -42,7 +42,7 @@ public class FeedbackForm extends AppCompatActivity {
     String FeedName, FeedEmail, FeedContact, FeedAddress, FeedPaymentAmount;
     RadioGroup radio_grop;
     RadioButton good, average, bad;
-    Button feedSubmit;
+    Button feedSubmit,cash_Submit;
     String Type;
     String Id;
     String Prov_id;
@@ -58,6 +58,7 @@ public class FeedbackForm extends AppCompatActivity {
         feedAddress = (EditText) findViewById(R.id.feedAddress);
         feedPayment = (EditText) findViewById(R.id.feedPayment);
         feedSubmit = (Button) findViewById(R.id.feedSubmit);
+        cash_Submit = (Button) findViewById(R.id.cash_Submit);
         radio_grop = (RadioGroup) findViewById(R.id.radio_grop);
         good = (RadioButton) findViewById(R.id.good);
         average = (RadioButton) findViewById(R.id.average);
@@ -96,6 +97,35 @@ public class FeedbackForm extends AppCompatActivity {
                     } else if (!FeedAddress.isEmpty()) {
 
                         new PostFeedback().execute();
+                    }
+
+                } else {
+                    Toast.makeText(FeedbackForm.this, "No Internet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        cash_Submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FeedName = feedName.getText().toString();
+                FeedEmail = feedEmail.getText().toString();
+                FeedContact = feedContact.getText().toString();
+                FeedAddress = feedAddress.getText().toString();
+                FeedPaymentAmount = feedPayment.getText().toString();
+
+
+                if (Connectivity.isNetworkAvailable(FeedbackForm.this)) {
+
+                    if (FeedAddress.isEmpty()) {
+                        feedAddress.setError("Address can not be empty");
+                    }
+                    if (FeedAddress.isEmpty()) {
+                        feedAddress.setError("Address can not be empty");
+                    } else if (!FeedAddress.isEmpty()) {
+
+                       // new Cash_Payment().execute();
                     }
 
                 } else {

@@ -146,17 +146,17 @@
         android:padding="5dp"
         android:weightSum="1">
 
-    <Button
-        android:layout_weight="0.5"
-        android:id="@+id/cash_Submit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@color/colorPrimary"
-        android:text="Cash Payment"
-        android:textAllCaps="false"
-        android:textColor="#fff" />
+    <!--<Button-->
+        <!--android:layout_weight="0.5"-->
+        <!--android:id="@+id/cash_Submit"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:layout_marginRight="20dp"-->
+        <!--android:background="@color/colorPrimary"-->
+        <!--android:text="Cash Payment"-->
+        <!--android:textAllCaps="false"-->
+        <!--android:textColor="#fff" />-->
 
 
         <Button

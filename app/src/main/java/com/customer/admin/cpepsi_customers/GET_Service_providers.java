@@ -643,7 +643,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
             geocoder = new Geocoder(GET_Service_providers.this);
             try {
-                event_address = geocoder.getFromLocationName(destination, 5);
+                event_address = geocoder.getFromLocationName(destination, 6);
                 if (event_address.isEmpty()) {
                     return null;
                 } else {
