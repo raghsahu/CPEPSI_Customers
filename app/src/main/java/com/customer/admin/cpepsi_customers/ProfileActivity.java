@@ -85,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity {
         profileName = (EditText) findViewById(R.id.profileName);
         profileEmail = (EditText) findViewById(R.id.profileEmail);
         profileNumber = (EditText) findViewById(R.id.profileNumber);
-        profilePassword = (EditText) findViewById(R.id.profilePassword);
+       // profilePassword = (EditText) findViewById(R.id.profilePassword);
         profileLocation = (EditText) findViewById(R.id.profileLocation);
         profile_submit = (Button) findViewById(R.id.profile_submit);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
@@ -113,7 +113,7 @@ public class ProfileActivity extends AppCompatActivity {
                 ProfileName = profileName.getText().toString();
                 ProfileEmail = profileEmail.getText().toString();
                 ProfileNumber = profileNumber.getText().toString();
-                ProfilePassword = profilePassword.getText().toString();
+               // ProfilePassword = profilePassword.getText().toString();
                 ProfileLocation = profileLocation.getText().toString();
 
                 if (Connectivity.isNetworkAvailable(ProfileActivity.this)) {
@@ -310,6 +310,10 @@ public class ProfileActivity extends AppCompatActivity {
                     String responce = object.getString("responce");
 
                     if (responce.equals("true")) {
+//                        if (!image.isEmpty()){
+//                            AppPreference.setProfileImage(ProfileActivity.this,image);
+//                        }
+
                         Toast.makeText(ProfileActivity.this, data, Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ProfileActivity.this, data, Toast.LENGTH_LONG).show();
@@ -524,7 +528,7 @@ public class ProfileActivity extends AppCompatActivity {
                     String name = dataObj.getString("name");
                     String email = dataObj.getString("email");
                     String contact = dataObj.getString("contact");
-                    String password = dataObj.getString("password");
+                   // String password = dataObj.getString("password");
                     String address = dataObj.getString("address");
                     String status = dataObj.getString("status");
                     String payment_status = dataObj.getString("payment_status");
@@ -534,7 +538,7 @@ public class ProfileActivity extends AppCompatActivity {
                     profileName.setText(name);
                     profileEmail.setText(email);
                     profileNumber.setText(contact);
-                    profilePassword.setText(password);
+                   // profilePassword.setText(password);
                     profileLocation.setText(address);
 
                     Picasso.with(ProfileActivity.this)
@@ -607,7 +611,7 @@ public class ProfileActivity extends AppCompatActivity {
                 postDataParams.put("name", ProfileName);
                 postDataParams.put("contact", ProfileNumber);
                 postDataParams.put("email", ProfileEmail);
-                postDataParams.put("password", ProfilePassword);
+               // postDataParams.put("password", ProfilePassword);
                 postDataParams.put("address", ProfileLocation);
 
                 Log.e("postDataParams", postDataParams.toString());
@@ -674,13 +678,13 @@ public class ProfileActivity extends AppCompatActivity {
                     String name = dataObj.getString("name");
                     String contact = dataObj.getString("contact");
                     String email = dataObj.getString("email");
-                    String password = dataObj.getString("password");
+                   // String password = dataObj.getString("password");
                     String address = dataObj.getString("address");
 
                     profileName.setText("");
                     profileEmail.setText("");
                     profileNumber.setText("");
-                    profilePassword.setText("");
+                    //profilePassword.setText("");
                     profileLocation.setText("");
 
 

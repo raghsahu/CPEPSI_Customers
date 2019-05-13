@@ -72,43 +72,43 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textColorHint="#000"
-                app:passwordToggleEnabled="true"
-                app:passwordToggleTint="#FFA500">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:textColorHint="#000"-->
+                <!--app:passwordToggleEnabled="true"-->
+                <!--app:passwordToggleTint="#FFA500">-->
 
-                <EditText
-                    android:id="@+id/profilePassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:maxLength="6"
-                    android:textColor="#000"
-                    android:textSize="13dp" />
+                <!--<EditText-->
+                    <!--android:id="@+id/profilePassword"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:hint="Password"-->
+                    <!--android:inputType="textPassword"-->
+                    <!--android:maxLength="6"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="13dp" />-->
 
-            </android.support.design.widget.TextInputLayout>
+            <!--</android.support.design.widget.TextInputLayout>-->
 
-            <android.support.design.widget.TextInputLayout
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:textColorHint="#000">
+            <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:visibility="gone"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="10dp"-->
+                <!--android:textColorHint="#000">-->
 
-                <EditText
-                    android:id="@+id/profileAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Address"
-                    android:inputType="textPersonName"
-                    android:textColor="#000"
-                    android:textSize="13dp" />
+                <!--<EditText-->
+                    <!--android:id="@+id/profileAddress"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:hint="Address"-->
+                    <!--android:inputType="textPersonName"-->
+                    <!--android:textColor="#000"-->
+                    <!--android:textSize="13dp" />-->
 
-            </android.support.design.widget.TextInputLayout>
+            <!--</android.support.design.widget.TextInputLayout>-->
 
             <android.support.design.widget.TextInputLayout
                 android:visibility="gone"

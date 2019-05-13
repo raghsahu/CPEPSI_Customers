@@ -324,7 +324,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         });
                         builder.show();
                     } else {
-                        Toast.makeText(GET_Service_providers.this, "" + Provider_infoHashMap.get(Stored_Ids[k]).getContactpersonnames(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GET_Service_providers.this, "Current Location", Toast.LENGTH_SHORT).show();
                     }
                 }
                // Toast.makeText(getApplicationContext(), "sdgsdgf" + marker.getSnippet(), Toast.LENGTH_SHORT).show();

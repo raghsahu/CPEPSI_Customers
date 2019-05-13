@@ -27,6 +27,7 @@ import com.customer.admin.cpepsi_customers.Fragments.Non_Professional_Services;
 import com.customer.admin.cpepsi_customers.Fragments.Professional_Services;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
+import com.squareup.picasso.Picasso;
 
 
 public class Main_Provider extends AppCompatActivity {
@@ -110,6 +111,7 @@ public class Main_Provider extends AppCompatActivity {
         } else {
 
         }
+
         manager = new SessionManager(this);
 
 //         toolbarHome = (Toolbar) findViewById(R.id.toolbarHome);

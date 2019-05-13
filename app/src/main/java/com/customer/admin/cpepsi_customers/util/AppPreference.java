@@ -18,6 +18,7 @@ public class AppPreference {
     public static final String SID = "sid";
     public static final String SNAME = "sname";
     public static final String ADDRESS = "address";
+    public static final String PROFILE_IMAGE= "profile_image";
 
 
     Context context;
@@ -168,7 +169,21 @@ public class AppPreference {
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, 0);
         return preferences.getString(ADDRESS, "");
     }
+//----------------------------------------------------------
+public static void setProfileImage(Context context, String value) {
+    SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, 0);
+    SharedPreferences.Editor editor = preferences.edit();
+    editor.putString(PROFILE_IMAGE, value);
+    editor.commit();
+}
 
+    public static String getProfileImage(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, 0);
+        return preferences.getString(PROFILE_IMAGE, "");
+    }
+
+
+    //-------------------------------------------------------------
 
     public void cleardatetime() {
         editor2.clear();
