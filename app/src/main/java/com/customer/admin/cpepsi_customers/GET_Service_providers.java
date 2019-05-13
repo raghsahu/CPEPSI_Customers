@@ -119,6 +119,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     int user_id;
     String ProviderId;
     String SubServiceNmae;
+    int SubSer_ID;
     // StreetViewPanorama streetViewPanorama;
     SearchView searchView1;
     private SearchAdapter searchAdapter;
@@ -144,12 +145,14 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
         selected_ser_name_from = getIntent().getIntExtra("service_id", 0);
         if (selected_ser_name_from == 0) {
             selected_ser_name_from = Integer.parseInt(AppPreference.getAfterID(getApplicationContext()));
         }
         CustProblem = getIntent().getStringExtra("Problem");
         SubServiceNmae = getIntent().getStringExtra("ServiceSub");
+        SubSer_ID = getIntent().getIntExtra("SubSer_ID",0);
 
         checkthepermisions();
 
@@ -312,16 +315,16 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         //rating.setText(RatingRes);
 
                         builder.setView(dialogLayout);
-                        builder.setPositiveButton("Request Send", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
-                                    new SendRequest().execute();
-                                } else {
-                                    Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                        builder.setPositiveButton("Request Send", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
+//                                    new SendRequest().execute();
+//                                } else {
+//                                    Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
                         builder.show();
                     } else {
                         Toast.makeText(GET_Service_providers.this, "Current Location", Toast.LENGTH_SHORT).show();
@@ -496,7 +499,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("Servicesid", selected_service);
-                postDataParams.put("subServicesid", sub_service);
+                postDataParams.put("subServicesid", SubSer_ID);
 
                 Log.e("postDataParams", postDataParams.toString());
 

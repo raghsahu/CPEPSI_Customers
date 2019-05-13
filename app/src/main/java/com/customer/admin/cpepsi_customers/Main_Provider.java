@@ -21,6 +21,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Fragments.Free_Services;
 import com.customer.admin.cpepsi_customers.Fragments.Non_Professional_Services;
@@ -177,13 +178,15 @@ public class Main_Provider extends AppCompatActivity {
         inflater.inflate(R.menu.home, menu);
         MenuItem item = menu.findItem(R.id.action_settings);
         MenuItem item1 =menu.findItem(R.id.action_prof);
-//        loginout = menu.
+        MenuItem item2 =menu.findItem(R.id.action_p_history);
         if (manager.isLoggedIn()) {
             item.setTitle("Logout");
             item1.setVisible(true);
+            item2.setVisible(true);
         }else{
             item.setTitle("Login");
             item1.setVisible(false);
+            item2.setVisible(false);
 
         }
         return true;
@@ -196,17 +199,18 @@ public class Main_Provider extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_notification) {
-            Intent intent = new Intent(Main_Provider.this, Notification.class);
-            startActivity(intent);
-            //finish();
-            return true;
-//        }
-// else if (id==R.id.action_feedback){
-//            Intent intent = new Intent(Main_Provider.this, FeedbackForm.class);
-//            startActivity(intent);
-           // finish();
+            if (manager.isLoggedIn()) {
+                Intent intent = new Intent(Main_Provider.this, Notification.class);
+                startActivity(intent);
+                //finish();
+                return true;
+            }else {
+                Toast.makeText(this, "Please Login First", Toast.LENGTH_SHORT).show();
+            }
+
+
         } else if (id == R.id.action_settings) {
             manager.logoutUser();
             manager.setAfterName(null);
@@ -218,6 +222,26 @@ public class Main_Provider extends AppCompatActivity {
         }else if (id == R.id.action_prof){
             Intent intent = new Intent(Main_Provider.this, ProfileActivity.class);
             startActivity(intent);
+          return true;
+        }else if (id == R.id.action_share){
+
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
+                String shareMessage= "\nLet me recommend you this application\n\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "choose one"));
+            } catch(Exception e) {
+                //e.toString();
+            }
+
+
+            return true;
+        }else if (id == R.id.action_p_history){
+//            Intent intent = new Intent(Main_Provider.this, ProfileActivity.class);
+//            startActivity(intent);
           return true;
         }
 

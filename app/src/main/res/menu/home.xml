@@ -5,12 +5,16 @@
     <item
         android:id="@+id/action_notification"
         android:title="Status" />
-    <!--<item-->
-        <!--android:id="@+id/action_feedback"-->
-        <!--android:title="Feedback" />-->
+    <item
+        android:id="@+id/action_p_history"
+        android:title="Payment History" />
+    <item
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/share"
+        android:id="@+id/action_share"
+        android:title="Share App" />
     <item
         app:actionViewClass="android.widget.TextView"
-
         android:id="@+id/action_settings"
         android:title="Logout" />
 
@@ -22,5 +26,5 @@
         android:icon="@drawable/prof"
         app:showAsAction="ifRoom"
         android:id="@+id/action_prof"
-        android:title="Login" />
+        android:title="Profile" />
 </menu>

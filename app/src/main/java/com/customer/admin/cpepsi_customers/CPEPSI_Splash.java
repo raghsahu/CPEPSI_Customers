@@ -38,7 +38,7 @@ public class CPEPSI_Splash extends AppCompatActivity {
                         // Log and toast
                         String msg = "message done";
                         Log.d("TAGWA", msg);
-                        Toast.makeText(CPEPSI_Splash.this, msg, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(CPEPSI_Splash.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);

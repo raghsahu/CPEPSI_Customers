@@ -1,13 +1,10 @@
 package com.customer.admin.cpepsi_customers;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -36,12 +33,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import instamojo.library.InstamojoPay;
-import instamojo.library.InstapayListener;
 
 public class After_service extends AppCompatActivity {
     Button next_ser;
@@ -65,6 +60,9 @@ public class After_service extends AppCompatActivity {
     public ApiModel apiModel;
     String Adss;
 
+    public HashMap<Integer, DataModel> SubServiceId=new HashMap<Integer, DataModel>();
+     String Service_Sub_ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +78,7 @@ public class After_service extends AppCompatActivity {
         problem = (EditText) findViewById(R.id.problem);
         address = (EditText) findViewById(R.id.address);
         address.setText(Adss);
+
         problem.setText(AppPreference.getProblem(After_service.this));
         apiModel = (ApiModel) getIntent().getSerializableExtra("ApiModel");
         if (getIntent() != null) {
@@ -91,7 +90,7 @@ public class After_service extends AppCompatActivity {
                     String SerName = apiModel.getService();
                     String Type = apiModel.getType();
                     String Status = apiModel.getStatus();
-                    Log.e("Rajkumar", "");
+                    Log.e("Rajkumar bhai", "");
                     service_ser.setText(SerName);
                     if (!AppPreference.getAfterID(getApplicationContext()).equals("null"))
                         strNew = Integer.parseInt(AppPreference.getAfterID(getApplicationContext()));
@@ -114,7 +113,7 @@ public class After_service extends AppCompatActivity {
                     String SerName = apiModel.getService();
                     String Type = apiModel.getType();
                     String Status = apiModel.getStatus();
-                    Log.e("Rajkumar", "");
+                    Log.e("Rajkumar with", "");
                   //  Toast.makeText(this, ""+strId, Toast.LENGTH_SHORT).show();
 
                     service_ser.setText(SerName);
@@ -160,6 +159,15 @@ public class After_service extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ServiceItem = uomAdapter.getItem(position).toString();
+
+                for (int i = 0; i < SubServiceId.size(); i++)
+                {
+
+                    if (SubServiceId.get(i).getId().equals(serviceType.getItemAtPosition(position)))
+                    {
+                        Service_Sub_ID=SubServiceId.get(i).getId();
+                    }
+                }
 
             }
 
@@ -311,6 +319,8 @@ public class After_service extends AppCompatActivity {
                         uomList.add(ServiceSubCategory);
                         uomSpinnerList.add(new DataModel(id, Service, type, ServiceSubCategory, status));
 
+                        SubServiceId.put(i,new DataModel(id, Service, type, ServiceSubCategory, status));
+
                     }
 
                     uomAdapter = new ArrayAdapter<String>(After_service.this, R.layout.spinner_row, uomList);
@@ -431,7 +441,7 @@ public class After_service extends AppCompatActivity {
                 dialog.dismiss();
 
                 JSONObject jsonObject = null;
-                Log.e("PostPIinsuranceDetails", result.toString());
+                Log.e("PostPI", result.toString());
                 try {
 
                     jsonObject = new JSONObject(result);
@@ -452,7 +462,7 @@ public class After_service extends AppCompatActivity {
                         Log.e("strNew?????", strNew + "");
                         to_map.putExtra("Problem", Problem);
                         to_map.putExtra("ServiceSub", ServiceItem);
-                        //   Log.e("Id>>>", Id + "");
+                       to_map.putExtra("SubSer_ID",Service_Sub_ID);
                         startActivity(to_map);
                         finish();
                         // AppPreference.setAfterId(getApplicationContext(),"null");
