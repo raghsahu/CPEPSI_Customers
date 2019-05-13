@@ -101,6 +101,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     HashMap<Integer, Provider_info> Provider_infoHashMap = new HashMap<>();
     Marker current_marker;
     Marker[] providerMarkers;
+
     //loction_str;
     CustomInfoWindowAdapter customInfoWindowAdapter;
     Address address;
@@ -323,10 +324,10 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         });
                         builder.show();
                     } else {
-                        Toast.makeText(GET_Service_providers.this, "else part is " + Provider_infoHashMap.get(Stored_Ids[k]).getContactpersonnames(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GET_Service_providers.this, "" + Provider_infoHashMap.get(Stored_Ids[k]).getContactpersonnames(), Toast.LENGTH_SHORT).show();
                     }
                 }
-                Toast.makeText(getApplicationContext(), "sdgsdgf" + marker.getSnippet(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getApplicationContext(), "sdgsdgf" + marker.getSnippet(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -595,7 +596,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                             City[i] = providersJsonArray.getJSONObject(i).getString("name");
 
                             Stored_Ids[i] = user_id;
-
+                            Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
                         }
 //                        user_id = providersJsonArray.getJSONObject(i).getInt("user_id");
 //                        Provider_infoHashMap.put(user_id, new Provider_info
@@ -615,16 +616,21 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         // Stored_Ids[i] = user_id;
 
                     }
-
+//
                     if (Destinations.length != 0) {
                         for (int k = 0; k < Destinations.length; k++) {
                             if (loc_on_mark(Destinations[k]) != null) {
                                 PlaceInfo placeInfo = new PlaceInfo();
                                 placeInfo.setName("" + City[k]);
                                 placeInfo.setAddress("" + Destinations[k] + "" + City[k]);
-                                LatLng provider_location = loc_on_mark(Destinations[k]);
+                               // LatLng provider_location = loc_on_mark(Destinations[k]);
+                               // LatLng provider_location = new LatLng(22, 75);
 
-                                providerMarkers[k] = mMap.addMarker(new MarkerOptions().position(provider_location).title(City[k]).snippet("" + Destinations[k]));
+                                providerMarkers[k] = mMap.addMarker(new MarkerOptions()
+                                        .position(p1)
+                                        .anchor(0.5f, 0.5f)
+                                        .title(City[k])
+                                        .snippet("" + Destinations[k]));
                             }
                         }
 
@@ -643,7 +649,9 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
             geocoder = new Geocoder(GET_Service_providers.this);
             try {
-                event_address = geocoder.getFromLocationName(destination, 6);
+                event_address = geocoder.getFromLocationName(destination, 5);
+                Toast.makeText(GET_Service_providers.this, "add "+event_address, Toast.LENGTH_SHORT).show();
+
                 if (event_address.isEmpty()) {
                     return null;
                 } else {
@@ -651,8 +659,13 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                     location.getLatitude();
                     location.getLongitude();
                     p1 = new LatLng(location.getLatitude(), location.getLongitude());
+                    Toast.makeText(GET_Service_providers.this, "ll "+p1, Toast.LENGTH_SHORT).show();
                 }
-            } catch (IOException e) {
+
+           }
+
+            catch (IOException e) {
+                Toast.makeText(GET_Service_providers.this, "catch+ "+e, Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
             return p1;

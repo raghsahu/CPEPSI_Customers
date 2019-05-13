@@ -35,6 +35,7 @@ public class StatusAct extends AppCompatActivity {
     String ReqStatus;
     String Pr_Id,ProvId;
      String Adds;
+    NotificationModel notificationModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class StatusAct extends AppCompatActivity {
 
 
         if (getIntent() != null) {
-            NotificationModel notificationModel = (NotificationModel) getIntent().getSerializableExtra("NotificationModel");
+            notificationModel = (NotificationModel) getIntent().getSerializableExtra("NotificationModel");
            /* Name = notificationModel.getPrId();
             Email = notificationModel.getCustomerId();
             Mobile = notificationModel.getMobile();*/
@@ -65,10 +66,16 @@ public class StatusAct extends AppCompatActivity {
             apvAddress.setText(Adds);
            // ReqStatus = notificationModel.getProstatus();
             if (notificationModel.getProstatus().equals("3")){
-                decline.setEnabled(false);
-                feedback.setEnabled(false);
-                Toast.makeText(this, "This request is already completed", Toast.LENGTH_LONG).show();
+              // decline.setEnabled(false);
+               // feedback.setEnabled(false);
+                Toast.makeText(this, "This service is already completed", Toast.LENGTH_SHORT).show();
             }
+            if (notificationModel.getProstatus().equals("2")){
+              //  decline.setEnabled(false);
+               // feedback.setEnabled(false);
+                Toast.makeText(this, "This service is Decline", Toast.LENGTH_SHORT).show();
+            }
+
         }
 
 
@@ -88,15 +95,28 @@ public class StatusAct extends AppCompatActivity {
         feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (Connectivity.isNetworkAvailable(StatusAct.this)) {
-//                    new PostAccept().execute();
-                    Intent intent = new Intent(StatusAct.this, FeedbackForm.class);
-                    intent.putExtra("PrID",Pr_Id);
-                   startActivity(intent);
-                } else {
-                    Toast.makeText(StatusAct.this, "No Internet", Toast.LENGTH_SHORT).show();
+                if (notificationModel.getProstatus().equals("3") || notificationModel.getProstatus().equals("2") || notificationModel.getProstatus().equals("0") ){
+                    if (notificationModel.getProstatus().equals("3")){
+                        Toast.makeText(StatusAct.this, "This Service is Already Completed", Toast.LENGTH_LONG).show();
+                    }
+                    if (notificationModel.getProstatus().equals("2")){
+                        Toast.makeText(StatusAct.this, "This Service is Decline", Toast.LENGTH_LONG).show();
+                    }
+                    if (notificationModel.getProstatus().equals("0")){
+                        Toast.makeText(StatusAct.this, "This Service is Now Pending, Please wait for Accept", Toast.LENGTH_LONG).show();
+                    }
                 }
+                else {
+                    if (Connectivity.isNetworkAvailable(StatusAct.this)) {
+                        Intent intent = new Intent(StatusAct.this, FeedbackForm.class);
+                        intent.putExtra("PrID",Pr_Id);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(StatusAct.this, "No Internet", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
 
             }
         });
@@ -105,11 +125,24 @@ public class StatusAct extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (Connectivity.isNetworkAvailable(StatusAct.this)) {
-                    new PostDecline().execute();
-                } else {
-                    Toast.makeText(StatusAct.this, "No Internet", Toast.LENGTH_SHORT).show();
+                if (notificationModel.getProstatus().equals("2") || notificationModel.getProstatus().equals("3")){
+                    if (notificationModel.getProstatus().equals("2")){
+                        Toast.makeText(StatusAct.this, "This Service is Already Decline", Toast.LENGTH_LONG).show();
+                    }
+                    if (notificationModel.getProstatus().equals("3")){
+                        Toast.makeText(StatusAct.this, "This Service is Already Completed", Toast.LENGTH_LONG).show();
+                    }
                 }
+
+                else {
+                    if (Connectivity.isNetworkAvailable(StatusAct.this)) {
+                        new PostDecline().execute();
+                    } else {
+                        Toast.makeText(StatusAct.this, "No Internet", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
 
             }
         });
