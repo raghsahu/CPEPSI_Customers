@@ -600,6 +600,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
                             Stored_Ids[i] = user_id;
                             Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
+
                         }
 //                        user_id = providersJsonArray.getJSONObject(i).getInt("user_id");
 //                        Provider_infoHashMap.put(user_id, new Provider_info

@@ -164,7 +164,6 @@
                     android:id="@+id/apvAddress"
                     android:padding="10dp"
                     android:editable="false"
-                    android:inputType="textMultiLine"
                     android:textSize="13dp"
                     android:maxLength="2000"
                     android:background="@color/Grey"

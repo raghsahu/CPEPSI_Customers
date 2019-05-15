@@ -13,125 +13,251 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none"
+            >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="10dp">
 
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:id="@+id/card2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="5dp"-->
+                <!--app:cardCornerRadius="8dp">-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/freeService"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="10dp">-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="70dp"-->
+                        <!--android:layout_marginBottom="8dp"-->
+                        <!--android:src="@drawable/free_services" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Free Services"-->
+                        <!--android:textColor="#000"-->
+                        <!--android:textSize="18dp"-->
+                        <!--android:textStyle="bold|italic"-->
+                        <!--android:typeface="serif" />-->
+
+                <!--</LinearLayout>-->
+
+            <!--</android.support.v7.widget.CardView>-->
 
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/card2"
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:id="@+id/card1"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="5dp"-->
+                <!--app:cardCornerRadius="8dp">-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/profService"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="10dp">-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="70dp"-->
+                        <!--android:layout_marginBottom="8dp"-->
+                        <!--android:src="@drawable/extra_ic" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Professional Services"-->
+                        <!--android:textColor="#000"-->
+                        <!--android:textSize="18dp"-->
+                        <!--android:textStyle="bold|italic"-->
+                        <!--android:typeface="serif" />-->
+
+                <!--</LinearLayout>-->
+            <!--</android.support.v7.widget.CardView>-->
+
+
+
+
+            <!--<android.support.v7.widget.CardView-->
+                <!--android:id="@+id/card3"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="8dp"-->
+                <!--app:cardCornerRadius="5dp">-->
+
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/techService"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="10dp">-->
+
+                    <!--<ImageView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="70dp"-->
+                        <!--android:layout_marginBottom="8dp"-->
+                        <!--android:src="@drawable/professional" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="center"-->
+                        <!--android:text="Technical Services"-->
+                        <!--android:textColor="#000"-->
+                        <!--android:textSize="18dp"-->
+                        <!--android:textStyle="bold|italic"-->
+                        <!--android:typeface="serif" />-->
+
+                <!--</LinearLayout>-->
+
+            <!--</android.support.v7.widget.CardView>-->
+            <!---->
+
+            <LinearLayout
+                android:weightSum="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="8dp">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp">
 
-                <LinearLayout
-                    android:id="@+id/freeService"
+                <ImageView
+                    android:layout_weight="0.8"
+                     android:layout_width="match_parent"
+                     android:layout_height="25dp"
+                    android:layout_gravity="center"
+                     android:src="@drawable/free_services" />
+
+                <TextView
+                    android:layout_weight="0.2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Free Services"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:textSize="18dp"
+                    android:textColor="#000"
+                    android:textStyle="normal"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_marginBottom="8dp"
-                        android:src="@drawable/free_services" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_freeservice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Free Services"
-                        android:textColor="#000"
-                        android:textSize="18dp"
-                        android:textStyle="bold|italic"
-                        android:typeface="serif" />
+            </android.support.v7.widget.RecyclerView>
 
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card1"
+            <LinearLayout
+                android:weightSum="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                app:cardCornerRadius="8dp">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp">
 
-                <LinearLayout
-                    android:id="@+id/profService"
+                <ImageView
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/extra_ic" />
+
+                <TextView
+                    android:layout_weight="0.2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Professional Services"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_marginBottom="8dp"
-                        android:src="@drawable/extra_ic" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Professional Services"
-                        android:textColor="#000"
-                        android:textSize="18dp"
-                        android:textStyle="bold|italic"
-                        android:typeface="serif" />
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                    android:textSize="18dp"
+                    android:textColor="#000"
+                    android:textStyle="normal"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
 
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_professional"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+            </android.support.v7.widget.RecyclerView>
 
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card3"
+            <LinearLayout
+                android:weightSum="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:cardCornerRadius="5dp">
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="10dp">
 
-                <LinearLayout
-                    android:id="@+id/techService"
+                <ImageView
+                    android:layout_weight="0.8"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/professional" />
+
+                <TextView
+                    android:layout_weight="0.2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Technical Services"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:textSize="18dp"
+                    android:textColor="#000"
+                    android:textStyle="normal"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
-                        android:layout_marginBottom="8dp"
-                        android:src="@drawable/professional" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Technical Services"
-                        android:textColor="#000"
-                        android:textSize="18dp"
-                        android:textStyle="bold|italic"
-                        android:typeface="serif" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_technical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="55dp"
+                >
 
-                </LinearLayout>
+            </android.support.v7.widget.RecyclerView>
 
-            </android.support.v7.widget.CardView>
+
 
         </LinearLayout>
 
-
+        </android.support.v4.widget.NestedScrollView>
     </FrameLayout>
 
 

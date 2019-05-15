@@ -692,7 +692,7 @@ public class ProfileActivity extends AppCompatActivity {
                         Intent intent = new Intent(ProfileActivity.this, Main_Provider.class);
                         startActivity(intent);
                         finish();
-                        Toast.makeText(ProfileActivity.this, responce, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfileActivity.this, "Successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(ProfileActivity.this, responce, Toast.LENGTH_SHORT).show();
                     }

@@ -1,8 +1,10 @@
 package com.customer.admin.cpepsi_customers;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,7 +13,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,12 +30,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Adapters.Service_NonPro_Adapter;
+import com.customer.admin.cpepsi_customers.Adapters.Service_Pro_Adapter;
+import com.customer.admin.cpepsi_customers.Adapters.Service_Recycler_Adapter;
 import com.customer.admin.cpepsi_customers.Fragments.Free_Services;
 import com.customer.admin.cpepsi_customers.Fragments.Non_Professional_Services;
 import com.customer.admin.cpepsi_customers.Fragments.Professional_Services;
+import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
+import com.customer.admin.cpepsi_customers.Java_files.NonProModel;
+import com.customer.admin.cpepsi_customers.Java_files.ProModel;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class Main_Provider extends AppCompatActivity {
@@ -41,6 +71,18 @@ public class Main_Provider extends AppCompatActivity {
     LinearLayout profService,freeService,techService;
     SessionManager manager;
 
+    RecyclerView recycler_freeservice,recycler_professional,recycler_technical;
+
+    ArrayList<ApiModel> serviceList = new ArrayList<>();
+    Service_Recycler_Adapter service_recycler_adapter;
+
+    ArrayList<ApiModel> serviceProList = new ArrayList<>();
+    Service_Pro_Adapter service_Pro_adapter;
+
+    ArrayList<ApiModel> serviceNonProList = new ArrayList<>();
+    Service_NonPro_Adapter service_NonPro_adapter;
+
+//************************************************************
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -106,6 +148,19 @@ public class Main_Provider extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__provider);
 
+        recycler_freeservice=findViewById(R.id.recycler_freeservice);
+        recycler_professional=findViewById(R.id.recycler_professional);
+        recycler_technical=findViewById(R.id.recycler_technical);
+
+        if (Connectivity.isNetworkAvailable(Main_Provider.this)) {
+            new Get_All_Non_Free_Services(3).execute();
+            new Get_All_Non_Profossional_Services(2).execute();
+            new Get_All_Profossional_Services(1).execute();
+
+        } else {
+            Toast.makeText(Main_Provider.this, "No Internet", Toast.LENGTH_SHORT).show();
+        }
+//*******************************************************************************
         if (ActivityCompat.checkSelfPermission(Main_Provider.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //ask for permission
             ActivityCompat.requestPermissions(Main_Provider.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
@@ -127,46 +182,49 @@ public class Main_Provider extends AppCompatActivity {
         final Animation right_to_left = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.right_to_left);
     //    final Animation left_to_right = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_to_right);
 
-        profService = (LinearLayout)findViewById(R.id.profService);
-        profService.startAnimation(right_to_left);
+//        profService = (LinearLayout)findViewById(R.id.profService);
+//        profService.startAnimation(right_to_left);
+//
+//        freeService = (LinearLayout)findViewById(R.id.freeService);
+//        freeService.startAnimation(right_to_left);
+//
+//        techService = (LinearLayout)findViewById(R.id.techService);
+//        techService.startAnimation(right_to_left);
+//
+//        card1 = (CardView)findViewById(R.id.card1);
+//        card2 = (CardView)findViewById(R.id.card2);
+//        card3 = (CardView)findViewById(R.id.card3);
+//
+//        card1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                FragmentManager fm = getSupportFragmentManager();
+//                Professional_Services fragment = new Professional_Services();
+//                fm.beginTransaction().add(R.id.provider_frame,fragment).commit();
+//            }
+//        });
+//
+//        card2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentManager fm = getSupportFragmentManager();
+//                Free_Services fragment = new Free_Services();
+//                fm.beginTransaction().add(R.id.provider_frame,fragment).commit();
+//            }
+//        });
+//
+//        card3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentManager fm = getSupportFragmentManager();
+//                Non_Professional_Services fragment = new Non_Professional_Services();
+//                fm.beginTransaction().add(R.id.provider_frame,fragment).commit();
+//            }
+//        });
 
-        freeService = (LinearLayout)findViewById(R.id.freeService);
-        freeService.startAnimation(right_to_left);
 
-        techService = (LinearLayout)findViewById(R.id.techService);
-        techService.startAnimation(right_to_left);
 
-        card1 = (CardView)findViewById(R.id.card1);
-        card2 = (CardView)findViewById(R.id.card2);
-        card3 = (CardView)findViewById(R.id.card3);
-
-        card1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                FragmentManager fm = getSupportFragmentManager();
-                Professional_Services fragment = new Professional_Services();
-                fm.beginTransaction().add(R.id.provider_frame,fragment).commit();
-            }
-        });
-
-        card2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getSupportFragmentManager();
-                Free_Services fragment = new Free_Services();
-                fm.beginTransaction().add(R.id.provider_frame,fragment).commit();
-            }
-        });
-
-        card3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getSupportFragmentManager();
-                Non_Professional_Services fragment = new Non_Professional_Services();
-                fm.beginTransaction().add(R.id.provider_frame,fragment).commit();
-            }
-        });
     }
 
     @Override
@@ -248,4 +306,453 @@ public class Main_Provider extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private class Get_All_Non_Free_Services extends AsyncTask<Void, Void, String> {
+        int service_id;
+        ProgressDialog dialog;
+
+        public Get_All_Non_Free_Services(int service_txt_id) {
+            this.service_id = service_txt_id;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(Main_Provider.this);
+            dialog.show();
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            try {
+
+                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put("type", service_id);
+
+                Log.e("postDataParams", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds*/);
+                conn.setConnectTimeout(15000  /*milliseconds*/);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        result.append(line);
+                    }
+                    r.close();
+                    return result.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            dialog.dismiss();
+            if (result != null) {
+                //  dialog.dismiss();
+
+
+                Log.e("PostRegistration", result.toString());
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(result);
+                    boolean response = jsonObject.getBoolean("responce");
+                    if (response) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject Service_json_object = jsonArray.getJSONObject(i);
+                            String id = Service_json_object.getString("id");
+                            String Service = Service_json_object.getString("Service");
+                            String type = Service_json_object.getString("type");
+                            String image = Service_json_object.getString("image");
+                            String status = Service_json_object.getString("status");
+
+                            serviceList.add(new ApiModel(id,Service,type,image,status));
+
+                           // size_of_services++;
+
+
+
+                        }
+//                        if (size_of_services == jsonArray.length()) {
+//
+//                            free_recyler.setAdapter(service_recycler_adapter);
+//                        }
+                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceList);
+                       // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+                        recycler_freeservice.setLayoutManager(manager);
+                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+                        recycler_freeservice.setAdapter(service_recycler_adapter);
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                super.onPostExecute(result);
+            }
+
+        }
+
+
+        public String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while (itr.hasNext()) {
+
+                String key = itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
+
+
+
+
+    }
+//************************************************************
+    private class Get_All_Non_Profossional_Services extends AsyncTask<Void, Void, String> {
+    int service_id;
+    ProgressDialog dialog;
+    int size_of_services = 0;
+
+    public Get_All_Non_Profossional_Services(int service_txt_id) {
+        this.service_id = service_txt_id;
+
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+
+        dialog = new ProgressDialog(Main_Provider.this);
+        dialog.show();
+
+        super.onPreExecute();
+
+    }
+
+
+    @Override
+    protected String doInBackground(Void... voids) {
+
+        try {
+
+
+            URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+            //   URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
+
+            JSONObject postDataParams = new JSONObject();
+            postDataParams.put("type", service_id);
+//                postDataParams.put("password", password);
+
+            Log.e("postDataParams", postDataParams.toString());
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000 /* milliseconds*/);
+            conn.setConnectTimeout(15000  /*milliseconds*/);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(getPostDataString(postDataParams));
+
+            writer.flush();
+            writer.close();
+            os.close();
+
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    result.append(line);
+                }
+                r.close();
+                return result.toString();
+
+            } else {
+                return new String("false : " + responseCode);
+            }
+        } catch (Exception e) {
+            return new String("Exception: " + e.getMessage());
+        }
+    }
+    public String getPostDataString(JSONObject params) throws Exception {
+
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = params.keys();
+
+        while (itr.hasNext()) {
+
+            String key = itr.next();
+            Object value = params.get(key);
+
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+        }
+        return result.toString();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        dialog.dismiss();
+        if (result != null) {
+            //  dialog.dismiss();
+
+
+            Log.e("PostRegistration", result.toString());
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+                boolean response = jsonObject.getBoolean("responce");
+                if (response) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject Service_json_object = jsonArray.getJSONObject(i);
+                        String id = Service_json_object.getString("id");
+                        String Service = Service_json_object.getString("Service");
+                        String type = Service_json_object.getString("type");
+                        String image = Service_json_object.getString("image");
+                        String status = Service_json_object.getString("status");
+
+                        serviceNonProList.add(new ApiModel(id,Service,type,image,status));
+
+//                        size_of_services++;
+//
+                    }
+//                    if (size_of_services == jsonArray.length()) {
+//
+//                        ser_list_view_other.setAdapter(service_recycler_adapter);
+//                    }
+
+                    service_NonPro_adapter = new Service_NonPro_Adapter(Main_Provider.this, serviceNonProList);
+                    // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+                    GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+                    recycler_technical.setLayoutManager(manager);
+                    recycler_technical.setItemAnimator(new DefaultItemAnimator());
+                    recycler_technical.setAdapter(service_NonPro_adapter);
+
+
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            super.onPostExecute(result);
+        }
+
+    }
+}
+//************************************************************
+    private class Get_All_Profossional_Services extends AsyncTask<Void, Void, String> {
+    int service_id;
+    ProgressDialog dialog;
+    int size_of_services = 0;
+    View v;
+
+    public Get_All_Profossional_Services( int service_txt_id) {
+        this.service_id = service_txt_id;
+        this.v = v;
+
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+        dialog = new ProgressDialog(Main_Provider.this);
+        dialog.show();
+
+        super.onPreExecute();
+    }
+
+
+    @Override
+    protected String doInBackground(Void... voids) {
+
+        try {
+
+
+            URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+            //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
+
+            JSONObject postDataParams = new JSONObject();
+            postDataParams.put("type", service_id);
+//                postDataParams.put("password", password);
+
+            Log.e("postDataParams", postDataParams.toString());
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setReadTimeout(15000 /* milliseconds*/);
+            conn.setConnectTimeout(15000  /*milliseconds*/);
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            OutputStream os = conn.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(os, "UTF-8"));
+            writer.write(getPostDataString(postDataParams));
+
+            writer.flush();
+            writer.close();
+            os.close();
+
+            int responseCode = conn.getResponseCode();
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder result = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    result.append(line);
+                }
+                r.close();
+                return result.toString();
+
+            } else {
+                return new String("false : " + responseCode);
+            }
+        } catch (Exception e) {
+            return new String("Exception: " + e.getMessage());
+        }
+    }
+
+    public String getPostDataString(JSONObject params) throws Exception {
+
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = params.keys();
+
+        while (itr.hasNext()) {
+
+            String key = itr.next();
+            Object value = params.get(key);
+
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+        }
+        return result.toString();
+    }
+
+    @Override
+    protected void onPostExecute(String result) {
+        dialog.dismiss();
+        if (result != null) {
+            //  dialog.dismiss();
+
+
+            Log.e("PostRegistration", result.toString());
+
+            try {
+
+                JSONObject jsonObject = new JSONObject(result);
+                boolean response = jsonObject.getBoolean("responce");
+                if (response) {
+                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject Service_json_object = jsonArray.getJSONObject(i);
+                        String id = Service_json_object.getString("id");
+                        String Service = Service_json_object.getString("Service");
+                        String type = Service_json_object.getString("type");
+                        String image = Service_json_object.getString("image");
+                        String status = Service_json_object.getString("status");
+
+                        serviceProList.add(new ApiModel(id,Service,type,image,status));
+
+//                        size_of_services++;
+//
+                    }
+//                    if (size_of_services == jsonArray.length()) {
+//
+//                        ser_list_view.setAdapter(service_recycler_adapter);
+//                    }
+                    service_Pro_adapter = new Service_Pro_Adapter(Main_Provider.this, serviceProList);
+                    // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+                    GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+                    recycler_professional.setLayoutManager(manager);
+                    recycler_professional.setItemAnimator(new DefaultItemAnimator());
+                    recycler_professional.setAdapter(service_Pro_adapter);
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        super.onPostExecute(result);
+    }
+
+
+    }
 }

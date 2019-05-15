@@ -62,9 +62,13 @@ public class StatusAct extends AppCompatActivity {
             Pr_Id = notificationModel.getPrId();
             ProvId = notificationModel.getProviderId();
             Adds  = notificationModel.getDesignation();
+            Name  = notificationModel.getName();
+            Email  = notificationModel.getEmailid();
+            Mobile  = notificationModel.getNumber();
+
             apvDescription.setText(Description);
-            apvAddress.setText(Adds);
-           // ReqStatus = notificationModel.getProstatus();
+
+
             if (notificationModel.getProstatus().equals("3")){
               // decline.setEnabled(false);
                // feedback.setEnabled(false);
@@ -75,6 +79,14 @@ public class StatusAct extends AppCompatActivity {
                // feedback.setEnabled(false);
                 Toast.makeText(this, "This service is Decline", Toast.LENGTH_SHORT).show();
             }
+            if (notificationModel.getProstatus().equals("1")){
+                apvName.setText(Name);
+                apvEmail.setText(Email);
+                apvMobile.setText(Mobile);
+                apvAddress.setText(Adds);
+                Toast.makeText(this, "This service is Accept", Toast.LENGTH_SHORT).show();
+            }
+
 
         }
 
@@ -95,7 +107,7 @@ public class StatusAct extends AppCompatActivity {
         feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (notificationModel.getProstatus().equals("3") || notificationModel.getProstatus().equals("2") || notificationModel.getProstatus().equals("0") ){
+                if (notificationModel.getProstatus().equals("3")|| notificationModel.getProstatus().equals("2") || notificationModel.getProstatus().equals("0") ){
                     if (notificationModel.getProstatus().equals("3")){
                         Toast.makeText(StatusAct.this, "This Service is Already Completed", Toast.LENGTH_LONG).show();
                     }

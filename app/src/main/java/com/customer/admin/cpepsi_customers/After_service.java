@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
 import com.customer.admin.cpepsi_customers.Java_files.DataModel;
+import com.customer.admin.cpepsi_customers.Java_files.NonProModel;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
 
@@ -58,6 +59,7 @@ public class After_service extends AppCompatActivity {
     SessionManager manager;
     String After_SerName;
     public ApiModel apiModel;
+   // public NonProModel apiModel;
     String Adss;
 
     public HashMap<Integer, DataModel> SubServiceId=new HashMap<Integer, DataModel>();
@@ -448,7 +450,7 @@ public class After_service extends AppCompatActivity {
                     String res = jsonObject.getString("responce");
 
                     if (res.equals("false")) {
-                        Toast.makeText(After_service.this, "Please pay Rs 10, Your first service Amount only one time",
+                        Toast.makeText(After_service.this, "Please pay Rs 20, Your Paid service Amount only one time",
                                 Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(After_service.this, FirstTime_Payment_Activity.class);
                         intent.putExtra("ApiModel", apiModel);

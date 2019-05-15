@@ -46,6 +46,10 @@ public class FeedbackForm extends AppCompatActivity {
     String Type;
     String Id;
     String Prov_id;
+    int Btn_Cash=0;
+    int Btn_Online=0;
+    public URL url;
+     String Rating_point;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class FeedbackForm extends AppCompatActivity {
         feedSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Btn_Online=1;
 
                 FeedName = feedName.getText().toString();
                 FeedEmail = feedEmail.getText().toString();
@@ -108,6 +113,7 @@ public class FeedbackForm extends AppCompatActivity {
         cash_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+           Btn_Cash=1;
 
                 FeedName = feedName.getText().toString();
                 FeedEmail = feedEmail.getText().toString();
@@ -125,7 +131,7 @@ public class FeedbackForm extends AppCompatActivity {
                         feedAddress.setError("Address can not be empty");
                     } else if (!FeedAddress.isEmpty()) {
 
-                       // new Cash_Payment().execute();
+                        new PostFeedback().execute();
                     }
 
                 } else {
@@ -140,27 +146,33 @@ public class FeedbackForm extends AppCompatActivity {
 
                 if (good.isChecked()) {
                     Type = "good";
+                    Rating_point="5.0";
                     Id = "1";
                     average.setChecked(false);
                     bad.setChecked(false);
-                    Toast.makeText(FeedbackForm.this, "type" + good, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FeedbackForm.this, "rate " +Rating_point , Toast.LENGTH_SHORT).show();
                 }
 
                 if (average.isChecked()) {
                     Type = "average";
+                    Rating_point="3.0";
                     Id = "2";
                     good.setChecked(false);
                     bad.setChecked(false);
+                    Toast.makeText(FeedbackForm.this, "rate " +Rating_point , Toast.LENGTH_SHORT).show();
                 }
 
                 if (bad.isChecked()) {
                     Type = "bad";
+                    Rating_point="1.0";
                     Id = "3";
                     average.setChecked(false);
                     good.setChecked(false);
+                    Toast.makeText(FeedbackForm.this, "rate " +Rating_point , Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 
     //---------------------------------------------
@@ -188,7 +200,7 @@ public class FeedbackForm extends AppCompatActivity {
                 postDataParams.put("contactno", FeedContact);
                 postDataParams.put("address", FeedAddress);
                 postDataParams.put("provider_id", Prov_id);
-                postDataParams.put("service", Type);
+                postDataParams.put("service", Rating_point);
 
                 Log.e("postDataParams", postDataParams.toString());
 
@@ -256,10 +268,14 @@ public class FeedbackForm extends AppCompatActivity {
                         feedEmail.setText("");
                         feedContact.setText("");
                         feedAddress.setText("");
-                        //  Intent intent = new Intent(FeedbackForm.this, Main_Provider.class);
-                        // startActivity(intent);
-                        //finish();
+
+                        if (Btn_Cash==1){
+                            new InsertPaymentData().execute();
+                        }
+                        if (Btn_Online==1){
                         callInstamojoPay(FeedEmail, FeedContact, FeedPaymentAmount, "PayServiceCharge", FeedName);
+
+                        }
 
                     } else {
                         Toast.makeText(FeedbackForm.this, "Some Problem", Toast.LENGTH_SHORT).show();
@@ -358,7 +374,12 @@ public class FeedbackForm extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/Api/insert_payment");
+                if (Btn_Cash==1){
+                    url = new URL("http://heightsmegamart.com/CPEPSI/api/insert_payment_cash");
+                }
+                if (Btn_Online==1){
+                     url = new URL("http://heightsmegamart.com/CPEPSI/Api/insert_payment");
+                }
             //    URL url = new URL("http://paramgoa.com/cpepsi/Api/insert_payment");
 
                 JSONObject postDataParams = new JSONObject();
@@ -430,8 +451,20 @@ public class FeedbackForm extends AppCompatActivity {
 
                     if (res.equals("true")) {
 
-                        Toast.makeText(FeedbackForm.this, "Service Payment Success, Thanks for using our service!",
-                                Toast.LENGTH_LONG).show();
+                        if (Btn_Cash==1){
+                            Toast.makeText(FeedbackForm.this, "Service Payment Success, Thanks for using our service!",
+                                    Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(FeedbackForm.this, Main_Provider.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        if (Btn_Online==1){
+                            Toast.makeText(FeedbackForm.this, "Service Payment Success, Thanks for using our service!",
+                                    Toast.LENGTH_LONG).show();
+                        }
+
 
 
                     } else {
