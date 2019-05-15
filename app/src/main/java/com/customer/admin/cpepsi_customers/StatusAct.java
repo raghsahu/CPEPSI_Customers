@@ -365,6 +365,7 @@ public class StatusAct extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if (result != null) {
                 dialog.dismiss();
+                Toast.makeText(StatusAct.this, "res "+result, Toast.LENGTH_SHORT).show();
 
                 JSONObject jsonObject = null;
                 String s = result.toString();
@@ -374,10 +375,10 @@ public class StatusAct extends AppCompatActivity {
                     String responce = jsonObject.getString("responce");
 
                     if (responce.equals("true")) {
-                        apvName.setText("");
-                        apvEmail.setText("");
-                        apvMobile.setText("");
-                        apvDescription.setText("");
+//                        apvName.setText("");
+//                        apvEmail.setText("");
+//                        apvMobile.setText("");
+//                        apvDescription.setText("");
                         Intent intent = new Intent(StatusAct.this,Main_Provider.class);
                         startActivity(intent);
                         finish();

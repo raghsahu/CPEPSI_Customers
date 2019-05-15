@@ -109,6 +109,7 @@ public class Register_Customer extends AppCompatActivity {
                     {
 
                         new DisttExecuteTask(StateHashMap.get(i).getState_id()).execute();
+                       // Toast.makeText(Register_Customer.this, "st "+StateHashMap.get(i).getState_id(), Toast.LENGTH_SHORT).show();
                     }
                     // else (StateHashMap.get(i).getState_name().equals(spin_state.getItemAtPosition(position))
                 }
@@ -365,7 +366,8 @@ public class Register_Customer extends AppCompatActivity {
                 res = jsonObject.getString("responce");
 
                 if (res.equals("false")){
-                    String error = jsonObject.getString("error");
+
+                    String error = jsonObject.getString("massage");
                     Toast.makeText(Register_Customer.this, ""+error, Toast.LENGTH_SHORT).show();
                 }else {
                     String msg = jsonObject.getString("massage");
@@ -444,7 +446,9 @@ public class Register_Customer extends AppCompatActivity {
                             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                             String state_id = jsonObject1.getString("state_id");
                             String state_name = jsonObject1.getString("state_name");
+
                             stateList.add(new StateModel(state_id, state_name));
+
                             StateHashMap.put(i, new StateModel(state_id,state_name));
                             ChooseState.add(state_name);
 

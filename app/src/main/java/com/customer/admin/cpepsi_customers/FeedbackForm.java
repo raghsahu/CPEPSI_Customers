@@ -387,6 +387,7 @@ public class FeedbackForm extends AppCompatActivity {
                 postDataParams.put("user_id", AppPreference.getId(FeedbackForm.this));
                 postDataParams.put("amount", FeedPaymentAmount);
                 postDataParams.put("remark", AppPreference.getProblem(FeedbackForm.this));
+                postDataParams.put("pr_id", Prov_id);
 
                 Log.e("postDataParams", postDataParams.toString());
 

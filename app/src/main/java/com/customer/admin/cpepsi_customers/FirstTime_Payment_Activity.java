@@ -107,7 +107,8 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(dialog.isShowing() && dialog !=null)
+        //if(dialog.isShowing() && dialog !=null)
+        if(dialog !=null)
         {
             dialog.dismiss();
         }

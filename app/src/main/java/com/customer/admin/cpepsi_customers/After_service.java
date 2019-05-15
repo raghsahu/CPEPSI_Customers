@@ -62,7 +62,7 @@ public class After_service extends AppCompatActivity {
    // public NonProModel apiModel;
     String Adss;
 
-    public HashMap<Integer, DataModel> SubServiceId=new HashMap<Integer, DataModel>();
+    public HashMap<Integer, DataModel> SubServiceId_HasMap=new HashMap<Integer, DataModel>();
      String Service_Sub_ID;
 
     @Override
@@ -156,19 +156,26 @@ public class After_service extends AppCompatActivity {
         } else {
             Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show();
         }
-
+//***************************************************************
         serviceType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                 ServiceItem = uomAdapter.getItem(position).toString();
 
-                for (int i = 0; i < SubServiceId.size(); i++)
+                for (int i = 0; i < SubServiceId_HasMap.size(); i++)
                 {
-
-                    if (SubServiceId.get(i).getId().equals(serviceType.getItemAtPosition(position)))
+                   // Toast.makeText(After_service.this, "item pos "+serviceType.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                    if (SubServiceId_HasMap.get(i).getServiceSubCategory().equals(serviceType.getItemAtPosition(position)))
                     {
-                        Service_Sub_ID=SubServiceId.get(i).getId();
+                        Service_Sub_ID=SubServiceId_HasMap.get(i).getId();
+                         Toast.makeText(After_service.this, "subId "+Service_Sub_ID, Toast.LENGTH_SHORT).show();
+                    }else
+                    {
+                        //Toast.makeText(After_service.this, "nonono", Toast.LENGTH_SHORT).show();
                     }
+
+
                 }
 
             }
@@ -192,7 +199,7 @@ public class After_service extends AppCompatActivity {
                     AppPreference.setProblem(After_service.this, Problem);
                     if (!ServiceItem.equals("--Select--")) {
                         if (!Problem.equals("")) {
-                            new CheckFirstPaymentStatus().execute();
+                            new CheckFirstPaymentStatus(Service_Sub_ID).execute();
                         } else {
                             problem.setError("Please Enter Problem.");
                             problem.requestFocus();
@@ -321,7 +328,7 @@ public class After_service extends AppCompatActivity {
                         uomList.add(ServiceSubCategory);
                         uomSpinnerList.add(new DataModel(id, Service, type, ServiceSubCategory, status));
 
-                        SubServiceId.put(i,new DataModel(id, Service, type, ServiceSubCategory, status));
+                        SubServiceId_HasMap.put(i,new DataModel(id, Service, type, ServiceSubCategory, status));
 
                     }
 
@@ -367,6 +374,12 @@ public class After_service extends AppCompatActivity {
     public class CheckFirstPaymentStatus extends AsyncTask<String, Void, String> {
 
         ProgressDialog dialog;
+        String Ser_Sub_ID;
+
+        public CheckFirstPaymentStatus(String service_sub_id) {
+            this.Ser_Sub_ID=service_sub_id;
+
+        }
 
         protected void onPreExecute() {
             dialog = new ProgressDialog(After_service.this);
@@ -464,7 +477,7 @@ public class After_service extends AppCompatActivity {
                         Log.e("strNew?????", strNew + "");
                         to_map.putExtra("Problem", Problem);
                         to_map.putExtra("ServiceSub", ServiceItem);
-                       to_map.putExtra("SubSer_ID",Service_Sub_ID);
+                       to_map.putExtra("SubSer_ID",Ser_Sub_ID);
                         startActivity(to_map);
                         finish();
                         // AppPreference.setAfterId(getApplicationContext(),"null");
