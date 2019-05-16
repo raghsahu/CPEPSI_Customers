@@ -16,9 +16,9 @@
 
     <string name="tv_problem">Email: <b>help.cpepsi@gmail.com</b> or Contact No. <b>8433013702</b> (Between 9:00AM to 6:00PM)</string>
 
-<string-array name="state">
-    <item>-select-</item>
-</string-array>
+    <string-array name="state">
+        <item>-select-</item>
+    </string-array>
 
 
 </resources>

@@ -237,14 +237,17 @@ public class Main_Provider extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_settings);
         MenuItem item1 =menu.findItem(R.id.action_prof);
         MenuItem item2 =menu.findItem(R.id.action_p_history);
+        MenuItem item3 =menu.findItem(R.id.action_notification);
         if (manager.isLoggedIn()) {
             item.setTitle("Logout");
             item1.setVisible(true);
             item2.setVisible(true);
+            item3.setVisible(true);
         }else{
             item.setTitle("Login");
             item1.setVisible(false);
             item2.setVisible(false);
+            item3.setVisible(false);
 
         }
         return true;
@@ -277,12 +280,13 @@ public class Main_Provider extends AppCompatActivity {
             startActivity(intent);
             finish();
             return true;
+
         }else if (id == R.id.action_prof){
             Intent intent = new Intent(Main_Provider.this, ProfileActivity.class);
             startActivity(intent);
           return true;
-        }else if (id == R.id.action_share){
 
+        }else if (id == R.id.action_share){
             try {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
@@ -294,12 +298,11 @@ public class Main_Provider extends AppCompatActivity {
             } catch(Exception e) {
                 //e.toString();
             }
-
-
             return true;
-        }else if (id == R.id.action_p_history){
-//            Intent intent = new Intent(Main_Provider.this, ProfileActivity.class);
-//            startActivity(intent);
+        }
+        else if (id == R.id.action_p_history){
+            Intent intent = new Intent(Main_Provider.this, Payment_History.class);
+            startActivity(intent);
           return true;
         }
 

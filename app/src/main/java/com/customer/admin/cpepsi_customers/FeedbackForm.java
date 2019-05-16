@@ -50,6 +50,8 @@ public class FeedbackForm extends AppCompatActivity {
     int Btn_Online=0;
     public URL url;
      String Rating_point;
+     String Provider_id;
+     String Description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,8 @@ public class FeedbackForm extends AppCompatActivity {
         //  good.setChecked(true);
 
         Prov_id = getIntent().getExtras().getString("PrID");
+        Provider_id = getIntent().getExtras().getString("ProvId");
+        Description = getIntent().getExtras().getString("Description");
 
         feedSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +203,8 @@ public class FeedbackForm extends AppCompatActivity {
                 postDataParams.put("email", FeedEmail);
                 postDataParams.put("contactno", FeedContact);
                 postDataParams.put("address", FeedAddress);
-                postDataParams.put("provider_id", Prov_id);
+                postDataParams.put("provider_id", Provider_id);
+                postDataParams.put("pr_id", Prov_id);
                 postDataParams.put("service", Rating_point);
 
                 Log.e("postDataParams", postDataParams.toString());
@@ -386,8 +391,10 @@ public class FeedbackForm extends AppCompatActivity {
 
                 postDataParams.put("user_id", AppPreference.getId(FeedbackForm.this));
                 postDataParams.put("amount", FeedPaymentAmount);
-                postDataParams.put("remark", AppPreference.getProblem(FeedbackForm.this));
+              //  postDataParams.put("remark", AppPreference.getProblem(FeedbackForm.this));
+                postDataParams.put("remark", Description);
                 postDataParams.put("pr_id", Prov_id);
+                postDataParams.put("provider_id", Provider_id);
 
                 Log.e("postDataParams", postDataParams.toString());
 

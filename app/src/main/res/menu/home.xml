@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_notification"
-        android:title="Status" />
+        android:title="Service Status" />
     <item
         android:id="@+id/action_p_history"
         android:title="Payment History" />

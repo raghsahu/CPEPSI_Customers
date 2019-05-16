@@ -77,6 +77,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -307,14 +308,14 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
                         final TextView rating = dialogLayout.findViewById(R.id.rating);
                         RatingRes = Provider_infoHashMap.get(Stored_Ids[k]).getFeedbackservice();
-                        if (RatingRes.equals("good")) {
-                            rating.setText("5.0");
-                        } else if (RatingRes.equals("average")) {
-                            rating.setText("3.0");
-                        } else if (RatingRes.equals("bad")) {
+                        if (RatingRes!="null"){
+                            Double valuej =Double.parseDouble(RatingRes) ;
+                          valuej=  Math.floor(valuej * 100) / 100;
+
+                            rating.setText(String.valueOf(valuej));
+                        }else {
                             rating.setText("1.0");
                         }
-                        //rating.setText(RatingRes);
 
                         builder.setView(dialogLayout);
                         builder.setPositiveButton("Request Send", new DialogInterface.OnClickListener() {
@@ -576,13 +577,13 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                                 providersJsonArray.getJSONObject(i).getString("user_id"),
                                                 providersJsonArray.getJSONObject(i).getString("Service"),
                                                 providersJsonArray.getJSONObject(i).getString("ServiceSubCategory"),
-                                                providersJsonArray.getJSONObject(i).getString("feedbackservice")));
+                                                providersJsonArray.getJSONObject(i).getString("avg_rating")));
 
                                 Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
                                 City[i] = providersJsonArray.getJSONObject(i).getString("name");
                                 Stored_Ids[i] = user_id;
 
-                                Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
 
                             }
                         } catch (Exception e) {
@@ -598,7 +599,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                             providersJsonArray.getJSONObject(i).getString("user_id"),
                                             providersJsonArray.getJSONObject(i).getString("Service"),
                                             "No Subservice found",
-                                            providersJsonArray.getJSONObject(i).getString("feedbackservice")));
+                                            providersJsonArray.getJSONObject(i).getString("avg_rating")));
 
                             Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
                             City[i] = providersJsonArray.getJSONObject(i).getString("name");
@@ -659,7 +660,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
             geocoder = new Geocoder(GET_Service_providers.this,Locale.getDefault());
             try {
                 event_address = geocoder.getFromLocationName(destination, 5);
-                Toast.makeText(GET_Service_providers.this, "add "+event_address, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(GET_Service_providers.this, "add "+event_address, Toast.LENGTH_SHORT).show();
                 Log.e("log" , "destination"+destination);
 
                 if (event_address.isEmpty()) {
@@ -669,7 +670,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                     location.getLatitude();
                     location.getLongitude();
                     p1 = new LatLng(location.getLatitude(), location.getLongitude());
-                    Toast.makeText(GET_Service_providers.this, "ll "+p1, Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(GET_Service_providers.this, "ll "+p1, Toast.LENGTH_SHORT).show();
 
 
                 }

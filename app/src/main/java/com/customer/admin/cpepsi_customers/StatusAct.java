@@ -72,6 +72,10 @@ public class StatusAct extends AppCompatActivity {
             if (notificationModel.getProstatus().equals("3")){
               // decline.setEnabled(false);
                // feedback.setEnabled(false);
+                apvName.setText(Name);
+                apvEmail.setText(Email);
+                apvMobile.setText(Mobile);
+                apvAddress.setText(Adds);
                 Toast.makeText(this, "This service is already completed", Toast.LENGTH_SHORT).show();
             }
             if (notificationModel.getProstatus().equals("2")){
@@ -122,6 +126,8 @@ public class StatusAct extends AppCompatActivity {
                     if (Connectivity.isNetworkAvailable(StatusAct.this)) {
                         Intent intent = new Intent(StatusAct.this, FeedbackForm.class);
                         intent.putExtra("PrID",Pr_Id);
+                        intent.putExtra("ProvId",ProvId);
+                        intent.putExtra("Description",Description);
                         startActivity(intent);
                     } else {
                         Toast.makeText(StatusAct.this, "No Internet", Toast.LENGTH_SHORT).show();
@@ -365,7 +371,7 @@ public class StatusAct extends AppCompatActivity {
         protected void onPostExecute(String result) {
             if (result != null) {
                 dialog.dismiss();
-                Toast.makeText(StatusAct.this, "res "+result, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(StatusAct.this, "res "+result, Toast.LENGTH_SHORT).show();
 
                 JSONObject jsonObject = null;
                 String s = result.toString();
