@@ -100,7 +100,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     String address1 = "";
     double longitude;
     Geocoder geocoder;
-    HashMap<Integer, Provider_info> Provider_infoHashMap = new HashMap<>();
+    HashMap<Integer, Provider_info> Provider_infoHashMap = new HashMap<Integer, Provider_info>();
     Marker current_marker;
     Marker[] providerMarkers;
 
@@ -133,6 +133,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     String server_url;
     String RatingRes;
     String adds;
+     String[] ProStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +169,14 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
-                    new GetSearch(newText).execute();
+                    if (!newText.isEmpty()){
+                        new GetSearch(newText).execute();
+                    }else {
+                        searchModelList.clear();
+                        searchAdapter.notifyDataSetChanged();
+                        Toast.makeText(GET_Service_providers.this, "No text found", Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
                 }
@@ -250,9 +258,9 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED)
+            {
                 if (selected_ser_name_from != 0) {
                     new Get_Places(selected_ser_name_from).execute();
                 }
@@ -270,6 +278,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 return false;
             }
         });
+
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GET_Service_providers.this));
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -341,24 +350,29 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
             Log.e("ypur", "locatopn");
             Toast.makeText(GET_Service_providers.this, "your location", Toast.LENGTH_SHORT).show();
             LatLng current = new LatLng(latitude, longitude);
-            current_marker = mMap.addMarker(new MarkerOptions().position(current).title("Your Current location"));
+            current_marker = mMap.addMarker(new MarkerOptions()
+                    .position(current)
+                    .title("Your Current location")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            );
 //            get_loc_map.setText(address1);
             final CameraPosition cameraPosition = new CameraPosition.Builder().target(current).zoom(13)
                     .bearing(90)
                     .tilt(30)
                     .build();
-            mMap.addMarker(new MarkerOptions().position(new LatLng(current.latitude, current.longitude)).title("Your location is here"));
+            mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(current.latitude, current.longitude)).title("Your location is here")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            );
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                                                        @Override
-                                                        public boolean onMyLocationButtonClick() {
-                                                            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                                                            return true;
-                                                        }
-                                                    }
+                @Override
+                public boolean onMyLocationButtonClick() {
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    return true;
+                }
+            }
             );
-//            mMap.addMarker(new MarkerOptions().position(current).title("my location"));
-//            mMap.moveCamera(CameraUpdateFactory.newLatLng(current));
 
         } else {
 //            LatLng sydney2 = new LatLng(-34, 151);
@@ -374,30 +388,6 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API).build();
         mGoogleApiClient.connect();
-    }
-
-
-    private LatLng put_location_to_the_marker(String destination) {
-        geocoder = new Geocoder(this);
-        try {
-            event_address = geocoder.getFromLocationName(destination, 5);
-            if (event_address.isEmpty()) {
-                return null;
-            } else {
-                Address location = event_address.get(0);
-                state_of_provider = location.getLocality().toString();
-//                place_of_provider = location.getSubLocality().toString();
-                Log.e("location getLocality", "" + location.getLocality().toString());
-                Log.e("location getSubLocality", "" + location.getSubLocality().toString());
-                Log.e("location getAdminArea", "" + location.getAdminArea().toString());
-                location.getLatitude();
-                location.getLongitude();
-                p1 = new LatLng(location.getLatitude(), location.getLongitude());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return p1;
     }
 
     @Override
@@ -559,6 +549,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                     Destinations = new String[providersJsonArray.length()];
                     Stored_Ids = new int[providersJsonArray.length()];
                     City = new String[providersJsonArray.length()];
+                    ProStatus = new String[providersJsonArray.length()];
                     providerMarkers = new Marker[providersJsonArray.length()];
 
                     for (int i = 0; i < providersJsonArray.length(); i++) {
@@ -577,10 +568,14 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                                 providersJsonArray.getJSONObject(i).getString("user_id"),
                                                 providersJsonArray.getJSONObject(i).getString("Service"),
                                                 providersJsonArray.getJSONObject(i).getString("ServiceSubCategory"),
-                                                providersJsonArray.getJSONObject(i).getString("avg_rating")));
+                                                providersJsonArray.getJSONObject(i).getString("avg_rating"),
+                                                providersJsonArray.getJSONObject(i).getString("prostatus")
+
+                                        ));
 
                                 Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
                                 City[i] = providersJsonArray.getJSONObject(i).getString("name");
+                                ProStatus[i] = providersJsonArray.getJSONObject(i).getString("prostatus");
                                 Stored_Ids[i] = user_id;
 
                                // Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
@@ -599,10 +594,13 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                             providersJsonArray.getJSONObject(i).getString("user_id"),
                                             providersJsonArray.getJSONObject(i).getString("Service"),
                                             "No Subservice found",
-                                            providersJsonArray.getJSONObject(i).getString("avg_rating")));
+                                            providersJsonArray.getJSONObject(i).getString("avg_rating"),
+                                            providersJsonArray.getJSONObject(i).getString("prostatus")
+                                    ));
 
                             Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
                             City[i] = providersJsonArray.getJSONObject(i).getString("name");
+                            ProStatus[i] = providersJsonArray.getJSONObject(i).getString("prostatus");
 
                             Stored_Ids[i] = user_id;
 
@@ -639,7 +637,25 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                         .position(provider_location)
                                         .anchor(0.5f, 0.5f)
                                         .title(City[k])
-                                        .snippet("" + Destinations[k]));
+                                        .snippet("" + Destinations[k])
+                                );
+
+                //****************************************************************
+                                if (ProStatus.length !=0){
+                                    for (int j = 0; j < ProStatus.length; j++) {
+
+                                        if (Provider_infoHashMap.get(ProStatus[j]).getProstatus().equals("1")){
+                                            mMap.addMarker(new MarkerOptions()
+                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                            );
+
+                                        }else {
+
+                                        }
+
+                                    }
+                                }
+                      //***********************************************
 
                             }
                         }
@@ -915,10 +931,11 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         serachResult.setLayoutManager(mLayoutManager);
                         serachResult.setItemAnimator(new DefaultItemAnimator());
                         serachResult.setAdapter(searchAdapter);
-                      /*  searchAdapter = new SearchAdapter(GET_Service_providers.this, searchModelList);
-                        serachResult.setAdapter(searchAdapter);*/
+
 
                     } else {
+                        searchModelList.clear();
+                        searchAdapter.notifyDataSetChanged();
                         Toast.makeText(GET_Service_providers.this, "No Data Found", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {

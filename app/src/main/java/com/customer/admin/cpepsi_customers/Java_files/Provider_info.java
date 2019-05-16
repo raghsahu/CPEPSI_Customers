@@ -2,11 +2,11 @@ package com.customer.admin.cpepsi_customers.Java_files;
 
 public class Provider_info {
     String State;
-    String Place;
+    String Place,prostatus;
     String TypeofFirm, NameFirm, NatureFirm, contactpersonname, Designation, number, Email_id, provider_name, procontactnumber,contactpersonnames,user_id,Service,ServiceSubCategory,feedbackservice;
 
 
-    public Provider_info(String typeofFirm, String nameFirm, String natureFirm, String contactpersonname, String designation, String email_id, String provider_name, String user_id, String service, String serviceSubCategory,String feedbackservice) {
+    public Provider_info(String typeofFirm, String nameFirm, String natureFirm, String contactpersonname, String designation, String email_id, String provider_name, String user_id, String service, String serviceSubCategory, String feedbackservice, String prostatus) {
         TypeofFirm = typeofFirm;
         NameFirm = nameFirm;
         NatureFirm = natureFirm;
@@ -18,6 +18,7 @@ public class Provider_info {
         ServiceSubCategory = serviceSubCategory;
         this.user_id = user_id;
         this.feedbackservice = feedbackservice;
+        this.prostatus=prostatus;
 
     }
 
@@ -69,6 +70,14 @@ public class Provider_info {
 
     public void setNatureFirm(String natureFirm) {
         NatureFirm = natureFirm;
+    }
+
+    public String getProstatus() {
+        return prostatus;
+    }
+
+    public void setProstatus(String prostatus) {
+        this.prostatus = prostatus;
     }
 
     public String getContactpersonnames() {
