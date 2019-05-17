@@ -278,7 +278,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 return false;
             }
         });
-
+//*******************************************************************
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GET_Service_providers.this));
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -569,7 +569,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                                 providersJsonArray.getJSONObject(i).getString("Service"),
                                                 providersJsonArray.getJSONObject(i).getString("ServiceSubCategory"),
                                                 providersJsonArray.getJSONObject(i).getString("avg_rating"),
-                                                providersJsonArray.getJSONObject(i).getString("prostatus")
+                                                providersJsonArray.getJSONObject(i).getInt("prostatus")
 
                                         ));
 
@@ -595,7 +595,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                             providersJsonArray.getJSONObject(i).getString("Service"),
                                             "No Subservice found",
                                             providersJsonArray.getJSONObject(i).getString("avg_rating"),
-                                            providersJsonArray.getJSONObject(i).getString("prostatus")
+                                            providersJsonArray.getJSONObject(i).getInt("prostatus")
                                     ));
 
                             Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
@@ -632,35 +632,42 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                 placeInfo.setAddress("" + Destinations[k] + "" + City[k]);
                                 LatLng provider_location = loc_on_mark(Destinations[k]);
                                 //LatLng provider_location = new LatLng(23.2599, 77.4126);
+//                                if (ProStatus.length !=0){
+                                    for (int j = 0; j < Provider_infoHashMap.size(); j++) {
+                            Log.e("prostatus",""+Provider_infoHashMap.get(Stored_Ids[j]).getProstatus());
+                            int x = Provider_infoHashMap.get(Stored_Ids[j]).getProstatus();
 
-                                providerMarkers[k] = mMap.addMarker(new MarkerOptions()
-                                        .position(provider_location)
-                                        .anchor(0.5f, 0.5f)
-                                        .title(City[k])
-                                        .snippet("" + Destinations[k])
-                                );
+                                        if (x==1){
 
-                //****************************************************************
-                                if (ProStatus.length !=0){
-                                    for (int j = 0; j < ProStatus.length; j++) {
 
-                                        if (Provider_infoHashMap.get(ProStatus[j]).getProstatus().equals("1")){
-                                            mMap.addMarker(new MarkerOptions()
-                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                                            providerMarkers[k] = mMap.addMarker(new MarkerOptions()
+                                                    .position(provider_location)
+                                                    .anchor(0.5f, 0.5f)
+                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                                                    .title(City[k])
+                                                    .snippet("" + Destinations[k])
                                             );
 
                                         }else {
-
+                                            providerMarkers[k] = mMap.addMarker(new MarkerOptions()
+                                                    .position(provider_location)
+                                                    .anchor(0.5f, 0.5f)
+                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                                    .title(City[k])
+                                                    .snippet("" + Destinations[k])
+                                            );
                                         }
-
                                     }
-                                }
-                      //***********************************************
+//                                }
 
                             }
                         }
-
                     }
+
+
+
+
+
                     Log.e("responce ", "is" + responce);
                 } catch (JSONException e) {
                     e.printStackTrace();

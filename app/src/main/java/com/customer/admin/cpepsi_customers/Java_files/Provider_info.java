@@ -2,11 +2,12 @@ package com.customer.admin.cpepsi_customers.Java_files;
 
 public class Provider_info {
     String State;
-    String Place,prostatus;
+    String Place;
+       Integer prostatus;
     String TypeofFirm, NameFirm, NatureFirm, contactpersonname, Designation, number, Email_id, provider_name, procontactnumber,contactpersonnames,user_id,Service,ServiceSubCategory,feedbackservice;
 
 
-    public Provider_info(String typeofFirm, String nameFirm, String natureFirm, String contactpersonname, String designation, String email_id, String provider_name, String user_id, String service, String serviceSubCategory, String feedbackservice, String prostatus) {
+    public Provider_info(String typeofFirm, String nameFirm, String natureFirm, String contactpersonname, String designation, String email_id, String provider_name, String user_id, String service, String serviceSubCategory, String feedbackservice, Integer prostatus) {
         TypeofFirm = typeofFirm;
         NameFirm = nameFirm;
         NatureFirm = natureFirm;
@@ -72,11 +73,11 @@ public class Provider_info {
         NatureFirm = natureFirm;
     }
 
-    public String getProstatus() {
+    public Integer getProstatus() {
         return prostatus;
     }
 
-    public void setProstatus(String prostatus) {
+    public void setProstatus(Integer prostatus) {
         this.prostatus = prostatus;
     }
 
