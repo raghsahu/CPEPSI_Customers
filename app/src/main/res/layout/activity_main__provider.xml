@@ -35,6 +35,7 @@
                 android:drawableLeft="@drawable/search"
                 android:background="@drawable/border"
                 android:layout_margin="5dp"
+                android:textSize="14dp"
                 tools:ignore="RtlCompat">
 
             </TextView>

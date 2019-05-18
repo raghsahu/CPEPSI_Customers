@@ -1,9 +1,11 @@
 package com.customer.admin.cpepsi_customers;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -321,12 +323,35 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
 
         } else if (id == R.id.action_settings) {
-            manager.logoutUser();
-            manager.setAfterName(null);
-            AppPreference.setAfterId(getApplicationContext(), "null");
-            Intent intent = new Intent(Main_Provider.this, Login_Constomer.class);
-            startActivity(intent);
-            finish();
+
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(Main_Provider.this).setTitle("CPEPSI")
+                    .setMessage("Are you sure, you want to logout this app");
+
+            dialog.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    exitLauncher();
+                }
+
+                private void exitLauncher() {
+                    manager.logoutUser();
+                    manager.setAfterName(null);
+                    AppPreference.setAfterId(getApplicationContext(), "null");
+                    Intent intent = new Intent(Main_Provider.this, Login_Constomer.class);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            final AlertDialog alert = dialog.create();
+            alert.show();
+
             return true;
 
         } else if (id == R.id.action_prof) {

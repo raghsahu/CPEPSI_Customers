@@ -63,7 +63,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(final NotificationAdapter.ViewHolder viewHolder, final int position) {
         NotificationModel notificationModel = notilist.get(position);
         viewHolder.date.setText(notificationModel.getDate());
-        viewHolder.description.setText(notificationModel.getDiscription());
+        viewHolder.description.setText("Service Query: "+notificationModel.getDiscription());
         finalStatus = (notificationModel.getProstatus());
         if (finalStatus.equals("0")) {
             viewHolder.status.setTextColor(context.getResources().getColor(R.color.orange));

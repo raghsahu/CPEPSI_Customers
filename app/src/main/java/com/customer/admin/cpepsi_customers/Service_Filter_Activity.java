@@ -54,8 +54,14 @@ public class Service_Filter_Activity extends AppCompatActivity implements Servic
                     if (!newText.isEmpty()){
                         new GetSearch_Service(newText).execute();
                     }else {
-                       MainModelArrayList.clear();
-                        service_recycler_adapter.notifyDataSetChanged();
+                        try{
+                            if (!MainModelArrayList.isEmpty()){
+                                MainModelArrayList.clear();
+                                service_recycler_adapter.notifyDataSetChanged();
+                            }
+                        }catch (Exception e){
+
+                        }
                         Toast.makeText(Service_Filter_Activity.this, "No text found", Toast.LENGTH_SHORT).show();
                     }
 
@@ -139,9 +145,16 @@ public class Service_Filter_Activity extends AppCompatActivity implements Servic
                             recycler_serachResult.setAdapter(service_recycler_adapter);
 
                     } else {
-                        MainModelArrayList.clear();
-                        service_recycler_adapter.notifyDataSetChanged();
-                        Toast.makeText(Service_Filter_Activity.this, "No Data Found", Toast.LENGTH_SHORT).show();
+                        try{
+                            if (!MainModelArrayList.isEmpty()){
+                                MainModelArrayList.clear();
+                                service_recycler_adapter.notifyDataSetChanged();
+                            }
+                        }catch (Exception e){
+
+                        }
+
+                        Toast.makeText(Service_Filter_Activity.this, "No Service Found", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

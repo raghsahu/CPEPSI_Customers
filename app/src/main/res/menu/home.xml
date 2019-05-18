@@ -9,6 +9,10 @@
         android:id="@+id/action_p_history"
         android:title="Payment History" />
     <item
+        android:icon="@drawable/prof"
+        android:id="@+id/action_prof"
+        android:title="Profile" />
+    <item
         app:showAsAction="ifRoom"
         android:icon="@drawable/share"
         android:id="@+id/action_share"
@@ -22,9 +26,5 @@
         android:visible="false"
         android:id="@+id/action_login"
         android:title="Login" />
-    <item
-        android:icon="@drawable/prof"
-        app:showAsAction="ifRoom"
-        android:id="@+id/action_prof"
-        android:title="Profile" />
+
 </menu>
