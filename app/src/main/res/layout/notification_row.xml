@@ -85,8 +85,6 @@
                         android:layout_marginBottom="3dp"
                         android:textStyle="bold"
                         android:textSize="14dp" />
-
-
                 </LinearLayout>
 
 
