@@ -24,6 +24,7 @@
     android:weightSum="2">
 
     <SearchView
+        android:visibility="gone"
         android:id="@+id/searchView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

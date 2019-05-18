@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.customer.admin.cpepsi_customers.Adapters.Service_Recycler_Adapter;
@@ -36,7 +37,7 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Free_Services extends Fragment {
+public class Free_Services extends Fragment implements Service_Recycler_Adapter.Service_Recycler_Adapter_Listener {
     RecyclerView free_recyler;
     ArrayList<ApiModel> serviceList = new ArrayList<>();
     private LinearLayoutManager layoutManager_in;
@@ -58,7 +59,7 @@ public class Free_Services extends Fragment {
 //        serviceList.add(new Services("Home Tutor"));
 //        serviceList.add(new Services("Tailor Male"));
 //        serviceList.add(new Services("Tailor Female"));
-        service_recycler_adapter = new Service_Recycler_Adapter(getActivity(), serviceList);
+        service_recycler_adapter = new Service_Recycler_Adapter(getActivity(), serviceList, Free_Services.this);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
         free_recyler.setLayoutManager(manager);
       //  service_recycler_adapter.setLayoutManager(new GridLayoutManager(getActivity(), 4));
@@ -68,6 +69,11 @@ public class Free_Services extends Fragment {
         return view;
 
 //        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onItemSelected(ApiModel apiModel) {
+       // Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
     }
 
 

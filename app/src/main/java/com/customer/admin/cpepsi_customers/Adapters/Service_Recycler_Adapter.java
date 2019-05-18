@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,12 +27,12 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recycler_Adapter.MyViewHolder> {
+public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recycler_Adapter.MyViewHolder> implements Filterable {
     private Context mContext;
     DownloadManager downloadManager;
     private Service_Recycler_Adapter service_recycler_adapter;
-    URL image_download_url;
-    int pos_try;
+    Service_Recycler_Adapter_Listener listener;
+
     private String communStr = "http://heightsmegamart.com/CPEPSI/uploads/";
    // private String communStr = "http://heightsmegamart.com/CPEPSI/ ";
 
@@ -41,14 +43,16 @@ public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recyc
     String service;
 
     public ArrayList<ApiModel> services_list;
+    private ArrayList<ApiModel> serviceListFiltered;
     private ProgressDialog progressBar;
     private String id= "";
     private String Service= "";
     private String Image;
     String sId = "";
 
-    public Service_Recycler_Adapter(FragmentActivity activity, ArrayList<ApiModel> services) {
+    public Service_Recycler_Adapter(FragmentActivity activity, ArrayList<ApiModel> services, Service_Recycler_Adapter_Listener listener) {
         mContext = activity;
+        this.listener=listener;
         this.services_list = services;
 
         setHasStableIds(true);
@@ -67,14 +71,18 @@ public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recyc
             mainclick = (LinearLayout) itemView.findViewById(R.id.mainclick);
             animalDoctor = (ImageView) itemView.findViewById(R.id.animalDoctor);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // send selected contact in callback
+                    listener.onItemSelected(serviceListFiltered.get(getAdapterPosition()));
+                }
+            });
         }
-    }
 
-    public String Download_reports(String report) {
-
-        return null;
 
     }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -139,10 +147,45 @@ public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recyc
         return position;
     }
 
-    private class Get_The_Selected extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... strings) {
-            return null;
-        }
+ //**********************************************************************
+
+    @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    serviceListFiltered = services_list;
+                } else {
+                   ArrayList<ApiModel> filteredList = new ArrayList<>();
+                    for (ApiModel row : services_list) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getService().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    serviceListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = serviceListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                serviceListFiltered = (ArrayList<ApiModel>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public interface Service_Recycler_Adapter_Listener {
+        void onItemSelected(ApiModel apiModel);
     }
 }

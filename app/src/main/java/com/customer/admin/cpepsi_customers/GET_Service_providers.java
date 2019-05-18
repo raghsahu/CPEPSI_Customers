@@ -271,13 +271,13 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
             buildGoogleApiClient();
             //       mMap.setMyLocationEnabled(true);
         }
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                //        Toast.makeText(getApplicationContext(), "sdgsdgf"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+//        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+//            @Override
+//            public boolean onMarkerClick(Marker marker) {
+//                      //  Toast.makeText(getApplicationContext(), "sdgsdgf"+marker.getSnippet(), Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
 //*******************************************************************
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GET_Service_providers.this));
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
@@ -339,31 +339,31 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         });
                         builder.show();
                     } else {
-                        Toast.makeText(GET_Service_providers.this, "Current Location", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GET_Service_providers.this, "Location: "+marker.getTitle(), Toast.LENGTH_SHORT).show();
                     }
                 }
-               // Toast.makeText(getApplicationContext(), "sdgsdgf" + marker.getSnippet(), Toast.LENGTH_SHORT).show();
             }
         });
-
+//**************************************************
         if (address1 != null) {
             Log.e("ypur", "locatopn");
-            Toast.makeText(GET_Service_providers.this, "your location", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(GET_Service_providers.this, "your location", Toast.LENGTH_SHORT).show();
             LatLng current = new LatLng(latitude, longitude);
             current_marker = mMap.addMarker(new MarkerOptions()
                     .position(current)
                     .title("Your Current location")
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+                    .snippet(" ")
             );
 //            get_loc_map.setText(address1);
             final CameraPosition cameraPosition = new CameraPosition.Builder().target(current).zoom(13)
                     .bearing(90)
                     .tilt(30)
                     .build();
-            mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(current.latitude, current.longitude)).title("Your location is here")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-            );
+//            mMap.addMarker(new MarkerOptions()
+//                    .position(new LatLng(current.latitude, current.longitude)).title("Your location is here")
+//                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+           // );
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                 @Override
@@ -402,7 +402,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
+       // mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -631,34 +631,28 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                 placeInfo.setName("" + City[k]);
                                 placeInfo.setAddress("" + Destinations[k] + "" + City[k]);
                                 LatLng provider_location = loc_on_mark(Destinations[k]);
-                                //LatLng provider_location = new LatLng(23.2599, 77.4126);
+
 //                                if (ProStatus.length !=0){
-                                    for (int j = 0; j < Provider_infoHashMap.size(); j++) {
-                            Log.e("prostatus",""+Provider_infoHashMap.get(Stored_Ids[j]).getProstatus());
-                            int x = Provider_infoHashMap.get(Stored_Ids[j]).getProstatus();
-
-                                        if (x==1){
 
 
-                                            providerMarkers[k] = mMap.addMarker(new MarkerOptions()
-                                                    .position(provider_location)
-                                                    .anchor(0.5f, 0.5f)
-                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
-                                                    .title(City[k])
-                                                    .snippet("" + Destinations[k])
-                                            );
+                                        MarkerOptions markerOptions = new MarkerOptions();
+                                        markerOptions.position(provider_location);
+                                        markerOptions.anchor(0.5f, 0.5f);
+                                        markerOptions.title(City[k]);
+                                        markerOptions.snippet(""+Destinations[k]);
 
+//                                      for (int j = 0; j <Stored_Ids.length; j++) {
+                                        int x = (Provider_infoHashMap.get(Stored_Ids[k]).getProstatus());
+                                        if (x==1) {
+                                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                                         }else {
-                                            providerMarkers[k] = mMap.addMarker(new MarkerOptions()
-                                                    .position(provider_location)
-                                                    .anchor(0.5f, 0.5f)
-                                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                                                    .title(City[k])
-                                                    .snippet("" + Destinations[k])
-                                            );
+                                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
                                         }
-                                    }
-//                                }
+//                                    }
+                                mMap.addMarker(markerOptions);
+
+                                //*********************************************************************
+
 
                             }
                         }

@@ -37,7 +37,7 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Non_Professional_Services extends Fragment {
+public class Non_Professional_Services extends Fragment implements Service_Recycler_Adapter.Service_Recycler_Adapter_Listener {
     RecyclerView ser_list_view_other;
     TextView service_txt_id;
     private Service_Recycler_Adapter service_recycler_adapter;
@@ -60,11 +60,16 @@ public class Non_Professional_Services extends Fragment {
 
         service_txt_id = (TextView) ser_view.findViewById(R.id.service_txt_id);
         new Get_All_Non_Profossional_Services(Service_id).execute();
-        service_recycler_adapter = new Service_Recycler_Adapter(getActivity(), serviceList_other);
+        service_recycler_adapter = new Service_Recycler_Adapter(getActivity(), serviceList_other, Non_Professional_Services.this);
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.VERTICAL, false);
         ser_list_view_other.setLayoutManager(manager);
 
         return ser_view;
+    }
+
+    @Override
+    public void onItemSelected(ApiModel apiModel) {
+
     }
 
     private class Get_All_Non_Profossional_Services extends AsyncTask<Void, Void, String> {

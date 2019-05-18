@@ -2,6 +2,8 @@ package com.customer.admin.cpepsi_customers;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -17,7 +19,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +30,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,20 +65,25 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import okhttp3.Response;
 
-public class Main_Provider extends AppCompatActivity {
+
+public class Main_Provider extends AppCompatActivity implements Service_Recycler_Adapter.Service_Recycler_Adapter_Listener {
 
     private TextView mTextMessage;
     android.support.v4.widget.NestedScrollView scro_pro;
     Button topup;
     Toolbar toolbarHome;
-    CardView card1,card2,card3;
-    LinearLayout profService,freeService,techService;
+    CardView card1, card2, card3;
+    LinearLayout profService, freeService, techService;
     SessionManager manager;
 
-    RecyclerView recycler_freeservice,recycler_professional,recycler_technical;
+    TextView search_service;
+
+    RecyclerView recycler_freeservice, recycler_professional, recycler_technical;
 
     ArrayList<ApiModel> serviceList = new ArrayList<>();
+    ArrayList<ApiModel> MainModelArrayList = new ArrayList<>();
     Service_Recycler_Adapter service_recycler_adapter;
 
     ArrayList<ApiModel> serviceProList = new ArrayList<>();
@@ -82,7 +92,7 @@ public class Main_Provider extends AppCompatActivity {
     ArrayList<ApiModel> serviceNonProList = new ArrayList<>();
     Service_NonPro_Adapter service_NonPro_adapter;
 
-//************************************************************
+    //************************************************************
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -142,15 +152,54 @@ public class Main_Provider extends AppCompatActivity {
         fragmentTransaction.replace(R.id.provider_frame, new Professional_Services());
         fragmentTransaction.commit();
     }
-
+//********************************************************************************************************************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main__provider);
 
-        recycler_freeservice=findViewById(R.id.recycler_freeservice);
-        recycler_professional=findViewById(R.id.recycler_professional);
-        recycler_technical=findViewById(R.id.recycler_technical);
+        recycler_freeservice = findViewById(R.id.recycler_freeservice);
+        search_service = findViewById(R.id.search_service);
+
+        search_service.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Main_Provider.this,Service_Filter_Activity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+//        SearchManager searchManager = (SearchManager) getSystemService(Main_Provider.SEARCH_SERVICE);
+//        search_service.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+//        search_service.setMaxWidth(Integer.MAX_VALUE);
+//        search_service.setActivated(true);
+//        search_service.setQueryHint("Type here");
+
+//        search_service.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                // filter recycler view when query submitted
+//
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String query) {
+//                // filter recycler view when text is changed
+//                if ( !query.isEmpty() ) {
+//                    service_recycler_adapter.getFilter().filter(query);
+//                }else {
+//                    service_recycler_adapter.getFilter().filter(query.toString());
+//                }
+//                return false;
+//            }
+//        });
+
+
+        // recycler_professional=findViewById(R.id.recycler_professional);
+        // recycler_technical=findViewById(R.id.recycler_technical);
 
         if (Connectivity.isNetworkAvailable(Main_Provider.this)) {
             new Get_All_Non_Free_Services(3).execute();
@@ -173,14 +222,14 @@ public class Main_Provider extends AppCompatActivity {
 //         toolbarHome = (Toolbar) findViewById(R.id.toolbarHome);
 //        setSupportActionBar(toolbarHome);
 
-       // scro_pro = (android.support.v4.widget.NestedScrollView) findViewById(R.id.scro_pro);
-   //     mTextMessage = (TextView) findViewById(R.id.message);
+        // scro_pro = (android.support.v4.widget.NestedScrollView) findViewById(R.id.scro_pro);
+        //     mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         //   topup = (Button)findViewById(R.id.topup);
 
-        final Animation right_to_left = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.right_to_left);
-    //    final Animation left_to_right = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_to_right);
+        final Animation right_to_left = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.right_to_left);
+        //    final Animation left_to_right = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.left_to_right);
 
 //        profService = (LinearLayout)findViewById(R.id.profService);
 //        profService.startAnimation(right_to_left);
@@ -224,7 +273,6 @@ public class Main_Provider extends AppCompatActivity {
 //        });
 
 
-
     }
 
     @Override
@@ -235,15 +283,15 @@ public class Main_Provider extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.home, menu);
         MenuItem item = menu.findItem(R.id.action_settings);
-        MenuItem item1 =menu.findItem(R.id.action_prof);
-        MenuItem item2 =menu.findItem(R.id.action_p_history);
-        MenuItem item3 =menu.findItem(R.id.action_notification);
+        MenuItem item1 = menu.findItem(R.id.action_prof);
+        MenuItem item2 = menu.findItem(R.id.action_p_history);
+        MenuItem item3 = menu.findItem(R.id.action_notification);
         if (manager.isLoggedIn()) {
             item.setTitle("Logout");
             item1.setVisible(true);
             item2.setVisible(true);
             item3.setVisible(true);
-        }else{
+        } else {
             item.setTitle("Login");
             item1.setVisible(false);
             item2.setVisible(false);
@@ -267,7 +315,7 @@ public class Main_Provider extends AppCompatActivity {
                 startActivity(intent);
                 //finish();
                 return true;
-            }else {
+            } else {
                 Toast.makeText(this, "Please Login First", Toast.LENGTH_SHORT).show();
             }
 
@@ -275,38 +323,43 @@ public class Main_Provider extends AppCompatActivity {
         } else if (id == R.id.action_settings) {
             manager.logoutUser();
             manager.setAfterName(null);
-             AppPreference.setAfterId(getApplicationContext(),"null");
+            AppPreference.setAfterId(getApplicationContext(), "null");
             Intent intent = new Intent(Main_Provider.this, Login_Constomer.class);
             startActivity(intent);
             finish();
             return true;
 
-        }else if (id == R.id.action_prof){
+        } else if (id == R.id.action_prof) {
             Intent intent = new Intent(Main_Provider.this, ProfileActivity.class);
             startActivity(intent);
-          return true;
+            return true;
 
-        }else if (id == R.id.action_share){
+        } else if (id == R.id.action_share) {
             try {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "My application name");
-                String shareMessage= "\nLet me recommend you this application\n\n";
-                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID +"\n\n";
+                String shareMessage = "\nLet me recommend you this application\n\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "\n\n";
                 shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                 startActivity(Intent.createChooser(shareIntent, "choose one"));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 //e.toString();
             }
             return true;
-        }
-        else if (id == R.id.action_p_history){
+        } else if (id == R.id.action_p_history) {
             Intent intent = new Intent(Main_Provider.this, Payment_History.class);
             startActivity(intent);
-          return true;
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(ApiModel apiModel) {
+        Toast.makeText(Main_Provider.this, "Selected: " + apiModel.getService(), Toast.LENGTH_SHORT).show();
+
     }
 
     private class Get_All_Non_Free_Services extends AsyncTask<Void, Void, String> {
@@ -398,10 +451,10 @@ public class Main_Provider extends AppCompatActivity {
                             String image = Service_json_object.getString("image");
                             String status = Service_json_object.getString("status");
 
-                            serviceList.add(new ApiModel(id,Service,type,image,status));
+                            serviceList.add(new ApiModel(id, Service, type, image, status));
+                            MainModelArrayList.add(new ApiModel(id, Service, type, image, status));
 
-                           // size_of_services++;
-
+                            // size_of_services++;
 
 
                         }
@@ -409,8 +462,9 @@ public class Main_Provider extends AppCompatActivity {
 //
 //                            free_recyler.setAdapter(service_recycler_adapter);
 //                        }
-                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceList);
-                       // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceList, Main_Provider.this);
+
+                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
                         GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
                         recycler_freeservice.setLayoutManager(manager);
                         recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
@@ -453,309 +507,346 @@ public class Main_Provider extends AppCompatActivity {
         }
 
 
-
-
     }
-//************************************************************
+
+    //************************************************************
     private class Get_All_Non_Profossional_Services extends AsyncTask<Void, Void, String> {
-    int service_id;
-    ProgressDialog dialog;
-    int size_of_services = 0;
+        int service_id;
+        ProgressDialog dialog;
+        int size_of_services = 0;
 
-    public Get_All_Non_Profossional_Services(int service_txt_id) {
-        this.service_id = service_txt_id;
-
-    }
-
-
-    @Override
-    protected void onPreExecute() {
-
-        dialog = new ProgressDialog(Main_Provider.this);
-        dialog.show();
-
-        super.onPreExecute();
-
-    }
-
-
-    @Override
-    protected String doInBackground(Void... voids) {
-
-        try {
-
-
-            URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
-            //   URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
-
-            JSONObject postDataParams = new JSONObject();
-            postDataParams.put("type", service_id);
-//                postDataParams.put("password", password);
-
-            Log.e("postDataParams", postDataParams.toString());
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000 /* milliseconds*/);
-            conn.setConnectTimeout(15000  /*milliseconds*/);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
-            writer.flush();
-            writer.close();
-            os.close();
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-                BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder result = new StringBuilder();
-                String line;
-                while ((line = r.readLine()) != null) {
-                    result.append(line);
-                }
-                r.close();
-                return result.toString();
-
-            } else {
-                return new String("false : " + responseCode);
-            }
-        } catch (Exception e) {
-            return new String("Exception: " + e.getMessage());
-        }
-    }
-    public String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while (itr.hasNext()) {
-
-            String key = itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+        public Get_All_Non_Profossional_Services(int service_txt_id) {
+            this.service_id = service_txt_id;
 
         }
-        return result.toString();
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        dialog.dismiss();
-        if (result != null) {
-            //  dialog.dismiss();
 
 
-            Log.e("PostRegistration", result.toString());
+        @Override
+        protected void onPreExecute() {
+
+            dialog = new ProgressDialog(Main_Provider.this);
+            dialog.show();
+
+            super.onPreExecute();
+
+        }
+
+
+        @Override
+        protected String doInBackground(Void... voids) {
 
             try {
 
-                JSONObject jsonObject = new JSONObject(result);
-                boolean response = jsonObject.getBoolean("responce");
-                if (response) {
-                    JSONArray jsonArray = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject Service_json_object = jsonArray.getJSONObject(i);
-                        String id = Service_json_object.getString("id");
-                        String Service = Service_json_object.getString("Service");
-                        String type = Service_json_object.getString("type");
-                        String image = Service_json_object.getString("image");
-                        String status = Service_json_object.getString("status");
 
-                        serviceNonProList.add(new ApiModel(id,Service,type,image,status));
+                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+                //   URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
 
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put("type", service_id);
+//                postDataParams.put("password", password);
+
+                Log.e("postDataParams", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds*/);
+                conn.setConnectTimeout(15000  /*milliseconds*/);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        result.append(line);
+                    }
+                    r.close();
+                    return result.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        public String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while (itr.hasNext()) {
+
+                String key = itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            dialog.dismiss();
+            if (result != null) {
+                //  dialog.dismiss();
+
+
+                Log.e("PostRegistration", result.toString());
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(result);
+                    boolean response = jsonObject.getBoolean("responce");
+                    if (response) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject Service_json_object = jsonArray.getJSONObject(i);
+                            String id = Service_json_object.getString("id");
+                            String Service = Service_json_object.getString("Service");
+                            String type = Service_json_object.getString("type");
+                            String image = Service_json_object.getString("image");
+                            String status = Service_json_object.getString("status");
+
+                            serviceNonProList.add(new ApiModel(id, Service, type, image, status));
+                            MainModelArrayList.add(new ApiModel(id, Service, type, image, status));
 //                        size_of_services++;
 //
-                    }
+                        }
 //                    if (size_of_services == jsonArray.length()) {
 //
 //                        ser_list_view_other.setAdapter(service_recycler_adapter);
 //                    }
 
-                    service_NonPro_adapter = new Service_NonPro_Adapter(Main_Provider.this, serviceNonProList);
-                    // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
-                    GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
-                    recycler_technical.setLayoutManager(manager);
-                    recycler_technical.setItemAnimator(new DefaultItemAnimator());
-                    recycler_technical.setAdapter(service_NonPro_adapter);
+                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceNonProList, Main_Provider.this);
+
+                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+                        recycler_freeservice.setLayoutManager(manager);
+                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+                        recycler_freeservice.setAdapter(service_recycler_adapter);
 
 
+                    }
 
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                super.onPostExecute(result);
+            }
+
+        }
+    }
+
+    //************************************************************
+    private class Get_All_Profossional_Services extends AsyncTask<Void, Void, String> {
+        int service_id;
+        ProgressDialog dialog;
+        int size_of_services = 0;
+        View v;
+
+        public Get_All_Profossional_Services(int service_txt_id) {
+            this.service_id = service_txt_id;
+            this.v = v;
+
+        }
+
+
+        @Override
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(Main_Provider.this);
+            dialog.show();
+
+            super.onPreExecute();
+        }
+
+
+        @Override
+        protected String doInBackground(Void... voids) {
+
+            try {
+
+
+                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+                //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
+
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put("type", service_id);
+//                postDataParams.put("password", password);
+
+                Log.e("postDataParams", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds*/);
+                conn.setConnectTimeout(15000  /*milliseconds*/);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        result.append(line);
+                    }
+                    r.close();
+                    return result.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        public String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while (itr.hasNext()) {
+
+                String key = itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            dialog.dismiss();
+            if (result != null) {
+                //  dialog.dismiss();
+
+
+                Log.e("PostRegistration", result.toString());
+
+                try {
+
+                    JSONObject jsonObject = new JSONObject(result);
+                    boolean response = jsonObject.getBoolean("responce");
+                    if (response) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject Service_json_object = jsonArray.getJSONObject(i);
+                            String id = Service_json_object.getString("id");
+                            String Service = Service_json_object.getString("Service");
+                            String type = Service_json_object.getString("type");
+                            String image = Service_json_object.getString("image");
+                            String status = Service_json_object.getString("status");
+
+                            serviceProList.add(new ApiModel(id, Service, type, image, status));
+                            MainModelArrayList.add(new ApiModel(id, Service, type, image, status));
+
+                        }
+                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceProList, Main_Provider.this);
+                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+                        recycler_freeservice.setLayoutManager(manager);
+                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+                        recycler_freeservice.setAdapter(service_recycler_adapter);
+
+                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, MainModelArrayList, Main_Provider.this);
+                        GridLayoutManager manager2 = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+                        recycler_freeservice.setLayoutManager(manager2);
+                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+                        recycler_freeservice.setAdapter(service_recycler_adapter);
+
+                        // fetchService();
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
             super.onPostExecute(result);
         }
 
-    }
-}
-//************************************************************
-    private class Get_All_Profossional_Services extends AsyncTask<Void, Void, String> {
-    int service_id;
-    ProgressDialog dialog;
-    int size_of_services = 0;
-    View v;
-
-    public Get_All_Profossional_Services( int service_txt_id) {
-        this.service_id = service_txt_id;
-        this.v = v;
 
     }
 
-
-    @Override
-    protected void onPreExecute() {
-        dialog = new ProgressDialog(Main_Provider.this);
-        dialog.show();
-
-        super.onPreExecute();
-    }
-
-
-    @Override
-    protected String doInBackground(Void... voids) {
-
-        try {
-
-
-            URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
-            //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
-
-            JSONObject postDataParams = new JSONObject();
-            postDataParams.put("type", service_id);
-//                postDataParams.put("password", password);
-
-            Log.e("postDataParams", postDataParams.toString());
-
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(15000 /* milliseconds*/);
-            conn.setConnectTimeout(15000  /*milliseconds*/);
-            conn.setRequestMethod("POST");
-            conn.setDoInput(true);
-            conn.setDoOutput(true);
-
-            OutputStream os = conn.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(
-                    new OutputStreamWriter(os, "UTF-8"));
-            writer.write(getPostDataString(postDataParams));
-
-            writer.flush();
-            writer.close();
-            os.close();
-
-            int responseCode = conn.getResponseCode();
-
-            if (responseCode == HttpsURLConnection.HTTP_OK) {
-
-                BufferedReader r = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                StringBuilder result = new StringBuilder();
-                String line;
-                while ((line = r.readLine()) != null) {
-                    result.append(line);
-                }
-                r.close();
-                return result.toString();
-
-            } else {
-                return new String("false : " + responseCode);
-            }
-        } catch (Exception e) {
-            return new String("Exception: " + e.getMessage());
-        }
-    }
-
-    public String getPostDataString(JSONObject params) throws Exception {
-
-        StringBuilder result = new StringBuilder();
-        boolean first = true;
-
-        Iterator<String> itr = params.keys();
-
-        while (itr.hasNext()) {
-
-            String key = itr.next();
-            Object value = params.get(key);
-
-            if (first)
-                first = false;
-            else
-                result.append("&");
-
-            result.append(URLEncoder.encode(key, "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
-
-        }
-        return result.toString();
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        dialog.dismiss();
-        if (result != null) {
-            //  dialog.dismiss();
-
-
-            Log.e("PostRegistration", result.toString());
-
-            try {
-
-                JSONObject jsonObject = new JSONObject(result);
-                boolean response = jsonObject.getBoolean("responce");
-                if (response) {
-                    JSONArray jsonArray = jsonObject.getJSONArray("data");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject Service_json_object = jsonArray.getJSONObject(i);
-                        String id = Service_json_object.getString("id");
-                        String Service = Service_json_object.getString("Service");
-                        String type = Service_json_object.getString("type");
-                        String image = Service_json_object.getString("image");
-                        String status = Service_json_object.getString("status");
-
-                        serviceProList.add(new ApiModel(id,Service,type,image,status));
-
-//                        size_of_services++;
+//    private void fetchService() {
 //
-                    }
-//                    if (size_of_services == jsonArray.length()) {
+//        JsonArrayRequest request = new JsonArrayRequest(URL,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        if (response == null) {
+//                            Toast.makeText(getApplicationContext(), "Couldn't fetch the contacts! Please try again.", Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
 //
-//                        ser_list_view.setAdapter(service_recycler_adapter);
+//                       ArrayList<ApiModel> items = new Gson().fromJson(response.toString(), new TypeToken<ArrayList<ApiModel>>() {
+//                        }.getType());
+//
+//                        // adding contacts to contacts list
+//                        contactList.clear();
+//                        contactList.addAll(items);
+//
+//                        // refreshing recycler view
+//                        service_recycler_adapter.notifyDataSetChanged();
 //                    }
-                    service_Pro_adapter = new Service_Pro_Adapter(Main_Provider.this, serviceProList);
-                    // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
-                    GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
-                    recycler_professional.setLayoutManager(manager);
-                    recycler_professional.setItemAnimator(new DefaultItemAnimator());
-                    recycler_professional.setAdapter(service_Pro_adapter);
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-        super.onPostExecute(result);
-    }
-
-
-    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                // error in getting json
+//                Log.e(TAG, "Error: " + error.getMessage());
+//                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
+//    }
 }

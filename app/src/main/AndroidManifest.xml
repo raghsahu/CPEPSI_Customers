@@ -26,7 +26,8 @@
         android:roundIcon="@drawable/cone"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Payment_History"></activity>
+        <activity android:name=".Service_Filter_Activity"></activity>
+        <activity android:name=".Payment_History" />
         <activity android:name=".PDF_Viewer" />
         <activity android:name=".PasswordMatch" />
         <activity android:name=".ProfileActivity" />
