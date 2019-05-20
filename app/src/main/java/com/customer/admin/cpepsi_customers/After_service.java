@@ -3,6 +3,8 @@ package com.customer.admin.cpepsi_customers;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +19,9 @@ import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
 import com.customer.admin.cpepsi_customers.Java_files.DataModel;
-import com.customer.admin.cpepsi_customers.Java_files.NonProModel;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -36,6 +39,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -64,6 +69,10 @@ public class After_service extends AppCompatActivity {
 
     public HashMap<Integer, DataModel> SubServiceId_HasMap=new HashMap<Integer, DataModel>();
      String Service_Sub_ID;
+     Geocoder geocoder;
+     List<Address> event_address;
+     LatLng p1;
+    String Address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +88,8 @@ public class After_service extends AppCompatActivity {
         serviceType = (Spinner) findViewById(R.id.serviceType);
         problem = (EditText) findViewById(R.id.problem);
         address = (EditText) findViewById(R.id.address);
-        address.setText(Adss);
+       // address.setText(Adss);
+        Address=address.getText().toString();
 
         problem.setText(AppPreference.getProblem(After_service.this));
         apiModel = (ApiModel) getIntent().getSerializableExtra("ApiModel");
@@ -193,6 +203,12 @@ public class After_service extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (loc_on_mark(address.getText().toString()) != null) {
+                    LatLng cust_location = loc_on_mark(address.getText().toString());
+                    Toast.makeText(After_service.this, "cust_loc "+cust_location, Toast.LENGTH_SHORT).show();
+                }
+               // Toast.makeText(After_service.this, "Add "+address.getText().toString(), Toast.LENGTH_SHORT).show();
+
                 if (manager.isLoggedIn()) {
 
                     Problem = problem.getText().toString();
@@ -227,6 +243,35 @@ public class After_service extends AppCompatActivity {
        /* if (Service_Name != 0) {
             service_ser.setText(Service_Name);
         }*/
+
+    }
+//*******************************************************************
+    private LatLng loc_on_mark(String address) {
+
+        String address1="452011";
+        geocoder = new Geocoder(After_service.this, Locale.getDefault());
+        try {
+            event_address = geocoder.getFromLocationName(address, 5);
+            // Toast.makeText(GET_Service_providers.this, "add "+event_address, Toast.LENGTH_SHORT).show();
+            Log.e("log123" , "destination "+address);
+
+            if (event_address.isEmpty()) {
+                return null;
+            } else {
+                Address location = event_address.get(0);
+                location.getLatitude();
+                location.getLongitude();
+                p1 = new LatLng(location.getLatitude(), location.getLongitude());
+
+            }
+            Toast.makeText(After_service.this, "latlong "+p1, Toast.LENGTH_SHORT).show();
+        }
+
+        catch (IOException e) {
+            Toast.makeText(After_service.this, "catch+ "+e, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        return p1;
 
     }
 

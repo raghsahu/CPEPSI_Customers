@@ -747,7 +747,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("customer_id", AppPreference.getId(GET_Service_providers.this));
-                postDataParams.put("provider_id", ProviderId);
+               // postDataParams.put("provider_id", ProviderId);
                 postDataParams.put("discription", CustProblem);
 
                 //     Log.e("user_id", user_id + "");
