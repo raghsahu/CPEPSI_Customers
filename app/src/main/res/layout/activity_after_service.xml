@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="com.customer.admin.cpepsi_customer.After_service">
 
         <android.support.v7.widget.CardView
@@ -51,7 +52,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="0dp"
                 android:layout_marginLeft="0dp"
-                android:layout_marginTop="58dp"
+
                 android:scaleType="fitXY"
                 android:src="@drawable/inside5" />
 
@@ -217,11 +218,13 @@
 
             </android.support.v7.widget.CardView>
 
-
-
-
-
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
 
         <Button
             android:id="@+id/next_ser"
@@ -233,8 +236,27 @@
             android:background="#000"
             android:layout_marginRight="60dp"
             android:layout_marginLeft="60dp"
-            android:text="Next"
+            android:text="Send Request"
             android:layout_marginBottom="10dp"
             android:textColor="#FFF" />
-    </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/next_go_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/l1y"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:text="Go to Map &amp; Send Request"
+            android:layout_marginBottom="10dp"
+            android:textColor="#000" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 </ScrollView>

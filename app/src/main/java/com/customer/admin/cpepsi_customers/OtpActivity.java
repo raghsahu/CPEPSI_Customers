@@ -46,7 +46,8 @@ public class OtpActivity extends AppCompatActivity {
     String address = "";
     String City = "";
     String State = "";
-
+    String Cust_Lat;
+    String Cust_Long;
 
 
     @Override
@@ -70,6 +71,8 @@ public class OtpActivity extends AppCompatActivity {
         Add = getIntent().getStringExtra("add");
         City = getIntent().getStringExtra("city");
         State = getIntent().getStringExtra("state");
+        Cust_Lat = getIntent().getStringExtra("Cust_Lat");
+        Cust_Long = getIntent().getStringExtra("Cust_Long");
 
         btn_verify.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +114,8 @@ public class OtpActivity extends AppCompatActivity {
                 postDataParams.put("address", Add);
                 postDataParams.put("district", City);
                 postDataParams.put("state", State);
+                postDataParams.put("latitude", Cust_Lat);
+                postDataParams.put("longitude", Cust_Long);
 
 
                 Log.e("postDataParams", postDataParams.toString());

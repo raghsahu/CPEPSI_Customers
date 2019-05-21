@@ -64,6 +64,8 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -128,6 +130,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
             return false;
         }
     };
+
 
     private void Load_Free_Services(Free_Services free_services) {
 //        scro_pro.setVisibility(View.GONE);
@@ -288,16 +291,19 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
         MenuItem item1 = menu.findItem(R.id.action_prof);
         MenuItem item2 = menu.findItem(R.id.action_p_history);
         MenuItem item3 = menu.findItem(R.id.action_notification);
+        MenuItem item4 = menu.findItem(R.id.action_login);
         if (manager.isLoggedIn()) {
-            item.setTitle("Logout");
+            item.setVisible(true);
             item1.setVisible(true);
             item2.setVisible(true);
             item3.setVisible(true);
+            item4.setVisible(false);
         } else {
-            item.setTitle("Login");
+            item.setVisible(false);
             item1.setVisible(false);
             item2.setVisible(false);
             item3.setVisible(false);
+            item4.setVisible(true);
 
         }
         return true;
@@ -374,6 +380,10 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
             return true;
         } else if (id == R.id.action_p_history) {
             Intent intent = new Intent(Main_Provider.this, Payment_History.class);
+            startActivity(intent);
+            return true;
+        }else if (id == R.id.action_login) {
+            Intent intent = new Intent(Main_Provider.this, Login_Constomer.class);
             startActivity(intent);
             return true;
         }
@@ -479,14 +489,8 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
                             serviceList.add(new ApiModel(id, Service, type, image, status));
                             MainModelArrayList.add(new ApiModel(id, Service, type, image, status));
 
-                            // size_of_services++;
-
-
                         }
-//                        if (size_of_services == jsonArray.length()) {
-//
-//                            free_recyler.setAdapter(service_recycler_adapter);
-//                        }
+
                         service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceList, Main_Provider.this);
 
                         // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);

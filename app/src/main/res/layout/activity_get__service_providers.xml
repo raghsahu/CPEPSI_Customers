@@ -46,28 +46,26 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentBottom="true"
+        >
 
 
-   <!-- <AutoCompleteTextView
-        android:padding="5dp"
-        android:layout_weight="0.25"
-        android:id="@+id/searchView1"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:hint="Search Location"
-        android:textColor="@android:color/black"
-        android:background="@android:color/white" >
-    </AutoCompleteTextView>
-
-    <ImageView
-        android:layout_weight="1.75"
-        android:src="@drawable/search"
-        android:padding="5dp"
-        android:id="@+id/Search_button1"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@android:color/white" />-->
+        <Button
+            android:id="@+id/btn_send_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/l1y"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:background="#000"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:text="Send Request"
+            android:layout_marginBottom="10dp"
+            android:textColor="#FFF" />
 
 </LinearLayout>
 

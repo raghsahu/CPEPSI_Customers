@@ -134,6 +134,9 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     String RatingRes;
     String adds;
      String[] ProStatus;
+     String Cust_Lat;
+     String Cust_long;
+     Button btn_send_request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +145,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
         searchView1 = (SearchView) findViewById(R.id.searchView1);
         serachResult = (RecyclerView) findViewById(R.id.serachResult);
+        btn_send_request=findViewById(R.id.btn_send_request);
 
         searchModelList = new ArrayList<>();
 
@@ -156,7 +160,9 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
         CustProblem = getIntent().getStringExtra("Problem");
         SubServiceNmae = getIntent().getStringExtra("ServiceSub");
         SubSer_ID = getIntent().getStringExtra("SubSer_ID");
-        Toast.makeText(this, "ssi "+SubSer_ID, Toast.LENGTH_SHORT).show();
+        Cust_Lat = getIntent().getStringExtra("Cust_Lat");
+        Cust_long = getIntent().getStringExtra("Cust_Long");
+       // Toast.makeText(this, "ssi "+SubSer_ID, Toast.LENGTH_SHORT).show();
 
         checkthepermisions();
 
@@ -184,8 +190,21 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 return false;
             }
         });
-    }
+        //************************************************
+        btn_send_request.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
+                    new SendRequest().execute();
+                } else {
+                    Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+//**********************************************************************************************
     private void checkthepermisions() {
 
         if (ActivityCompat.checkSelfPermission(GET_Service_providers.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -327,16 +346,16 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         }
 
                         builder.setView(dialogLayout);
-                        builder.setPositiveButton("Request Send", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
-                                    new SendRequest().execute();
-                                } else {
-                                    Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+//                        builder.setPositiveButton("Request Send", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
+//                                    new SendRequest().execute();
+//                                } else {
+//                                    Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        });
                         builder.show();
                     } else {
                         Toast.makeText(GET_Service_providers.this, "Location: "+marker.getTitle(), Toast.LENGTH_SHORT).show();
@@ -749,6 +768,8 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 postDataParams.put("customer_id", AppPreference.getId(GET_Service_providers.this));
                // postDataParams.put("provider_id", ProviderId);
                 postDataParams.put("discription", CustProblem);
+               // postDataParams.put("latitude", Cust_Lat);
+               // postDataParams.put("longitude", Cust_long);
 
                 //     Log.e("user_id", user_id + "");
                 Log.e("user_id", user_id + "");

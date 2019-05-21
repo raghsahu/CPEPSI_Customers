@@ -26,6 +26,9 @@ import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recycler_Adapter.MyViewHolder> implements Filterable {
     private Context mContext;
@@ -50,12 +53,17 @@ public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recyc
     private String Image;
     String sId = "";
 
+    String[] sections;
+    List<String> sectionLetters=new ArrayList<String>();
+
     public Service_Recycler_Adapter(FragmentActivity activity, ArrayList<ApiModel> services, Service_Recycler_Adapter_Listener listener) {
         mContext = activity;
         this.listener=listener;
         this.services_list = services;
 
         setHasStableIds(true);
+
+
     }
 
 
@@ -100,12 +108,7 @@ public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recyc
         final ApiModel apiModel = services_list.get(position);
         holder.service_doc.setText(apiModel.getService());
 
-       /* this.pos_try = position;
-        final Services services1;
-        services1 = services_list.get(pos_try);
-        Log.e("Position", "is " + pos_try);
-        service = services1.getService_doc();
-        StrictMode.setVmPolicy(builder.build());*/
+
 
         holder.mainclick.setOnClickListener(new View.OnClickListener() {
             @Override

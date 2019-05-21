@@ -27,7 +27,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView eventName, description,status,date;
+        public TextView providerName, description,status,date;
         CardView card;
         ImageView recpdeleteBtn;
         int pos;
@@ -35,7 +35,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public ViewHolder(View view) {
             super(view);
 
-           // eventName = (TextView) view.findViewById(R.id.eventName);
+            providerName = (TextView) view.findViewById(R.id.pro_nam);
             description = (TextView) view.findViewById(R.id.description);
             status = (TextView) view.findViewById(R.id.status);
             date = (TextView) view.findViewById(R.id.date);
@@ -64,6 +64,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         NotificationModel notificationModel = notilist.get(position);
         viewHolder.date.setText(notificationModel.getDate());
         viewHolder.description.setText("Service Query: "+notificationModel.getDiscription());
+
+
         finalStatus = (notificationModel.getProstatus());
         if (finalStatus.equals("0")) {
             viewHolder.status.setTextColor(context.getResources().getColor(R.color.orange));
@@ -71,12 +73,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         } else if (notificationModel.getProstatus().equals("1")) {
             viewHolder.status.setTextColor(context.getResources().getColor(R.color.color2));
             viewHolder.status.setText("Accept...");
+            viewHolder.providerName.setText(notificationModel.getName());
         } else if (notificationModel.getProstatus().equals("2")) {
             viewHolder.status.setTextColor(context.getResources().getColor(R.color.color1));
             viewHolder.status.setText("Decline...");
         } else if (notificationModel.getProstatus().equals("3")) {
             viewHolder.status.setTextColor(context.getResources().getColor(R.color.newone));
             viewHolder.status.setText("Completed...");
+            viewHolder.providerName.setText(notificationModel.getName());
         }
         viewHolder.card.setTag(viewHolder);
         viewHolder.pos = position;

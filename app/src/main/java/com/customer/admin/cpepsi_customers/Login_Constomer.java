@@ -312,6 +312,7 @@ public class Login_Constomer extends AppCompatActivity {
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
+               // conn.setChunkedStreamingMode(0);
 
                 OutputStream os = conn.getOutputStream();
 

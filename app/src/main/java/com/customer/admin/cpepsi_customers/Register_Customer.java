@@ -2,12 +2,18 @@ package com.customer.admin.cpepsi_customers;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,6 +31,11 @@ import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Java_files.StateModel;
 import com.customer.admin.cpepsi_customers.util.HttpHandler;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +55,10 @@ import java.util.Iterator;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Register_Customer extends AppCompatActivity {
+public class Register_Customer extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+    private static final String TAG = "Register_Customer";
+
     CheckBox terms_view;
     Button sbmt;
     TextView tx_terms;
@@ -65,6 +79,16 @@ public class Register_Customer extends AppCompatActivity {
     public String Spin_state, Spin_distt;
 
     public HashMap<Integer, StateModel> StateHashMap = new HashMap<Integer, StateModel>();
+     GoogleApiClient mGoogleApiClient;
+     LocationManager mLocationManager;
+    private LocationManager locationManager;
+    private Location mLocation;
+    private LocationRequest mLocationRequest;
+    private long UPDATE_INTERVAL = 5 * 1000;
+    private long FASTEST_INTERVAL = 5000;
+     String mLatitudeString;
+     String mLongitudeString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,12 +170,53 @@ public class Register_Customer extends AppCompatActivity {
 
             }
         });
+//***************************************************************************
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
+        mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+
+        checkLocation(); //ch
 
 
     }
 
+    private boolean checkLocation() {
+        if(!isLocationEnabled())
+            showAlert();
+        return isLocationEnabled();
+    }
 
+    private boolean isLocationEnabled() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+    private void showAlert() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
+                        "use this app")
+                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                    }
+                });
+        dialog.show();
+    }
+    //*******************************************************
     private void Check_The_Validation() {
 
         Cus_add = cus_add.getText().toString();
@@ -250,7 +315,108 @@ public class Register_Customer extends AppCompatActivity {
             // permissions this app might request
         }
     }
+//*************************************************************************
+@Override
+public void onConnected(Bundle bundle) {
+    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        // TODO: Consider calling
+        //    ActivityCompat#requestPermissions
+        // here to request the missing permissions, and then overriding
+        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        //                                          int[] grantResults)
+        // to handle the case where the user grants the permission. See the documentation
+        // for ActivityCompat#requestPermissions for more details.
+        return;
+    }
 
+    startLocationUpdates();
+
+    mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+    if(mLocation == null){
+        startLocationUpdates();
+    }
+    if (mLocation != null) {
+
+        // mLatitudeTextView.setText(String.valueOf(mLocation.getLatitude()));
+        //mLongitudeTextView.setText(String.valueOf(mLocation.getLongitude()));
+    } else {
+        Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+    }
+}
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "Connection failed. Error: " + connectionResult.getErrorCode());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        mLatitudeString=(String.valueOf(location.getLatitude()));
+        mLongitudeString=(String.valueOf(location.getLongitude() ));
+        // Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        // You can now create a LatLng Object for use with maps
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //******************address******************************
+
+//        if (location != null) {
+//            double latitude = location.getLatitude();
+//            double longitude = location.getLongitude();
+//            LocationAddress locationAddress = new LocationAddress();
+//            locationAddress.getAddressFromLocation(latitude, longitude,
+//                    getApplicationContext(), new GeocoderHandler());
+//        }
+
+    }
+//*******************************************************************************************
     private class Check_Log_Infor_Cus extends AsyncTask<String, Void, String> {
         ProgressDialog Log_in_Progress;
         String email, mobile_no, name;
@@ -382,6 +548,8 @@ public class Register_Customer extends AppCompatActivity {
                         to_completion.putExtra("add",Cus_add);
                         to_completion.putExtra("city",Spin_distt);
                         to_completion.putExtra("state",Spin_state);
+                        to_completion.putExtra("Cust_Lat", mLatitudeString);
+                        to_completion.putExtra("Cust_Long", mLongitudeString);
 
                         startActivity(to_completion);
                         Toast.makeText(Register_Customer.this, ""+msg, Toast.LENGTH_SHORT).show();

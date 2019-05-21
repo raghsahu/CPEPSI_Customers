@@ -45,9 +45,12 @@ import java.util.Locale;
 import javax.net.ssl.HttpsURLConnection;
 
 public class After_service extends AppCompatActivity {
-    Button next_ser;
-    EditText service_ser, problem,address;
+    Button next_ser,next_go_map;
+    EditText service_ser, problem, address;
     int service_from_main;
+    int BtnNextGo_map=0;
+    int Btn_Send_req=0;
+
     Spinner serviceType;
     ArrayList<String> uomList;
     private ArrayList<DataModel> uomSpinnerList;
@@ -64,32 +67,35 @@ public class After_service extends AppCompatActivity {
     SessionManager manager;
     String After_SerName;
     public ApiModel apiModel;
-   // public NonProModel apiModel;
+    // public NonProModel apiModel;
     String Adss;
 
-    public HashMap<Integer, DataModel> SubServiceId_HasMap=new HashMap<Integer, DataModel>();
-     String Service_Sub_ID;
-     Geocoder geocoder;
-     List<Address> event_address;
-     LatLng p1;
+    public HashMap<Integer, DataModel> SubServiceId_HasMap = new HashMap<Integer, DataModel>();
+    String Service_Sub_ID;
+    Geocoder geocoder;
+    List<Address> event_address;
+    LatLng p1;
     String Address;
+    LatLng cust_location;
+    String Lati, Longi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_service);
 
-        Adss =AppPreference.getAddress(After_service.this);
-        Log.e("Adss",Adss);
+        Adss = AppPreference.getAddress(After_service.this);
+        Log.e("Adss", Adss);
         manager = new SessionManager(this);
 
         next_ser = (Button) findViewById(R.id.next_ser);
+        next_go_map = (Button) findViewById(R.id.next_go_map);
         service_ser = findViewById(R.id.service_ser);
         serviceType = (Spinner) findViewById(R.id.serviceType);
         problem = (EditText) findViewById(R.id.problem);
         address = (EditText) findViewById(R.id.address);
-       // address.setText(Adss);
-        Address=address.getText().toString();
+        // address.setText(Adss);
+        Address = address.getText().toString();
 
         problem.setText(AppPreference.getProblem(After_service.this));
         apiModel = (ApiModel) getIntent().getSerializableExtra("ApiModel");
@@ -126,7 +132,7 @@ public class After_service extends AppCompatActivity {
                     String Type = apiModel.getType();
                     String Status = apiModel.getStatus();
                     Log.e("Rajkumar with", "");
-                  //  Toast.makeText(this, ""+strId, Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(this, ""+strId, Toast.LENGTH_SHORT).show();
 
                     service_ser.setText(SerName);
                     After_SerName = service_ser.getText().toString();
@@ -173,15 +179,12 @@ public class After_service extends AppCompatActivity {
 
                 ServiceItem = uomAdapter.getItem(position).toString();
 
-                for (int i = 0; i < SubServiceId_HasMap.size(); i++)
-                {
-                   // Toast.makeText(After_service.this, "item pos "+serviceType.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
-                    if (SubServiceId_HasMap.get(i).getServiceSubCategory().equals(serviceType.getItemAtPosition(position)))
-                    {
-                        Service_Sub_ID=SubServiceId_HasMap.get(i).getId();
-                         Toast.makeText(After_service.this, "subId "+Service_Sub_ID, Toast.LENGTH_SHORT).show();
-                    }else
-                    {
+                for (int i = 0; i < SubServiceId_HasMap.size(); i++) {
+                    // Toast.makeText(After_service.this, "item pos "+serviceType.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                    if (SubServiceId_HasMap.get(i).getServiceSubCategory().equals(serviceType.getItemAtPosition(position))) {
+                        Service_Sub_ID = SubServiceId_HasMap.get(i).getId();
+                        Toast.makeText(After_service.this, "subId " + Service_Sub_ID, Toast.LENGTH_SHORT).show();
+                    } else {
                         //Toast.makeText(After_service.this, "nonono", Toast.LENGTH_SHORT).show();
                     }
 
@@ -203,11 +206,12 @@ public class After_service extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+
                 if (loc_on_mark(address.getText().toString()) != null) {
-                    LatLng cust_location = loc_on_mark(address.getText().toString());
-                    Toast.makeText(After_service.this, "cust_loc "+cust_location, Toast.LENGTH_SHORT).show();
+                    cust_location = loc_on_mark(address.getText().toString());
+                    // Toast.makeText(After_service.this, "cust_loc "+cust_location, Toast.LENGTH_SHORT).show();
                 }
-               // Toast.makeText(After_service.this, "Add "+address.getText().toString(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(After_service.this, "Add " + Lati + Longi, Toast.LENGTH_SHORT).show();
 
                 if (manager.isLoggedIn()) {
 
@@ -215,6 +219,49 @@ public class After_service extends AppCompatActivity {
                     AppPreference.setProblem(After_service.this, Problem);
                     if (!ServiceItem.equals("--Select--")) {
                         if (!Problem.equals("")) {
+                            Btn_Send_req=1;
+                            new CheckFirstPaymentStatus(Service_Sub_ID).execute();
+                        } else {
+                            problem.setError("Please Enter Problem.");
+                            problem.requestFocus();
+                        }
+                    } else {
+                        Toast.makeText(After_service.this, "Please Select", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    AppPreference.setAfterId(After_service.this, strId);
+                    // AppPreference.setAfterName(After_service.this,After_SerName);
+                    //Toast.makeText(After_service.this, "" + strId, Toast.LENGTH_SHORT).show();
+                    manager.setAfterName(After_SerName);
+                    //Toast.makeText(After_service.this, "" + After_SerName, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(After_service.this, "Please login first", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(After_service.this, Login_Constomer.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
+
+//******************************************************************
+        next_go_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (loc_on_mark(address.getText().toString()) != null) {
+                    cust_location = loc_on_mark(address.getText().toString());
+                    // Toast.makeText(After_service.this, "cust_loc "+cust_location, Toast.LENGTH_SHORT).show();
+                }
+              //  Toast.makeText(After_service.this, "Add " + Lati + Longi, Toast.LENGTH_SHORT).show();
+
+                if (manager.isLoggedIn()) {
+
+                    Problem = problem.getText().toString();
+                    AppPreference.setProblem(After_service.this, Problem);
+                    if (!ServiceItem.equals("--Select--")) {
+                        if (!Problem.equals("")) {
+                            BtnNextGo_map=1;
                             new CheckFirstPaymentStatus(Service_Sub_ID).execute();
                         } else {
                             problem.setError("Please Enter Problem.");
@@ -240,20 +287,21 @@ public class After_service extends AppCompatActivity {
         });
 
 
-       /* if (Service_Name != 0) {
-            service_ser.setText(Service_Name);
-        }*/
+
+
+
 
     }
-//*******************************************************************
+
+    //*******************************************************************
     private LatLng loc_on_mark(String address) {
 
-        String address1="452011";
+        String address1 = "452011";
         geocoder = new Geocoder(After_service.this, Locale.getDefault());
         try {
             event_address = geocoder.getFromLocationName(address, 5);
             // Toast.makeText(GET_Service_providers.this, "add "+event_address, Toast.LENGTH_SHORT).show();
-            Log.e("log123" , "destination "+address);
+            Log.e("log123", "destination " + address);
 
             if (event_address.isEmpty()) {
                 return null;
@@ -262,13 +310,13 @@ public class After_service extends AppCompatActivity {
                 location.getLatitude();
                 location.getLongitude();
                 p1 = new LatLng(location.getLatitude(), location.getLongitude());
+                Lati = String.valueOf(location.getLatitude());
+                Longi = String.valueOf(location.getLongitude());
 
             }
-            Toast.makeText(After_service.this, "latlong "+p1, Toast.LENGTH_SHORT).show();
-        }
-
-        catch (IOException e) {
-            Toast.makeText(After_service.this, "catch+ "+e, Toast.LENGTH_SHORT).show();
+            Toast.makeText(After_service.this, "latlong " + Lati + Longi, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(After_service.this, "catch+ " + e, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return p1;
@@ -373,7 +421,7 @@ public class After_service extends AppCompatActivity {
                         uomList.add(ServiceSubCategory);
                         uomSpinnerList.add(new DataModel(id, Service, type, ServiceSubCategory, status));
 
-                        SubServiceId_HasMap.put(i,new DataModel(id, Service, type, ServiceSubCategory, status));
+                        SubServiceId_HasMap.put(i, new DataModel(id, Service, type, ServiceSubCategory, status));
 
                     }
 
@@ -422,7 +470,7 @@ public class After_service extends AppCompatActivity {
         String Ser_Sub_ID;
 
         public CheckFirstPaymentStatus(String service_sub_id) {
-            this.Ser_Sub_ID=service_sub_id;
+            this.Ser_Sub_ID = service_sub_id;
 
         }
 
@@ -437,7 +485,7 @@ public class After_service extends AppCompatActivity {
             try {
 
                 URL url = new URL("http://heightsmegamart.com/CPEPSI/Api/first_payment_check");
-            //   URL url = new URL("http://paramgoa.com/cpepsi/Api/first_payment_check");
+                //   URL url = new URL("http://paramgoa.com/cpepsi/Api/first_payment_check");
 
                 JSONObject postDataParams = new JSONObject();
 
@@ -517,17 +565,25 @@ public class After_service extends AppCompatActivity {
 
 
                     } else {
-                        Intent to_map = new Intent(After_service.this, GET_Service_providers.class);
-                        to_map.putExtra("service_id", strNew);
-                        Log.e("strNew?????", strNew + "");
-                        to_map.putExtra("Problem", Problem);
-                        to_map.putExtra("ServiceSub", ServiceItem);
-                       to_map.putExtra("SubSer_ID",Ser_Sub_ID);
-                        startActivity(to_map);
-                        finish();
+                        if (BtnNextGo_map==1){
+                            Intent to_map = new Intent(After_service.this, GET_Service_providers.class);
+                            to_map.putExtra("service_id", strNew);
+                            Log.e("strNew?????", strNew + "");
+                            to_map.putExtra("Problem", Problem);
+                            to_map.putExtra("ServiceSub", ServiceItem);
+                            to_map.putExtra("SubSer_ID", Ser_Sub_ID);
+                            to_map.putExtra("Cust_Lat", Lati);
+                            to_map.putExtra("Cust_Long", Longi);
+                            startActivity(to_map);
+                            finish();
+                            Toast.makeText(After_service.this, "We are working on it", Toast.LENGTH_SHORT).show();
+                        }
+                    if (Btn_Send_req==1){
+                        new SendRequest().execute();
+                    }
                         // AppPreference.setAfterId(getApplicationContext(),"null");
                         //      Snackbar.make(After_service.this, "We are working on it", Snackbar.LENGTH_LONG);
-                        Toast.makeText(After_service.this, "We are working on it", Toast.LENGTH_SHORT).show();
+
                     }
 
 
@@ -562,6 +618,136 @@ public class After_service extends AppCompatActivity {
 
         }
         return result.toString();
+    }
+//*****************************************************
+    private class SendRequest extends AsyncTask<String, Void, String> {
+        ProgressDialog dialog;
+
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(After_service.this);
+            dialog.show();
+
+        }
+
+        protected String doInBackground(String... arg0) {
+
+            try {
+
+                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Add_approval");
+                //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Add_approval");
+
+                JSONObject postDataParams = new JSONObject();
+                postDataParams.put("customer_id", AppPreference.getId(After_service.this));
+                // postDataParams.put("provider_id", ProviderId);
+                postDataParams.put("discription", Problem);
+               // postDataParams.put("latitude", Lati);
+                //postDataParams.put("longitude", Longi);
+
+                //     Log.e("user_id", user_id + "");
+               // Log.e("user_id", user_id + "");
+                //Log.e("CustProblem", CustProblem);
+                //Log.e("postDataParams", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds*/);
+                conn.setConnectTimeout(15000  /*milliseconds*/);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader in = new BufferedReader(new
+                            InputStreamReader(
+                            conn.getInputStream()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+
+                    while ((line = in.readLine()) != null) {
+
+                        StringBuffer Ss = sb.append(line);
+                        Log.e("Ss", Ss.toString());
+                        sb.append(line);
+                        break;
+                    }
+
+                    in.close();
+                    return sb.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                dialog.dismiss();
+
+                JSONObject jsonObject = null;
+                Log.e("SendRequest", result.toString());
+                try {
+
+                    jsonObject = new JSONObject(result);
+                    String data = jsonObject.getString("data");
+                    String responce = jsonObject.getString("responce");
+                    Log.e(">>>>", jsonObject.toString() + " " + responce + " " + data);
+
+                    if (responce.equals("true")) {
+                        Toast.makeText(After_service.this, responce, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(After_service.this, RequestActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(After_service.this, "Some Problem.", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public String getPostDataString(JSONObject params) throws Exception {
+
+            StringBuilder result = new StringBuilder();
+            boolean first = true;
+
+            Iterator<String> itr = params.keys();
+
+            while (itr.hasNext()) {
+
+                String key = itr.next();
+                Object value = params.get(key);
+
+                if (first)
+                    first = false;
+                else
+                    result.append("&");
+
+                result.append(URLEncoder.encode(key, "UTF-8"));
+                result.append("=");
+                result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+            }
+            return result.toString();
+        }
     }
 
 }
