@@ -299,9 +299,13 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 //        });
 //*******************************************************************
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GET_Service_providers.this));
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+
+                try {
+
                 for (int k = 0; k < Stored_Ids.length; k++) {
                     //  Toast.makeText(getApplicationContext(), "Stored_Ids is" + Stored_Ids[k], Toast.LENGTH_SHORT).show();
                     if (Provider_infoHashMap.get(Stored_Ids[k]).getContactpersonnames().equals(marker.getTitle())) {
@@ -336,12 +340,12 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
                         final TextView rating = dialogLayout.findViewById(R.id.rating);
                         RatingRes = Provider_infoHashMap.get(Stored_Ids[k]).getFeedbackservice();
-                        if (RatingRes!="null"){
-                            Double valuej =Double.parseDouble(RatingRes) ;
-                          valuej=  Math.floor(valuej * 100) / 100;
+                        if (RatingRes != "null") {
+                            Double valuej = Double.parseDouble(RatingRes);
+                            valuej = Math.floor(valuej * 100) / 100;
 
                             rating.setText(String.valueOf(valuej));
-                        }else {
+                        } else {
                             rating.setText("1.0");
                         }
 
@@ -358,8 +362,13 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 //                        });
                         builder.show();
                     } else {
-                        Toast.makeText(GET_Service_providers.this, "Location: "+marker.getTitle(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GET_Service_providers.this, "Location: " + marker.getTitle(), Toast.LENGTH_SHORT).show();
                     }
+                }
+            }catch (Exception e){
+                   // Toast.makeText(GET_Service_providers.this, " "+e, Toast.LENGTH_SHORT).show();
+                    System.out.print(e);
+                    Toast.makeText(GET_Service_providers.this, "No Details Found", Toast.LENGTH_SHORT).show();
                 }
             }
         });

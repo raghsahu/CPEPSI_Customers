@@ -1,7 +1,9 @@
 package com.customer.admin.cpepsi_customers;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -314,7 +316,7 @@ public class After_service extends AppCompatActivity {
                 Longi = String.valueOf(location.getLongitude());
 
             }
-            Toast.makeText(After_service.this, "latlong " + Lati + Longi, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(After_service.this, "latlong " + Lati + Longi, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(After_service.this, "catch+ " + e, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
@@ -556,12 +558,44 @@ public class After_service extends AppCompatActivity {
                     String res = jsonObject.getString("responce");
 
                     if (res.equals("false")) {
-                        Toast.makeText(After_service.this, "Please pay Rs 20, Your Paid service Amount only one time",
+                        String error=jsonObject.getString("error");
+
+                        final AlertDialog.Builder dialog = new AlertDialog.Builder(After_service.this).setTitle("CPEPSI")
+                                .setMessage(""+error +", Please Pay Rs 20, Your Paid service Amount Only One Time.");
+
+                        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                exitLauncher();
+                            }
+
+                            private void exitLauncher() {
+                                Intent intent = new Intent(After_service.this, FirstTime_Payment_Activity.class);
+                                intent.putExtra("ApiModel", apiModel);
+                                startActivity(intent);
+                                // finish();
+                            }
+                        });
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
+
+
+
+
+
+
+                        //**********************************************************
+                       // Toast.makeText(After_service.this, ""+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(After_service.this, "Please Pay Rs 20, Your Paid service Amount Only One Time",
                                 Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(After_service.this, FirstTime_Payment_Activity.class);
-                        intent.putExtra("ApiModel", apiModel);
-                        startActivity(intent);
-                        // finish();
+
 
 
                     } else {
