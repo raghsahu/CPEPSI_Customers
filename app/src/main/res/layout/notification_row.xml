@@ -9,7 +9,7 @@
         android:id="@+id/card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
         app:cardCornerRadius="10dp">
 
         <LinearLayout
@@ -20,25 +20,25 @@
             android:weightSum="1">
 
             <LinearLayout
+                android:weightSum="4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
                 android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:layout_weight="1"
                     android:weightSum="1"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_weight="0.50"
+                        android:layout_weight="0.7"
                         android:id="@+id/status"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
                         android:text="qqqq"
                         android:textColor="#4a802f"
                         android:textSize="14dp"
@@ -48,77 +48,86 @@
                         android:id="@+id/date"
                         android:gravity="end"
                         android:text="15/05/2018"
-                        android:layout_weight="0.50"
-                        android:layout_marginRight="5dp"
+                        android:layout_weight="0.3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
+
                         android:textColor="#E02525"
                         android:textSize="14dp" />
 
-
                 </LinearLayout>
                 <LinearLayout
+                    android:layout_weight="1"
                     android:weightSum="1"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
+
 
                     <TextView
-                        android:layout_weight="0.50"
-                        android:id="@+id/pro_name"
+                        android:text="Provider Name:"
+                        android:layout_weight="0.7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="10dp"
-                        android:text="Provider Name: "
-                        android:textSize="14dp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:textSize="12dp" />
 
                     <TextView
                         android:id="@+id/pro_nam"
-                        android:gravity="end"
                         android:text=""
-                        android:layout_weight="0.50"
-                        android:layout_marginRight="5dp"
+                        android:layout_weight="0.3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="3dp"
                         android:textStyle="bold"
-                        android:textSize="14dp" />
+                        android:textSize="12dp" />
+
+
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:weightSum="1"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
+                    <TextView
+                        android:text="Service Name:"
+                        android:layout_weight="0.7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp" />
 
-                <!--<TextView-->
-                    <!--android:layout_weight="0.50"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="3dp"-->
-                    <!--android:text="Description:"-->
-                    <!--android:textColor="#000"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:textSize="15dp" />-->
+                    <TextView
+                        android:id="@+id/pro_service"
+                        android:text=" "
+                        android:layout_weight="0.3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:weightSum="1"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
-                    android:text="aaaa"
+                    android:text="Discription:"
                     android:textSize="12dp" />
 
+                </LinearLayout>
 
 
-                <!--<TextView-->
-                    <!--android:id="@+id/reasion"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--android:gravity="end"-->
-                    <!--android:text=""-->
-                    <!--android:textColor="#4a802f"-->
-                    <!--android:textSize="14dp"-->
-                    <!--android:textStyle="bold"-->
-                    <!--android:visibility="gne" />-->
+
+
+
             </LinearLayout>
 
         </LinearLayout>

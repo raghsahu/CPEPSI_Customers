@@ -222,6 +222,7 @@ public class After_service extends AppCompatActivity {
                     if (!ServiceItem.equals("--Select--")) {
                         if (!Problem.equals("")) {
                             Btn_Send_req=1;
+                            BtnNextGo_map=0;
                             new CheckFirstPaymentStatus(Service_Sub_ID).execute();
                         } else {
                             problem.setError("Please Enter Problem.");
@@ -264,6 +265,7 @@ public class After_service extends AppCompatActivity {
                     if (!ServiceItem.equals("--Select--")) {
                         if (!Problem.equals("")) {
                             BtnNextGo_map=1;
+                            Btn_Send_req=0;
                             new CheckFirstPaymentStatus(Service_Sub_ID).execute();
                         } else {
                             problem.setError("Please Enter Problem.");
@@ -556,12 +558,14 @@ public class After_service extends AppCompatActivity {
 
                     jsonObject = new JSONObject(result);
                     String res = jsonObject.getString("responce");
+                    Toast.makeText(After_service.this, "res+ "+res, Toast.LENGTH_SHORT).show();
 
                     if (res.equals("false")) {
                         String error=jsonObject.getString("error");
+                        final String charge_amount=jsonObject.getString("charge_amount");
 
                         final AlertDialog.Builder dialog = new AlertDialog.Builder(After_service.this).setTitle("CPEPSI")
-                                .setMessage(""+error +", Please Pay Rs 20, Your Paid service Amount Only One Time.");
+                                .setMessage(""+error +", Please Pay Rs "+charge_amount +", Your Paid service Amount Only One Time.");
 
                         dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
@@ -579,6 +583,7 @@ public class After_service extends AppCompatActivity {
                             private void exitLauncher() {
                                 Intent intent = new Intent(After_service.this, FirstTime_Payment_Activity.class);
                                 intent.putExtra("ApiModel", apiModel);
+                                intent.putExtra("charge_amount", charge_amount);
                                 startActivity(intent);
                                 // finish();
                             }
@@ -586,14 +591,9 @@ public class After_service extends AppCompatActivity {
                         final AlertDialog alert = dialog.create();
                         alert.show();
 
-
-
-
-
-
                         //**********************************************************
                        // Toast.makeText(After_service.this, ""+error, Toast.LENGTH_SHORT).show();
-                        Toast.makeText(After_service.this, "Please Pay Rs 20, Your Paid service Amount Only One Time",
+                        Toast.makeText(After_service.this, "Please Pay First Payment, Your Paid service Amount Only One Time",
                                 Toast.LENGTH_LONG).show();
 
 
@@ -613,7 +613,7 @@ public class After_service extends AppCompatActivity {
                             Toast.makeText(After_service.this, "We are working on it", Toast.LENGTH_SHORT).show();
                         }
                     if (Btn_Send_req==1){
-                        new SendRequest().execute();
+                        new SendRequest(Ser_Sub_ID,strNew).execute();
                     }
                         // AppPreference.setAfterId(getApplicationContext(),"null");
                         //      Snackbar.make(After_service.this, "We are working on it", Snackbar.LENGTH_LONG);
@@ -657,7 +657,14 @@ public class After_service extends AppCompatActivity {
     private class SendRequest extends AsyncTask<String, Void, String> {
         ProgressDialog dialog;
 
-        protected void onPreExecute() {
+        String Ser_Sub_Id;
+        int Ser_Id;
+    public SendRequest(String ser_sub_id, int strNew) {
+        this.Ser_Sub_Id=ser_sub_id;
+        this.Ser_Id=strNew;
+    }
+
+    protected void onPreExecute() {
             dialog = new ProgressDialog(After_service.this);
             dialog.show();
 
@@ -674,6 +681,8 @@ public class After_service extends AppCompatActivity {
                 postDataParams.put("customer_id", AppPreference.getId(After_service.this));
                 // postDataParams.put("provider_id", ProviderId);
                 postDataParams.put("discription", Problem);
+                postDataParams.put("service_id", Ser_Id);
+                postDataParams.put("sub_category", Ser_Sub_Id);
                // postDataParams.put("latitude", Lati);
                 //postDataParams.put("longitude", Longi);
 

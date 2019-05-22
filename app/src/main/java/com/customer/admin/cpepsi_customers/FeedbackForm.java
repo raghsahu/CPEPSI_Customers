@@ -88,6 +88,7 @@ public class FeedbackForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Btn_Online=1;
+                Btn_Cash=0;
 
                 FeedName = feedName.getText().toString();
                 FeedEmail = feedEmail.getText().toString();
@@ -118,6 +119,7 @@ public class FeedbackForm extends AppCompatActivity {
             @Override
             public void onClick(View v) {
            Btn_Cash=1;
+           Btn_Online=0;
 
                 FeedName = feedName.getText().toString();
                 FeedEmail = feedEmail.getText().toString();

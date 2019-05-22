@@ -160,9 +160,10 @@ public class All_fragment extends Fragment  {
                         String sub_service = dataObj.getString("sub_service");
                         String status = dataObj.getString("status");
                         String image = dataObj.getString("image");
-                        noti_list.add(i,new NotificationModel(pr_id, customer_id, provider_id, discription, date,Prostatus,user_id
+                        String service_sub = dataObj.getString("service_sub");
+                        noti_list.add(0,new NotificationModel(pr_id, customer_id, provider_id, discription, date,Prostatus,user_id
                                 ,TypeofFirm,Designation,business,City,state,place,number,name,dob,adharno,middle,sirname,emailid,
-                                password,service,sub_service,status,image));
+                                password,service,sub_service,status,image,service_sub));
                     }
 
                     notificationAdapter = new NotificationAdapter(getContext(), noti_list);

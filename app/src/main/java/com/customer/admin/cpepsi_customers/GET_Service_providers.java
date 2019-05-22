@@ -196,7 +196,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
             public void onClick(View v) {
 
                 if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
-                    new SendRequest().execute();
+                    new SendRequest(selected_ser_name_from,SubSer_ID).execute();
                 } else {
                     Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
                 }
@@ -760,6 +760,14 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     public class SendRequest extends AsyncTask<String, Void, String> {
         ProgressDialog dialog;
 
+        String Sub_Ser_ID;
+        int Ser_ID;
+
+        public SendRequest(int selected_ser_name_from, String subSer_id) {
+       this.Sub_Ser_ID=subSer_id;
+       this.Ser_ID=selected_ser_name_from;
+        }
+
         protected void onPreExecute() {
             dialog = new ProgressDialog(GET_Service_providers.this);
             dialog.show();
@@ -777,6 +785,8 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 postDataParams.put("customer_id", AppPreference.getId(GET_Service_providers.this));
                // postDataParams.put("provider_id", ProviderId);
                 postDataParams.put("discription", CustProblem);
+                postDataParams.put("service_id", Ser_ID);
+                postDataParams.put("sub_category", Sub_Ser_ID);
                // postDataParams.put("latitude", Cust_Lat);
                // postDataParams.put("longitude", Cust_long);
 

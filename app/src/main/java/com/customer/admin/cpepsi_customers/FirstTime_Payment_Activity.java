@@ -70,6 +70,7 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
         feedName.setText(FeedName);
         feedEmail.setText(FeedEmail);
         feedContact.setText(FeedContact);
+        feedPayment.setText(getIntent().getStringExtra("charge_amount"));
         strid = getIntent().getStringExtra("strid");
         ApiModel = (ApiModel) getIntent().getSerializableExtra("ApiModel");
         first_payment.setOnClickListener(new View.OnClickListener() {

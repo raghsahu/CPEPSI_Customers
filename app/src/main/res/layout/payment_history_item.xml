@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
-                android:weightSum="6"
+                android:weightSum="7"
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:orientation="vertical">
@@ -136,6 +136,35 @@
                         android:textColor="#000"
                         android:textSize="14sp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:weightSum="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="0.7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Service Name- "
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:textSize="14sp" />
+                    <TextView
+                        android:layout_weight="0.3"
+                        android:id="@+id/txt_service_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:typeface="serif"
+                        android:textColor="#000"
+                        android:maxLines="5"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+
+
                 <LinearLayout
                     android:weightSum="1"
                     android:layout_width="match_parent"

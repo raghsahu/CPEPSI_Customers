@@ -173,11 +173,12 @@ public class Accept_fragment extends Fragment implements View.OnClickListener {
                         String sub_service = dataObj.getString("sub_service");
                         String status = dataObj.getString("status");
                         String image = dataObj.getString("image");
+                        String service_sub = dataObj.getString("service_sub");
 
                         if (Prostatus.equals("1")) {
                             noti_list.add(0,new NotificationModel(pr_id, customer_id, provider_id, discription, date,Prostatus,user_id
                                     ,TypeofFirm,Designation,business,City,state,place,number,name,dob,adharno,middle,sirname,emailid,
-                                    password,service,sub_service,status,image));
+                                    password,service,sub_service,status,image, service_sub));
                         }
                     }
 

@@ -8,9 +8,10 @@ public class Pay_History_Model {
     private String payment_type;
     private String datetime;
     private String provider_name;
+    private String service_sub;
 
 
-    public Pay_History_Model(String ph_id, String user_id, String amount, String remark, String payment_type, String datetime, String provider_name) {
+    public Pay_History_Model(String ph_id, String user_id, String amount, String remark, String payment_type, String datetime, String provider_name, String service_sub) {
 
    this.ph_id=ph_id;
    this.user_id=user_id;
@@ -19,6 +20,7 @@ public class Pay_History_Model {
    this.payment_type=payment_type;
    this.datetime=datetime;
    this.provider_name=provider_name;
+   this.service_sub=service_sub;
 
     }
 
@@ -48,6 +50,14 @@ public class Pay_History_Model {
 
     public String getPayment_type() {
         return payment_type;
+    }
+
+    public String getService_sub() {
+        return service_sub;
+    }
+
+    public void setService_sub(String service_sub) {
+        this.service_sub = service_sub;
     }
 
     public void setPayment_type(String payment_type) {

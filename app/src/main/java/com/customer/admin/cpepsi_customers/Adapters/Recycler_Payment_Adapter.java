@@ -42,7 +42,7 @@ public class Recycler_Payment_Adapter extends RecyclerView.Adapter<Recycler_Paym
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txt_date,txt_pay_mode,txt_amount,txt_description,txt_proname;
+        public TextView txt_date,txt_pay_mode,txt_amount,txt_description,txt_proname,txt_serviceName;
 
 
 
@@ -53,6 +53,7 @@ public class Recycler_Payment_Adapter extends RecyclerView.Adapter<Recycler_Paym
             txt_amount = (TextView) itemView.findViewById(R.id.amount);
             txt_proname = (TextView) itemView.findViewById(R.id.txt_pro_name);
             txt_description = (TextView) itemView.findViewById(R.id.txt_description);
+            txt_serviceName = (TextView) itemView.findViewById(R.id.txt_service_name);
 
         }
     }
@@ -73,6 +74,7 @@ public class Recycler_Payment_Adapter extends RecyclerView.Adapter<Recycler_Paym
         holder.txt_amount.setText(pay_history_model.getAmount());
         holder.txt_proname.setText(pay_history_model.getProvider_name());
         holder.txt_description.setText(pay_history_model.getRemark());
+        holder.txt_serviceName.setText(pay_history_model.getService_sub());
 
     }
 

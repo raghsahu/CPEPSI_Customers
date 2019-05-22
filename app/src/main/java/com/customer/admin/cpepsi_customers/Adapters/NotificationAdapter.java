@@ -27,7 +27,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView providerName, description,status,date;
+        public TextView providerName, description,status,date,pro_service_name;
         CardView card;
         ImageView recpdeleteBtn;
         int pos;
@@ -36,6 +36,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             super(view);
 
             providerName = (TextView) view.findViewById(R.id.pro_nam);
+            pro_service_name = (TextView) view.findViewById(R.id.pro_service);
             description = (TextView) view.findViewById(R.id.description);
             status = (TextView) view.findViewById(R.id.status);
             date = (TextView) view.findViewById(R.id.date);
@@ -63,6 +64,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(final NotificationAdapter.ViewHolder viewHolder, final int position) {
         NotificationModel notificationModel = notilist.get(position);
         viewHolder.date.setText(notificationModel.getDate());
+        viewHolder.pro_service_name.setText(notificationModel.getService_sub());
         viewHolder.description.setText("Service Query: "+notificationModel.getDiscription());
 
 

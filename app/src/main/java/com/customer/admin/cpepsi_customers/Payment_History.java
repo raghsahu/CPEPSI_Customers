@@ -141,8 +141,9 @@ public class Payment_History extends AppCompatActivity {
                             String payment_type = Service_json_object.getString("payment_type");
                             String datetime = Service_json_object.getString("datetime");
                             String provider_name = Service_json_object.getString("provider_name");
+                            String service_sub = Service_json_object.getString("service_sub");
 
-                            Payment_List.add(0,new Pay_History_Model(ph_id, user_id, amount, remark, payment_type,datetime,provider_name));
+                            Payment_List.add(0,new Pay_History_Model(ph_id, user_id, amount, remark, payment_type,datetime,provider_name,service_sub));
                         }
 
                         recycler_payment_adapter = new Recycler_Payment_Adapter(Payment_History.this, Payment_List);
