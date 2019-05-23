@@ -29,7 +29,7 @@ import java.util.Iterator;
 import javax.net.ssl.HttpsURLConnection;
 
 public class StatusAct extends AppCompatActivity {
-    EditText apvName, apvEmail, apvMobile, apvDescription,apvAddress;
+    EditText apvName, apvEmail, apvMobile, apvDescription,apvAddress,cust_rating;
     Button accept, decline,feedback;
     String Name, Email, Mobile, Description, Id;
     String ReqStatus;
@@ -47,6 +47,7 @@ public class StatusAct extends AppCompatActivity {
         apvMobile = (EditText) findViewById(R.id.apvMobile);
         apvDescription = (EditText) findViewById(R.id.apvDescription);
         apvAddress = (EditText) findViewById(R.id.apvAddress);
+        cust_rating = (EditText) findViewById(R.id.cust_rating);
         //accept = (Button) findViewById(R.id.accept);
         decline = (Button) findViewById(R.id.decline);
         feedback = (Button) findViewById(R.id.feedback);
@@ -67,6 +68,7 @@ public class StatusAct extends AppCompatActivity {
             Mobile  = notificationModel.getNumber();
 
             apvDescription.setText(Description);
+           // cust_rating.setText(Description);
 
 
             if (notificationModel.getProstatus().equals("3")){

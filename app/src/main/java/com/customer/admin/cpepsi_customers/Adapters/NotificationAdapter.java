@@ -64,7 +64,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     public void onBindViewHolder(final NotificationAdapter.ViewHolder viewHolder, final int position) {
         NotificationModel notificationModel = notilist.get(position);
         viewHolder.date.setText(notificationModel.getDate());
-        viewHolder.pro_service_name.setText(notificationModel.getService_sub());
+        viewHolder.pro_service_name.setText(notificationModel.getService_name()+", "+notificationModel.getSubservice_name());
         viewHolder.description.setText("Service Query: "+notificationModel.getDiscription());
 
 

@@ -29,13 +29,14 @@ public class NotificationModel implements Serializable {
     private String subService;
     private String status;
     private String image;
-    private String service_sub;
+    private String service_name;
+    private String subservice_name;
 
     public NotificationModel(String prId, String customerId, String providerId, String discription, String date, String prostatus,
                              String userId, String typeofFirm, String designation, String business, String city, String state,
                              String place, String number, String name, String dob, String adharno, String middle, String sirname,
                              String emailid, String password, String service, String subService, String status, String image,
-                             String service_sub) {
+                             String service_name, String subservice_name) {
         this.prId = prId;
         this.customerId = customerId;
         this.providerId = providerId;
@@ -61,7 +62,8 @@ public class NotificationModel implements Serializable {
         this.subService = subService;
         this.status = status;
         this.image = image;
-        this.service_sub = service_sub;
+        this.service_name = service_name;
+        this.subservice_name=subservice_name;
 
     }
 
@@ -105,12 +107,20 @@ public class NotificationModel implements Serializable {
         this.date = date;
     }
 
-    public String getService_sub() {
-        return service_sub;
+    public String getService_name() {
+        return service_name;
     }
 
-    public void setService_sub(String service_sub) {
-        this.service_sub = service_sub;
+    public String getSubservice_name() {
+        return subservice_name;
+    }
+
+    public void setSubservice_name(String subservice_name) {
+        this.subservice_name = subservice_name;
+    }
+
+    public void setService_name(String service_name) {
+        this.service_name = service_name;
     }
 
     public String getProstatus() {

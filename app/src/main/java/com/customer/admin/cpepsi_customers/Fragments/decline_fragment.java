@@ -168,11 +168,12 @@ public class decline_fragment extends Fragment implements View.OnClickListener {
                         String sub_service = dataObj.getString("sub_service");
                         String status = dataObj.getString("status");
                         String image = dataObj.getString("image");
-                        String service_sub = dataObj.getString("service_sub");
+                        String service_name = dataObj.getString("service_name");
+                        String subservice_name = dataObj.getString("sub_service_name");
                         if (Prostatus.equals("2")) {
                             noti_list.add(0,new NotificationModel(pr_id, customer_id, provider_id, discription, date,Prostatus,user_id
                                     ,TypeofFirm,Designation,business,City,state,place,number,name,dob,adharno,middle,sirname,emailid,
-                                    password,service,sub_service,status,image, service_sub));
+                                    password,service,sub_service,status,image, service_name, subservice_name));
                         }
                     }
 

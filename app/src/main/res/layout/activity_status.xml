@@ -175,37 +175,6 @@
 
             </LinearLayout>
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:weightSum="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.60"
-                    android:gravity="start"
-                    android:text="Paid Amount:"
-                    android:textColor="#000"
-                    android:textSize="13dp" />
-
-                <EditText
-                    android:id="@+id/paid_amount"
-                    android:padding="10dp"
-                    android:editable="false"
-                    android:textSize="13dp"
-                    android:background="@color/Grey"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_weight="0.40"
-                    android:hint="" />
-
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

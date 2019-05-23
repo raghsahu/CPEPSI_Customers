@@ -81,6 +81,8 @@ public class ProfileActivity extends AppCompatActivity {
     CircleImageView profile_image;
     ImageView badge_notification_1;
 
+    TextView tv_plan_type;
+
 
 //*****************************************************************
     @Override
@@ -96,6 +98,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_submit = (Button) findViewById(R.id.profile_submit);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         badge_notification_1 = (ImageView) findViewById(R.id.badge_notification_1);
+        tv_plan_type=findViewById(R.id.tv_plan_type);
 
      //   UserId = AppPreference.getId(ProfileActivity.this);
     //    Log.e("UserId>>>", UserId);
@@ -540,6 +543,13 @@ public class ProfileActivity extends AppCompatActivity {
                     String payment_status = dataObj.getString("payment_status");
                     String payment_amount = dataObj.getString("payment_amount");
                     String image = dataObj.getString("image");
+
+                    if (status.equals("1")){
+                        tv_plan_type.setText("You are using 30 days free trial 'Daily Life Service', After free trial you can use Paid Service.");
+                    }
+                    if (status.equals("2")){
+                        tv_plan_type.setText("You are using Paid 'Daily Life Service'.");
+                    }
 
                     profileName.setText(name);
                     profileEmail.setText(email);
