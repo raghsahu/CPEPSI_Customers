@@ -83,6 +83,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
     SessionManager manager;
 
     TextView search_service;
+    String Status_Plan;
 
     RecyclerView recycler_freeservice, recycler_professional, recycler_technical;
 
@@ -132,6 +133,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
     };
 
 
+
     private void Load_Free_Services(Free_Services free_services) {
 //        scro_pro.setVisibility(View.GONE);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -166,6 +168,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
         recycler_freeservice = findViewById(R.id.recycler_freeservice);
         search_service = findViewById(R.id.search_service);
 
+//********************************************************
         search_service.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

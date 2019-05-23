@@ -1,6 +1,8 @@
 package com.customer.admin.cpepsi_customers;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -215,25 +217,43 @@ public class OtpActivity extends AppCompatActivity {
                         String district = object.getString("district");
 
 
-                        manager.malegaonLogin();
-                        AppPreference.setId(OtpActivity.this, id);
-                        AppPreference.setName(OtpActivity.this, name);
-                        AppPreference.setEmail(OtpActivity.this, email1);
-                        AppPreference.setContact(OtpActivity.this, contact);
-                        AppPreference.setAddress(OtpActivity.this, address);
 
-                        if (!AppPreference.getAfterID(getApplicationContext()).equals("null")) {
-                            Intent to_completion = new Intent(OtpActivity.this, After_service.class);
-                            to_completion.putExtra("after_id1", AppPreference.getAfterID(getApplicationContext()));
-                            startActivity(to_completion);
-                            finish();
-                        } else {
-                            Intent to_completion = new Intent(OtpActivity.this, Main_Provider.class);
-                            startActivity(to_completion);
-                            finish();
+
+                        if (status.equals("1")){
+
+                            final AlertDialog.Builder dialog = new AlertDialog.Builder(OtpActivity.this).setTitle("CPEPSI")
+                                    .setMessage("You are using 30 days free trial 'Daily Life Service', After free trial you can use Paid Service.");
+
+                            dialog.setCancelable(false);
+                            dialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                    manager.malegaonLogin();
+                                    AppPreference.setId(OtpActivity.this, id);
+                                    AppPreference.setName(OtpActivity.this, name);
+                                    AppPreference.setEmail(OtpActivity.this, email1);
+                                    AppPreference.setContact(OtpActivity.this, contact);
+                                    AppPreference.setAddress(OtpActivity.this, address);
+
+
+
+                                    if (!AppPreference.getAfterID(getApplicationContext()).equals("null")) {
+                                        Intent to_completion = new Intent(OtpActivity.this, After_service.class);
+                                        to_completion.putExtra("after_id1", AppPreference.getAfterID(getApplicationContext()));
+                                        startActivity(to_completion);
+                                        finish();
+                                    } else {
+                                        Intent to_completion = new Intent(OtpActivity.this, Main_Provider.class);
+                                        startActivity(to_completion);
+                                        finish();
+                                    }
+                                }
+
+                            });
+                            final AlertDialog alert = dialog.create();
+                            alert.show();
                         }
-
-
                         Toast.makeText(OtpActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
 
                     } else {
