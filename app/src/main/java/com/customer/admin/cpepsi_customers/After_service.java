@@ -1,14 +1,25 @@
 package com.customer.admin.cpepsi_customers;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,8 +32,13 @@ import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
 import com.customer.admin.cpepsi_customers.Java_files.DataModel;
+import com.customer.admin.cpepsi_customers.LocationUtil.LocationAddress;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -46,7 +62,11 @@ import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class After_service extends AppCompatActivity {
+public class After_service extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+
+    private static final String TAG = "After_service";
+
     Button next_ser,next_go_map;
     EditText service_ser, problem, address;
     int service_from_main;
@@ -80,6 +100,16 @@ public class After_service extends AppCompatActivity {
     String Address;
     LatLng cust_location;
     String Lati, Longi;
+
+    GoogleApiClient mGoogleApiClient;
+    LocationManager mLocationManager;
+    private LocationManager locationManager;
+    private Location mLocation;
+    private LocationRequest mLocationRequest;
+    private long UPDATE_INTERVAL = 5 * 1000;
+    private long FASTEST_INTERVAL = 5000;
+    String mLatitudeString;
+    String mLongitudeString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,7 +243,7 @@ public class After_service extends AppCompatActivity {
                     cust_location = loc_on_mark(address.getText().toString());
                     // Toast.makeText(After_service.this, "cust_loc "+cust_location, Toast.LENGTH_SHORT).show();
                 }
-               // Toast.makeText(After_service.this, "Add " + Lati + Longi, Toast.LENGTH_SHORT).show();
+                Toast.makeText(After_service.this, "Add " + Lati + Longi, Toast.LENGTH_SHORT).show();
 
                 if (manager.isLoggedIn()) {
 
@@ -289,12 +319,50 @@ public class After_service extends AppCompatActivity {
 
             }
         });
+//************************************************************************
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
 
+        mLocationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
 
+        checkLocation(); //ch
 
+    }
 
+    private boolean checkLocation() {
+        if(!isLocationEnabled())
+            showAlert();
+        return isLocationEnabled();
+    }
 
+    private boolean isLocationEnabled() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+    private void showAlert() {
+        final android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(this);
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
+                        "use this app")
+                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
 
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+
+                    }
+                });
+        dialog.show();
     }
 
     //*******************************************************************
@@ -324,6 +392,117 @@ public class After_service extends AppCompatActivity {
             e.printStackTrace();
         }
         return p1;
+
+    }
+//***************************************************************************************
+@Override
+public void onConnected(Bundle bundle) {
+    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        // TODO: Consider calling
+        //    ActivityCompat#requestPermissions
+        // here to request the missing permissions, and then overriding
+        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        //                                          int[] grantResults)
+        // to handle the case where the user grants the permission. See the documentation
+        // for ActivityCompat#requestPermissions for more details.
+        return;
+    }
+
+    startLocationUpdates();
+
+    mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+    if(mLocation == null){
+        startLocationUpdates();
+    }
+    if (mLocation != null) {
+
+       String mLatitude=(String.valueOf(mLocation.getLatitude()));
+       String mLongitude=(String.valueOf(mLocation.getLongitude()));
+
+        double latitude = mLocation.getLatitude();
+        double longitude = mLocation.getLongitude();
+
+        LocationAddress locationAddress = new LocationAddress();
+        locationAddress.getAddressFromLocation(latitude, longitude,
+                getApplicationContext(), new GeocoderHandler());
+
+        Toast.makeText(this, "ll+"+mLatitude +mLongitude, Toast.LENGTH_SHORT).show();
+
+    } else {
+        Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
+    }
+}
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Connection Suspended");
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.i(TAG, "Connection failed. Error: " + connectionResult.getErrorCode());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        // Create the location request
+        mLocationRequest = LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(UPDATE_INTERVAL)
+                .setFastestInterval(FASTEST_INTERVAL);
+        // Request location updates
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                mLocationRequest, this);
+        Log.d("reque", "--->>>>");
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        mLatitudeString=(String.valueOf(location.getLatitude()));
+        mLongitudeString=(String.valueOf(location.getLongitude() ));
+        // Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        // You can now create a LatLng Object for use with maps
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //******************address******************************
+
+//        if (location != null) {
+//            double latitude = location.getLatitude();
+//            double longitude = location.getLongitude();
+//            LocationAddress locationAddress = new LocationAddress();
+//            locationAddress.getAddressFromLocation(latitude, longitude,
+//                    getApplicationContext(), new GeocoderHandler());
+//        }
 
     }
 
@@ -608,6 +787,7 @@ public class After_service extends AppCompatActivity {
                             to_map.putExtra("SubSer_ID", Ser_Sub_ID);
                             to_map.putExtra("Cust_Lat", Lati);
                             to_map.putExtra("Cust_Long", Longi);
+                            to_map.putExtra("Address", address.getText().toString());
                             startActivity(to_map);
                             finish();
                             Toast.makeText(After_service.this, "We are working on it", Toast.LENGTH_SHORT).show();
@@ -683,8 +863,9 @@ public class After_service extends AppCompatActivity {
                 postDataParams.put("discription", Problem);
                 postDataParams.put("service_id", Ser_Id);
                 postDataParams.put("sub_category", Ser_Sub_Id);
-               // postDataParams.put("latitude", Lati);
-                //postDataParams.put("longitude", Longi);
+                postDataParams.put("address", address.getText().toString());
+               postDataParams.put("latitude", Lati);
+                postDataParams.put("longitude", Longi);
 
                 //     Log.e("user_id", user_id + "");
                // Log.e("user_id", user_id + "");
@@ -748,7 +929,8 @@ public class After_service extends AppCompatActivity {
                 try {
 
                     jsonObject = new JSONObject(result);
-                    String data = jsonObject.getString("data");
+                    Toast.makeText(After_service.this, "rrr"+result, Toast.LENGTH_SHORT).show();
+                    String data = jsonObject.getString("service_id");
                     String responce = jsonObject.getString("responce");
                     Log.e(">>>>", jsonObject.toString() + " " + responce + " " + data);
 
@@ -793,4 +975,20 @@ public class After_service extends AppCompatActivity {
         }
     }
 
+    private class GeocoderHandler extends Handler {
+        @Override
+        public void handleMessage(Message message) {
+            String locationAddress;
+            switch (message.what) {
+                case 1:
+                    Bundle bundle = message.getData();
+                    locationAddress = bundle.getString("address");
+                    break;
+                default:
+                    locationAddress = null;
+            }
+            address.setText(locationAddress);
+            // Toast.makeText(MainLocation.this, ""+locationAddress, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

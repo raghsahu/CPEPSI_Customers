@@ -62,7 +62,7 @@ public class Service_Filter_Activity extends AppCompatActivity implements Servic
                         }catch (Exception e){
 
                         }
-                        Toast.makeText(Service_Filter_Activity.this, "No text found", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Service_Filter_Activity.this, "No text found", Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -146,14 +146,15 @@ public class Service_Filter_Activity extends AppCompatActivity implements Servic
 
                     } else {
                         try{
-                            if (!MainModelArrayList.isEmpty()){
                                 MainModelArrayList.clear();
                                 service_recycler_adapter.notifyDataSetChanged();
-                            }
-                        }catch (Exception e){
 
+                        }catch (Exception e){
+                            //Toast.makeText(Service_Filter_Activity.this, "pp", Toast.LENGTH_SHORT).show();
                         }
 
+                        MainModelArrayList.clear();
+                        service_recycler_adapter.notifyDataSetChanged();
                         Toast.makeText(Service_Filter_Activity.this, "No Service Found", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {

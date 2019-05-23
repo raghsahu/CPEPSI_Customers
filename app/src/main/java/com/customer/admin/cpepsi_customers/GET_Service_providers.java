@@ -110,7 +110,6 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
     double latitude;
     String[] Destinations, City, ServiceSubCategory, Service;
     List<Address> event_address;
-    String locality = "Indore", place = "Krishnodaya Nagar";
     String state_of_provider, place_of_provider;
     int selected_ser_name_from;
     Intent to_add_event;
@@ -137,6 +136,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
      String Cust_Lat;
      String Cust_long;
      Button btn_send_request;
+     String Cust_Address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +162,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
         SubSer_ID = getIntent().getStringExtra("SubSer_ID");
         Cust_Lat = getIntent().getStringExtra("Cust_Lat");
         Cust_long = getIntent().getStringExtra("Cust_Long");
+        Cust_Address = getIntent().getStringExtra("Address");
        // Toast.makeText(this, "ssi "+SubSer_ID, Toast.LENGTH_SHORT).show();
 
         checkthepermisions();
@@ -787,8 +788,9 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 postDataParams.put("discription", CustProblem);
                 postDataParams.put("service_id", Ser_ID);
                 postDataParams.put("sub_category", Sub_Ser_ID);
-               // postDataParams.put("latitude", Cust_Lat);
-               // postDataParams.put("longitude", Cust_long);
+                postDataParams.put("latitude", Cust_Lat);
+                postDataParams.put("longitude", Cust_long);
+                postDataParams.put("address", Cust_Address);
 
                 //     Log.e("user_id", user_id + "");
                 Log.e("user_id", user_id + "");
