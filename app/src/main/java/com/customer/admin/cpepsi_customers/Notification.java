@@ -19,8 +19,11 @@ import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Adapters.NotificationAdapter;
 import com.customer.admin.cpepsi_customers.Adapters.PagerView;
+import com.customer.admin.cpepsi_customers.Adapters.ViewPagerAdapter;
 import com.customer.admin.cpepsi_customers.Fragments.Accept_fragment;
 import com.customer.admin.cpepsi_customers.Fragments.All_fragment;
+import com.customer.admin.cpepsi_customers.Fragments.Complete_fragment;
+import com.customer.admin.cpepsi_customers.Fragments.Pending_fragment;
 import com.customer.admin.cpepsi_customers.Fragments.decline_fragment;
 import com.customer.admin.cpepsi_customers.Java_files.NotificationModel;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
@@ -55,42 +58,41 @@ public class Notification extends AppCompatActivity implements TabLayout.BaseOnT
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
 
-       // recyclerNotification = (RecyclerView)findViewById(R.id.recyclerNotification);
-
          tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
-       // Adding the tabs using addTab() method
-         tabLayout.addTab(tabLayout.newTab().setText("All"));
-        tabLayout.addTab(tabLayout.newTab().setText("Pending"));
-         tabLayout.addTab(tabLayout.newTab().setText("Accept"));
-         tabLayout.addTab(tabLayout.newTab().setText("Decline"));
-        tabLayout.addTab(tabLayout.newTab().setText("Complete"));
+         setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
 
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-         viewPager = (ViewPager) findViewById(R.id.pager);
-       // Creating our pager adapter
-         PagerView adapter = new PagerView(getSupportFragmentManager(), tabLayout.getTabCount());
-       // Adding adapter to pager
-         viewPager.setAdapter(adapter);
-      //  Adding onTabSelectedListener to swipe views
-         tabLayout.addOnTabSelectedListener(this);
-
-//*****************************************************************************
-//        noti_list = new ArrayList<>();
-
-//        if (Connectivity.isNetworkAvailable(Notification.this)){
-//            new PostNotification().execute();
-//        }else {
-//            Toast.makeText(this, "No Internet", Toast.LENGTH_SHORT).show();
-//        }
+        tabLayout.addOnTabSelectedListener(this);
         tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(viewPager));
-       // tabLayout.setupWithViewPager(viewPager);
         viewPager.setCurrentItem(0);
 
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+//        tabLayout.addTab(tabLayout.newTab().setText("All"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Pending"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Accept"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Decline"));
+//        tabLayout.addTab(tabLayout.newTab().setText("Complete"));
+//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+//        PagerView adapter = new PagerView(getSupportFragmentManager(), tabLayout.getTabCount());
+
+
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new All_fragment(), "All");
+        adapter.addFragment(new Pending_fragment(), "Pending");
+        adapter.addFragment(new Accept_fragment(), "Accept");
+        adapter.addFragment(new decline_fragment(), "Decline");
+        adapter.addFragment(new Complete_fragment(), "Complete");
+
+
+        viewPager.setAdapter(adapter);
+
+    }
 
 
     @Override

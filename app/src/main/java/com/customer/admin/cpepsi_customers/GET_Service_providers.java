@@ -573,18 +573,48 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(result);
-                    boolean responce = jsonObject.getBoolean("responce");
-                    JSONArray providersJsonArray = jsonObject.getJSONArray("data");
-                    Destinations = new String[providersJsonArray.length()];
-                    Stored_Ids = new int[providersJsonArray.length()];
-                    City = new String[providersJsonArray.length()];
-                    ProStatus = new String[providersJsonArray.length()];
-                    providerMarkers = new Marker[providersJsonArray.length()];
+                   String responce = jsonObject.getString("responce");
 
-                    for (int i = 0; i < providersJsonArray.length(); i++) {
-                        try {
-                            String px = providersJsonArray.getJSONObject(i).getString("ServiceSubCategory");
-                            if (!px.isEmpty()) {
+                    if (responce.equals("true")) {
+
+
+                        JSONArray providersJsonArray = jsonObject.getJSONArray("data");
+                        Destinations = new String[providersJsonArray.length()];
+                        Stored_Ids = new int[providersJsonArray.length()];
+                        City = new String[providersJsonArray.length()];
+                        ProStatus = new String[providersJsonArray.length()];
+                        providerMarkers = new Marker[providersJsonArray.length()];
+
+                        for (int i = 0; i < providersJsonArray.length(); i++) {
+                            try {
+                                String px = providersJsonArray.getJSONObject(i).getString("ServiceSubCategory");
+                                if (!px.isEmpty()) {
+                                    user_id = providersJsonArray.getJSONObject(i).getInt("user_id");
+                                    Provider_infoHashMap.put(user_id, new Provider_info
+                                            (providersJsonArray.getJSONObject(i).getString("TypeofFirm"),
+                                                    providersJsonArray.getJSONObject(i).getString("emailid"),
+                                                    providersJsonArray.getJSONObject(i).getString("City"),
+                                                    providersJsonArray.getJSONObject(i).getString("name"),
+                                                    providersJsonArray.getJSONObject(i).getString("Designation"),
+                                                    providersJsonArray.getJSONObject(i).getString("emailid"),
+                                                    providersJsonArray.getJSONObject(i).getString("middle"),
+                                                    providersJsonArray.getJSONObject(i).getString("user_id"),
+                                                    providersJsonArray.getJSONObject(i).getString("Service"),
+                                                    providersJsonArray.getJSONObject(i).getString("ServiceSubCategory"),
+                                                    providersJsonArray.getJSONObject(i).getString("avg_rating"),
+                                                    providersJsonArray.getJSONObject(i).getInt("prostatus")
+
+                                            ));
+
+                                    Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
+                                    City[i] = providersJsonArray.getJSONObject(i).getString("name");
+                                    ProStatus[i] = providersJsonArray.getJSONObject(i).getString("prostatus");
+                                    Stored_Ids[i] = user_id;
+
+                                    // Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
+
+                                }
+                            } catch (Exception e) {
                                 user_id = providersJsonArray.getJSONObject(i).getInt("user_id");
                                 Provider_infoHashMap.put(user_id, new Provider_info
                                         (providersJsonArray.getJSONObject(i).getString("TypeofFirm"),
@@ -596,44 +626,18 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                                                 providersJsonArray.getJSONObject(i).getString("middle"),
                                                 providersJsonArray.getJSONObject(i).getString("user_id"),
                                                 providersJsonArray.getJSONObject(i).getString("Service"),
-                                                providersJsonArray.getJSONObject(i).getString("ServiceSubCategory"),
+                                                "No Subservice found",
                                                 providersJsonArray.getJSONObject(i).getString("avg_rating"),
                                                 providersJsonArray.getJSONObject(i).getInt("prostatus")
-
                                         ));
 
                                 Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
                                 City[i] = providersJsonArray.getJSONObject(i).getString("name");
                                 ProStatus[i] = providersJsonArray.getJSONObject(i).getString("prostatus");
+
                                 Stored_Ids[i] = user_id;
 
-                               // Toast.makeText(GET_Service_providers.this, "des "+ providersJsonArray.getJSONObject(i).getString("Designation"), Toast.LENGTH_SHORT).show();
-
                             }
-                        } catch (Exception e) {
-                            user_id = providersJsonArray.getJSONObject(i).getInt("user_id");
-                            Provider_infoHashMap.put(user_id, new Provider_info
-                                    (providersJsonArray.getJSONObject(i).getString("TypeofFirm"),
-                                            providersJsonArray.getJSONObject(i).getString("emailid"),
-                                            providersJsonArray.getJSONObject(i).getString("City"),
-                                            providersJsonArray.getJSONObject(i).getString("name"),
-                                            providersJsonArray.getJSONObject(i).getString("Designation"),
-                                            providersJsonArray.getJSONObject(i).getString("emailid"),
-                                            providersJsonArray.getJSONObject(i).getString("middle"),
-                                            providersJsonArray.getJSONObject(i).getString("user_id"),
-                                            providersJsonArray.getJSONObject(i).getString("Service"),
-                                            "No Subservice found",
-                                            providersJsonArray.getJSONObject(i).getString("avg_rating"),
-                                            providersJsonArray.getJSONObject(i).getInt("prostatus")
-                                    ));
-
-                            Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
-                            City[i] = providersJsonArray.getJSONObject(i).getString("name");
-                            ProStatus[i] = providersJsonArray.getJSONObject(i).getString("prostatus");
-
-                            Stored_Ids[i] = user_id;
-
-                        }
 //                        user_id = providersJsonArray.getJSONObject(i).getInt("user_id");
 //                        Provider_infoHashMap.put(user_id, new Provider_info
 //                                (providersJsonArray.getJSONObject(i).getString("TypeofFirm"),
@@ -649,47 +653,51 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 //                        Destinations[i] = providersJsonArray.getJSONObject(i).getString("Designation");
 //                        City[i] = providersJsonArray.getJSONObject(i).getString("name");
 
-                        // Stored_Ids[i] = user_id;
+                            // Stored_Ids[i] = user_id;
 
-                    }
+                        }
 
-                    if (Destinations.length != 0) {
-                        for (int k = 0; k < Destinations.length; k++) {
-                            if (loc_on_mark(Destinations[k]) != null) {
-                                PlaceInfo placeInfo = new PlaceInfo();
-                                placeInfo.setName("" + City[k]);
-                                placeInfo.setAddress("" + Destinations[k] + "" + City[k]);
-                                LatLng provider_location = loc_on_mark(Destinations[k]);
+                        if (Destinations.length != 0) {
+                            for (int k = 0; k < Destinations.length; k++) {
+                                if (loc_on_mark(Destinations[k]) != null) {
+                                    PlaceInfo placeInfo = new PlaceInfo();
+                                    placeInfo.setName("" + City[k]);
+                                    placeInfo.setAddress("" + Destinations[k] + "" + City[k]);
+                                    LatLng provider_location = loc_on_mark(Destinations[k]);
 
 //                                if (ProStatus.length !=0){
 
 
-                                        MarkerOptions markerOptions = new MarkerOptions();
-                                        markerOptions.position(provider_location);
-                                        markerOptions.anchor(0.5f, 0.5f);
-                                        markerOptions.title(City[k]);
-                                        markerOptions.snippet(""+Destinations[k]);
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    markerOptions.position(provider_location);
+                                    markerOptions.anchor(0.5f, 0.5f);
+                                    markerOptions.title(City[k]);
+                                    markerOptions.snippet("" + Destinations[k]);
 
-//                                      for (int j = 0; j <Stored_Ids.length; j++) {
-                                        int x = (Provider_infoHashMap.get(Stored_Ids[k]).getProstatus());
-                                        if (x==1) {
-                                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                                        }else {
-                                            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                                        }
+
+                                    if (!Provider_infoHashMap.get(Stored_Ids[k]).getProstatus().equals("null")) {
+
+                                    int x = (Provider_infoHashMap.get(Stored_Ids[k]).getProstatus());
+                                    if (x == 1) {
+                                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                                    } else {
+                                        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+                                    }
 //                                    }
-                                mMap.addMarker(markerOptions);
+                                    mMap.addMarker(markerOptions);
 
-                                //*********************************************************************
+                                    //*********************************************************************
+                                }
 
-
+                                }
                             }
                         }
+
+
+                    }else {
+                        String error = jsonObject.getString("error");
+                        Toast.makeText(GET_Service_providers.this, "Provider Not Found", Toast.LENGTH_SHORT).show();
                     }
-
-
-
-
 
                     Log.e("responce ", "is" + responce);
                 } catch (JSONException e) {
@@ -856,7 +864,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                     jsonObject = new JSONObject(result);
                     String data = jsonObject.getString("data");
                     String responce = jsonObject.getString("responce");
-                    Log.e(">>>>", jsonObject.toString() + " " + responce + " " + data);
+                    Log.e("rrrr", jsonObject.toString() + " " + responce + " " + data);
 
                     if (responce.equals("true")) {
                         Toast.makeText(GET_Service_providers.this, responce, Toast.LENGTH_SHORT).show();
