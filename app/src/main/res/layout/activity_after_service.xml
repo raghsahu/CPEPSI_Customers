@@ -246,12 +246,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/l1y"
-            android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
-
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_marginRight="60dp"
             android:layout_marginLeft="60dp"
-            android:text="Go to Map &amp; Send Request"
+            android:text="Go to Map &amp; Check Provider"
             android:layout_marginBottom="10dp"
             android:textColor="#000" />
 

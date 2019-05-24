@@ -110,7 +110,7 @@ public class After_service extends AppCompatActivity implements GoogleApiClient.
     private long FASTEST_INTERVAL = 5000;
     String mLatitudeString;
     String mLongitudeString;
-
+///********************************************************************************************************
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
