@@ -870,7 +870,7 @@ public void onConnected(Bundle bundle) {
                 //     Log.e("user_id", user_id + "");
                // Log.e("user_id", user_id + "");
                 //Log.e("CustProblem", CustProblem);
-                //Log.e("postDataParams", postDataParams.toString());
+                Log.e("postDataParams_Approval", postDataParams.toString());
 
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setReadTimeout(15000 /* milliseconds*/);
@@ -921,6 +921,9 @@ public void onConnected(Bundle bundle) {
 
         @Override
         protected void onPostExecute(String result) {
+
+            Toast.makeText(After_service.this, "rrr "+result, Toast.LENGTH_SHORT).show();
+
             if (result != null) {
                 dialog.dismiss();
 
@@ -929,7 +932,6 @@ public void onConnected(Bundle bundle) {
                 try {
 
                     jsonObject = new JSONObject(result);
-                    Toast.makeText(After_service.this, "rrr"+result, Toast.LENGTH_SHORT).show();
                     String data = jsonObject.getString("service_id");
                     String responce = jsonObject.getString("responce");
                     Log.e(">>>>", jsonObject.toString() + " " + responce + " " + data);

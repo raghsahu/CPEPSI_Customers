@@ -31,12 +31,13 @@ public class NotificationModel implements Serializable {
     private String image;
     private String service_name;
     private String subservice_name;
+    private String feedback_to_cust;
 
     public NotificationModel(String prId, String customerId, String providerId, String discription, String date, String prostatus,
                              String userId, String typeofFirm, String designation, String business, String city, String state,
                              String place, String number, String name, String dob, String adharno, String middle, String sirname,
                              String emailid, String password, String service, String subService, String status, String image,
-                             String service_name, String subservice_name) {
+                             String service_name, String subservice_name, String feedback_to_cust) {
         this.prId = prId;
         this.customerId = customerId;
         this.providerId = providerId;
@@ -64,6 +65,7 @@ public class NotificationModel implements Serializable {
         this.image = image;
         this.service_name = service_name;
         this.subservice_name=subservice_name;
+        this.feedback_to_cust=feedback_to_cust;
 
     }
 
@@ -101,6 +103,14 @@ public class NotificationModel implements Serializable {
 
     public String getDate() {
         return date;
+    }
+
+    public String getFeedback_to_cust() {
+        return feedback_to_cust;
+    }
+
+    public void setFeedback_to_cust(String feedback_to_cust) {
+        this.feedback_to_cust = feedback_to_cust;
     }
 
     public void setDate(String date) {

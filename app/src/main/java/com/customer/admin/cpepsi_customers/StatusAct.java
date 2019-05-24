@@ -36,6 +36,7 @@ public class StatusAct extends AppCompatActivity {
     String Pr_Id,ProvId;
      String Adds;
     NotificationModel notificationModel;
+     String Cust_rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +67,10 @@ public class StatusAct extends AppCompatActivity {
             Name  = notificationModel.getName();
             Email  = notificationModel.getEmailid();
             Mobile  = notificationModel.getNumber();
+            Cust_rating  = notificationModel.getFeedback_to_cust();
 
             apvDescription.setText(Description);
-           // cust_rating.setText(Description);
+            cust_rating.setText(Cust_rating);
 
 
             if (notificationModel.getProstatus().equals("3")){
