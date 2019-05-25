@@ -84,6 +84,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
     TextView search_service;
     String Status_Plan;
+    String Id;
 
     RecyclerView recycler_freeservice, recycler_professional, recycler_technical;
 
@@ -96,6 +97,8 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
     ArrayList<ApiModel> serviceNonProList = new ArrayList<>();
     Service_NonPro_Adapter service_NonPro_adapter;
+
+    ApiModel ApiModel;
 
     //************************************************************
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -132,8 +135,6 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
         }
     };
 
-
-
     private void Load_Free_Services(Free_Services free_services) {
 //        scro_pro.setVisibility(View.GONE);
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -168,6 +169,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
         recycler_freeservice = findViewById(R.id.recycler_freeservice);
         search_service = findViewById(R.id.search_service);
 
+
 //********************************************************
         search_service.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,35 +179,6 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
             }
         });
-
-
-//        SearchManager searchManager = (SearchManager) getSystemService(Main_Provider.SEARCH_SERVICE);
-//        search_service.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        search_service.setMaxWidth(Integer.MAX_VALUE);
-//        search_service.setActivated(true);
-//        search_service.setQueryHint("Type here");
-
-//        search_service.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // filter recycler view when query submitted
-//
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String query) {
-//                // filter recycler view when text is changed
-//                if ( !query.isEmpty() ) {
-//                    service_recycler_adapter.getFilter().filter(query);
-//                }else {
-//                    service_recycler_adapter.getFilter().filter(query.toString());
-//                }
-//                return false;
-//            }
-//        });
-
-
         // recycler_professional=findViewById(R.id.recycler_professional);
         // recycler_technical=findViewById(R.id.recycler_technical);
 
@@ -217,6 +190,14 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
         } else {
             Toast.makeText(Main_Provider.this, "No Internet", Toast.LENGTH_SHORT).show();
         }
+        ////*****************************************************
+
+        if (Connectivity.isNetworkAvailable(Main_Provider.this)) {
+            new CheckFirstPaymentStatusm().execute();
+        }else {
+            Toast.makeText(Main_Provider.this, "No Internet", Toast.LENGTH_SHORT).show();
+        }
+
 //*******************************************************************************
         if (ActivityCompat.checkSelfPermission(Main_Provider.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             //ask for permission
@@ -849,36 +830,168 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
     }
 
-//    private void fetchService() {
-//
-//        JsonArrayRequest request = new JsonArrayRequest(URL,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        if (response == null) {
-//                            Toast.makeText(getApplicationContext(), "Couldn't fetch the contacts! Please try again.", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//
-//                       ArrayList<ApiModel> items = new Gson().fromJson(response.toString(), new TypeToken<ArrayList<ApiModel>>() {
-//                        }.getType());
-//
-//                        // adding contacts to contacts list
-//                        contactList.clear();
-//                        contactList.addAll(items);
-//
-//                        // refreshing recycler view
-//                        service_recycler_adapter.notifyDataSetChanged();
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                // error in getting json
-//                Log.e(TAG, "Error: " + error.getMessage());
-//                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//
-//    }
+    private class CheckFirstPaymentStatusm extends AsyncTask<String, Void, String> {
+
+        ProgressDialog dialog;
+
+
+        protected void onPreExecute() {
+            dialog = new ProgressDialog(Main_Provider.this);
+            dialog.show();
+
+        }
+
+        protected String doInBackground(String... arg0) {
+
+            try {
+
+                URL url = new URL("http://heightsmegamart.com/CPEPSI/Api/first_payment_check");
+                //   URL url = new URL("http://paramgoa.com/cpepsi/Api/first_payment_check");
+
+                JSONObject postDataParams = new JSONObject();
+
+                Id = AppPreference.getId(Main_Provider.this);
+
+                postDataParams.put("user_id", Id);
+                Log.e("Id", Id);
+
+                Log.e("postDataParams", postDataParams.toString());
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(15000 /* milliseconds*/);
+                conn.setConnectTimeout(15000  /*milliseconds*/);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(getPostDataString(postDataParams));
+
+                writer.flush();
+                writer.close();
+                os.close();
+
+                int responseCode = conn.getResponseCode();
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+
+                    BufferedReader in = new BufferedReader(new
+                            InputStreamReader(
+                            conn.getInputStream()));
+
+                    StringBuffer sb = new StringBuffer("");
+                    String line = "";
+
+                    while ((line = in.readLine()) != null) {
+
+                        StringBuffer Ss = sb.append(line);
+                        Log.e("Ss", Ss.toString());
+                        sb.append(line);
+                        break;
+                    }
+
+                    in.close();
+                    return sb.toString();
+
+                } else {
+                    return new String("false : " + responseCode);
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                dialog.dismiss();
+
+                JSONObject jsonObject = null;
+                Log.e("PostPI", result.toString());
+                try {
+
+                    jsonObject = new JSONObject(result);
+                    String res = jsonObject.getString("responce");
+                    Toast.makeText(Main_Provider.this, "chk+ "+res, Toast.LENGTH_SHORT).show();
+
+                    if (res.equals("false")) {
+                        String error=jsonObject.getString("error");
+                        final String charge_amount=jsonObject.getString("charge_amount");
+
+                        final AlertDialog.Builder dialog = new AlertDialog.Builder(Main_Provider.this).setTitle("CPEPSI")
+                                .setMessage(""+error +", Please Pay Rs "+charge_amount +", Your Paid service Amount Only One Time.");
+
+                        dialog.setNegativeButton("Not Now", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.setPositiveButton("Pay amount", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                exitLauncher();
+                            }
+
+                            private void exitLauncher() {
+                                Intent intent = new Intent(Main_Provider.this, FirstTime_Payment_Activity.class);
+                                intent.putExtra("ApiModel", ApiModel);
+                                intent.putExtra("charge_amount", charge_amount);
+                                startActivity(intent);
+                                // finish();
+                            }
+                        });
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
+
+                        //**********************************************************
+                        // Toast.makeText(After_service.this, ""+error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Main_Provider.this, "Please Pay First Payment, Your Paid service Amount Only One Time",
+                                Toast.LENGTH_LONG).show();
+
+
+
+                    } else {
+
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    public String getPostDataString(JSONObject params) throws Exception {
+
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        Iterator<String> itr = params.keys();
+
+        while (itr.hasNext()) {
+
+            String key = itr.next();
+            Object value = params.get(key);
+
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(key, "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(value.toString(), "UTF-8"));
+
+        }
+        return result.toString();
+    }
+
+
 }

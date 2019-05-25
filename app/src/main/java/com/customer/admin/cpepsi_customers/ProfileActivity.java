@@ -544,11 +544,19 @@ public class ProfileActivity extends AppCompatActivity {
                     String payment_amount = dataObj.getString("payment_amount");
                     String image = dataObj.getString("image");
 
+                    AppPreference.setName(ProfileActivity.this, name);
+                    AppPreference.setEmail(ProfileActivity.this, email);
+                    AppPreference.setContact(ProfileActivity.this, contact);
+                    AppPreference.setAddress(ProfileActivity.this, address);
+
                     if (status.equals("1")){
                         tv_plan_type.setText("You are using 30 days free trial 'Daily Life Service', After free trial you can use Paid Service.");
                     }
                     if (status.equals("2")){
                         tv_plan_type.setText("You are using Paid 'Daily Life Service'.");
+                    }
+                    if (status.equals("0")){
+                        tv_plan_type.setText("Your Free Trial 'Daily Life Service' Hasbeen Expired, Please Pay Only One Time Payment Amount And Use Permanent 'Daily Life Service'");
                     }
 
                     profileName.setText(name);
@@ -705,6 +713,13 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                     if (responce.equals("true")) {
+
+                        AppPreference.setName(ProfileActivity.this, name);
+                        AppPreference.setEmail(ProfileActivity.this, email);
+                        AppPreference.setContact(ProfileActivity.this, contact);
+                        AppPreference.setAddress(ProfileActivity.this, address);
+
+
                         Intent intent = new Intent(ProfileActivity.this, Main_Provider.class);
                         startActivity(intent);
                         finish();
