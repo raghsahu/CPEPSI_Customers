@@ -355,7 +355,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 //                            @Override
 //                            public void onClick(DialogInterface dialogInterface, int i) {
 //                                if (Connectivity.isNetworkAvailable(GET_Service_providers.this)) {
-//                                    new SendRequest().execute();
+//                                    new SendRequest(selected_ser_name_from,SubSer_ID).execute();
 //                                } else {
 //                                    Toast.makeText(GET_Service_providers.this, "No Internet", Toast.LENGTH_SHORT).show();
 //                                }
@@ -862,9 +862,9 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                 try {
 
                     jsonObject = new JSONObject(result);
-                    String data = jsonObject.getString("data");
+                   // String data = jsonObject.getString("data");
                     String responce = jsonObject.getString("responce");
-                    Log.e("rrrr", jsonObject.toString() + " " + responce + " " + data);
+                    Log.e("rrrr", jsonObject.toString() + " " + responce + " ");
 
                     if (responce.equals("true")) {
                         Toast.makeText(GET_Service_providers.this, responce, Toast.LENGTH_SHORT).show();

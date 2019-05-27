@@ -73,15 +73,15 @@ public class StatusAct extends AppCompatActivity {
             cust_rating.setText(Cust_rating);
 
 
-            if (notificationModel.getProstatus().equals("3")){
+           // if (notificationModel.getProstatus().equals("3")){
               // decline.setEnabled(false);
                // feedback.setEnabled(false);
                 apvName.setText(Name);
                 apvEmail.setText(Email);
                 apvMobile.setText(Mobile);
                 apvAddress.setText(Adds);
-                Toast.makeText(this, "This service is already completed", Toast.LENGTH_SHORT).show();
-            }
+               // Toast.makeText(this, "This service is already completed", Toast.LENGTH_SHORT).show();
+           // }
             if (notificationModel.getProstatus().equals("2")){
               //  decline.setEnabled(false);
                // feedback.setEnabled(false);
