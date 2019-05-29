@@ -63,7 +63,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
     EditText profileName, profileEmail, profileNumber, profilePassword,profileLocation;
     String ProfileName, ProfileEmail, ProfileNumber, ProfilePassword,ProfileLocation;
-    Button profile_submit;
+    Button profile_submit,btn_pay_first;
     private String userChoosenTask;
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
@@ -99,6 +99,7 @@ public class ProfileActivity extends AppCompatActivity {
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         badge_notification_1 = (ImageView) findViewById(R.id.badge_notification_1);
         tv_plan_type=findViewById(R.id.tv_plan_type);
+        btn_pay_first=findViewById(R.id.btn_pay_first);
 
      //   UserId = AppPreference.getId(ProfileActivity.this);
     //    Log.e("UserId>>>", UserId);
@@ -132,6 +133,21 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //******************************************
+
+        btn_pay_first.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AppPreference.setRefid(ProfileActivity.this,"1");
+                Intent intent = new Intent(ProfileActivity.this, FirstTime_Payment_Activity.class);
+//                intent.putExtra("ApiModel", apiModel);
+//                intent.putExtra("charge_amount", charge_amount);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 
@@ -550,12 +566,15 @@ public class ProfileActivity extends AppCompatActivity {
                     AppPreference.setAddress(ProfileActivity.this, address);
 
                     if (status.equals("1")){
+                        btn_pay_first.setVisibility(View.GONE);
                         tv_plan_type.setText("You are using 30 days free trial 'Daily Life Service', After free trial you can use Paid Service.");
                     }
                     if (status.equals("2")){
+                        btn_pay_first.setVisibility(View.GONE);
                         tv_plan_type.setText("You are using Paid 'Daily Life Service'.");
                     }
                     if (status.equals("0")){
+                        btn_pay_first.setVisibility(View.VISIBLE);
                         tv_plan_type.setText("Your Free Trial 'Daily Life Service' Hasbeen Expired, Please Pay Only One Time Payment Amount And Use Permanent 'Daily Life Service'");
                     }
 

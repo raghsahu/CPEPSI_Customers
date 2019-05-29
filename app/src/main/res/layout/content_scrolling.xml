@@ -174,6 +174,29 @@
                     />
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                >
+                <Button
+                    android:id="@+id/btn_pay_first"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/btn_shape"
+                    android:text="Pay"
+                    android:textAllCaps="false"
+                    android:textColor="#fff" />
+            </LinearLayout>
+
+
+
         </LinearLayout>
 
 

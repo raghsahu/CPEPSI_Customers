@@ -73,6 +73,7 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
         feedPayment.setText(getIntent().getStringExtra("charge_amount"));
         strid = getIntent().getStringExtra("strid");
         ApiModel = (ApiModel) getIntent().getSerializableExtra("ApiModel");
+
         first_payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,15 +148,24 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
 
                 new FirstPaymentSucccess().execute();
-                intent = new Intent(FirstTime_Payment_Activity.this, After_service.class);
-                intent.putExtra("ApiModel" ,ApiModel);
-                new FirstPaymentSucccess().execute();
-                startActivity(intent);
-                finish();
-//                 intent = new Intent(FirstTime_Payment_Activity.this, After_service.class);
-//                intent.putExtra("strid" ,strid );
-//                startActivity(intent);
-//               finish();
+                Toast.makeText(FirstTime_Payment_Activity.this, "Payment Success", Toast.LENGTH_SHORT).show();
+
+                if (!AppPreference.getRefid(getApplicationContext()).equals("1")) {
+
+                    Intent go_to_home = new Intent(FirstTime_Payment_Activity.this, Main_Provider.class);
+                    startActivity(go_to_home);
+                    finish();
+
+                }else {
+                    intent = new Intent(FirstTime_Payment_Activity.this, After_service.class);
+                    intent.putExtra("ApiModel" ,ApiModel);
+                    new FirstPaymentSucccess().execute();
+                    startActivity(intent);
+                    finish();
+                }
+
+
+
             }
 
             @Override

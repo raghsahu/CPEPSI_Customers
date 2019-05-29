@@ -19,6 +19,7 @@ public class AppPreference {
     public static final String SNAME = "sname";
     public static final String ADDRESS = "address";
     public static final String PROFILE_IMAGE= "profile_image";
+    public static final String Refid= "RefID";
 
 
     Context context;
@@ -38,6 +39,20 @@ public class AppPreference {
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, 0);
         return preferences.getString(ID, "");
     }
+
+    public static void setRefid(Context context, String value) {
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, 0);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Refid, value);
+
+        editor.commit();
+    }
+
+    public static String getRefid(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, 0);
+        return preferences.getString(Refid, "");
+    }
+
 
     //--------------------------------------
     public static void setName(Context context, String value) {
