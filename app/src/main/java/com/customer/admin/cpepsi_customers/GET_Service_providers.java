@@ -872,7 +872,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(GET_Service_providers.this, "Some Problem.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GET_Service_providers.this, "Provider busy.", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
