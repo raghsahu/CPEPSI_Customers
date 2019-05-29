@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Adapters.NotificationAdapter;
+import com.customer.admin.cpepsi_customers.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.NotificationModel;
 import com.customer.admin.cpepsi_customers.R;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
@@ -49,7 +51,20 @@ public class All_fragment extends Fragment  {
 
         recyclerNotification = (RecyclerView)allView.findViewById(R.id.recyclerNotification);
 
-        new PostNotification().execute();
+        try{
+            if (!noti_list.isEmpty()){
+                noti_list.clear();
+                notificationAdapter.notifyDataSetChanged();
+            }
+        }catch (Exception e){
+
+        }
+
+        if (Connectivity.isNetworkAvailable(getActivity())) {
+            new PostNotification().execute();
+        }else {
+            Toast.makeText(getActivity(), "No Internet", Toast.LENGTH_SHORT).show();
+        }
 
 
 //************************************************************************************
@@ -169,6 +184,7 @@ public class All_fragment extends Fragment  {
                                 ,TypeofFirm,Designation,business,City,state,place,number,name,dob,adharno,middle,sirname,emailid,
                                 password,service,sub_service,status,image,service_name, subservice_name, feedback_to_cust));
                     }
+
 
                     notificationAdapter = new NotificationAdapter(getContext(), noti_list);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());

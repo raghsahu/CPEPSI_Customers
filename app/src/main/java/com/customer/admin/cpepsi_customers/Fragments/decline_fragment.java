@@ -50,6 +50,16 @@ public class decline_fragment extends Fragment implements View.OnClickListener {
 
         recyclerNotification = (RecyclerView) allView.findViewById(R.id.recyclerNotification);
 
+
+        try{
+            if (!noti_list.isEmpty()){
+                noti_list.clear();
+                notificationAdapter.notifyDataSetChanged();
+            }
+        }catch (Exception e){
+
+        }
+
         if (Connectivity.isNetworkAvailable(getActivity())) {
             new PostNotification().execute();
         }else {
