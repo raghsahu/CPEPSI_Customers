@@ -21,6 +21,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.customer.admin.cpepsi_customers.Fcm.SmsListener;
+import com.customer.admin.cpepsi_customers.Fcm.SmsReceiver;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
 
@@ -65,7 +67,20 @@ public class OtpActivity extends AppCompatActivity {
 
         Ed_otp = getIntent().getStringExtra("otp").toString();
         ed_otp.setText(Ed_otp);
+//*********************************auto read otp*******************************************
+        SmsReceiver.bindListener(new SmsListener() {
+            @Override
+            public void messageReceived(String messageText) {
+                Log.d("Auto_read_sms",messageText);
 
+                String smsString = messageText.replaceAll("\\D+","");
+                Log.e("replace_sms",smsString);
+
+                Toast.makeText(OtpActivity.this,""+smsString,Toast.LENGTH_LONG).show();
+                ed_otp.setText(smsString);
+            }
+        });
+        //************************************************************************
         Email = getIntent().getStringExtra("email").toString();
        // Password = getIntent().getStringExtra("password").toString();
         Contact = getIntent().getStringExtra("contact").toString();
@@ -270,5 +285,12 @@ public class OtpActivity extends AppCompatActivity {
             super.onPostExecute(result);
         }
 
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        SmsReceiver.unbindListener();
+        super.onDestroy();
     }
 }

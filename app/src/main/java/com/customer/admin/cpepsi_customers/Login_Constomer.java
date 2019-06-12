@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Fcm.SmsListener;
+import com.customer.admin.cpepsi_customers.Fcm.SmsReceiver;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
 
@@ -55,7 +57,21 @@ public class Login_Constomer extends AppCompatActivity {
         otp_customer = findViewById(R.id.otp_customer);
         text_et_otp = findViewById(R.id.et_otp);
         mobile_customer.requestFocus();
+        //*********************************auto read otp**************************
 
+        SmsReceiver.bindListener(new SmsListener() {
+            @Override
+            public void messageReceived(String messageText) {
+                Log.d("Auto_read_sms",messageText);
+
+              String smsString = messageText.replaceAll("\\D+","");
+                Log.e("replace_sms",smsString);
+
+                Toast.makeText(Login_Constomer.this,""+smsString,Toast.LENGTH_LONG).show();
+                otp_customer.setText(smsString);
+            }
+        });
+//**********************************************************************************
         manager = new SessionManager(this);
         if (manager.isLoggedIn()) {
 
@@ -388,7 +404,7 @@ public class Login_Constomer extends AppCompatActivity {
                 String msg = jsonObject.getString("massage");
                 if (msg.equals("OTP Sent Successfully")) {
                     Toast.makeText(Login_Constomer.this, ""+msg, Toast.LENGTH_SHORT).show();
-                    otp_customer.setText(res);
+                   // otp_customer.setText(res);
                     text_et_otp.setVisibility(View.VISIBLE);
                     log_cp.setText("Login");
 
@@ -406,8 +422,16 @@ public class Login_Constomer extends AppCompatActivity {
         }
         super.onPostExecute(result);
     }
-
-
-
     }
+
+
+
+    @Override
+    protected void onDestroy() {
+        SmsReceiver.unbindListener();
+        super.onDestroy();
+    }
+
+
+
 }
