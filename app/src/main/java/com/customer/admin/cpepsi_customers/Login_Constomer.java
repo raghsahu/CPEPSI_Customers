@@ -418,6 +418,7 @@ public class Login_Constomer extends AppCompatActivity {
 
 
         } catch (JSONException e) {
+            Log.e("login_error",e.toString());
             e.printStackTrace();
         }
         super.onPostExecute(result);
