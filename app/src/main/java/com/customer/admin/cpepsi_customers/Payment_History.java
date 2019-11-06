@@ -5,15 +5,13 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Adapters.Recycler_Payment_Adapter;
-import com.customer.admin.cpepsi_customers.Adapters.Service_Recycler_Adapter;
-import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.Pay_History_Model;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 
@@ -75,7 +73,7 @@ public class Payment_History extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/user_payment");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/user_payment");
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("user_id", AppPreference.getId(Payment_History.this));

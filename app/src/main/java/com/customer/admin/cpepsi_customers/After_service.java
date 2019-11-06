@@ -17,8 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -30,6 +28,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
 import com.customer.admin.cpepsi_customers.Java_files.DataModel;
 import com.customer.admin.cpepsi_customers.LocationUtil.LocationAddress;
@@ -215,7 +214,8 @@ public class After_service extends AppCompatActivity implements GoogleApiClient.
                     // Toast.makeText(After_service.this, "item pos "+serviceType.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                     if (SubServiceId_HasMap.get(i).getServiceSubCategory().equals(serviceType.getItemAtPosition(position))) {
                         Service_Sub_ID = SubServiceId_HasMap.get(i).getId();
-                        Toast.makeText(After_service.this, "subId " + Service_Sub_ID, Toast.LENGTH_SHORT).show();
+                      Log.e("sub_id",""+Service_Sub_ID);
+                       // Toast.makeText(After_service.this, "subId " + Service_Sub_ID, Toast.LENGTH_SHORT).show();
                     } else {
                         //Toast.makeText(After_service.this, "nonono", Toast.LENGTH_SHORT).show();
                     }
@@ -243,7 +243,7 @@ public class After_service extends AppCompatActivity implements GoogleApiClient.
                     cust_location = loc_on_mark(address.getText().toString());
                     // Toast.makeText(After_service.this, "cust_loc "+cust_location, Toast.LENGTH_SHORT).show();
                 }
-                Toast.makeText(After_service.this, "Add " + Lati + Longi, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(After_service.this, "Add " + Lati + Longi, Toast.LENGTH_SHORT).show();
 
                 if (manager.isLoggedIn()) {
 
@@ -255,7 +255,7 @@ public class After_service extends AppCompatActivity implements GoogleApiClient.
                             BtnNextGo_map=0;
                             new CheckFirstPaymentStatus(Service_Sub_ID).execute();
                         } else {
-                            problem.setError("Please Enter Problem.");
+                            problem.setError("Please Enter Description.");
                             problem.requestFocus();
                         }
                     } else {
@@ -307,9 +307,9 @@ public class After_service extends AppCompatActivity implements GoogleApiClient.
                 } else {
                     AppPreference.setAfterId(After_service.this, strId);
                     // AppPreference.setAfterName(After_service.this,After_SerName);
-                    Toast.makeText(After_service.this, "" + strId, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(After_service.this, "" + strId, Toast.LENGTH_SHORT).show();
                     manager.setAfterName(After_SerName);
-                    Toast.makeText(After_service.this, "" + After_SerName, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(After_service.this, "" + After_SerName, Toast.LENGTH_SHORT).show();
 
                     Toast.makeText(After_service.this, "Please login first", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(After_service.this, Login_Constomer.class);
@@ -388,7 +388,7 @@ public class After_service extends AppCompatActivity implements GoogleApiClient.
             }
            // Toast.makeText(After_service.this, "latlong " + Lati + Longi, Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Toast.makeText(After_service.this, "catch+ " + e, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(After_service.this, "catch+ " + e, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         return p1;
@@ -427,7 +427,7 @@ public void onConnected(Bundle bundle) {
         locationAddress.getAddressFromLocation(latitude, longitude,
                 getApplicationContext(), new GeocoderHandler());
 
-        Toast.makeText(this, "ll+"+mLatitude +mLongitude, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "ll+"+mLatitude +mLongitude, Toast.LENGTH_SHORT).show();
 
     } else {
         Toast.makeText(this, "Location not Detected", Toast.LENGTH_SHORT).show();
@@ -522,7 +522,7 @@ public void onConnected(Bundle bundle) {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_SubServices");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Get_SubServices");
                 //URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_SubServices");
 
                 JSONObject postDataParams = new JSONObject();
@@ -667,7 +667,7 @@ public void onConnected(Bundle bundle) {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/Api/first_payment_check");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/Api/first_payment_check");
                 //   URL url = new URL("http://paramgoa.com/cpepsi/Api/first_payment_check");
 
                 JSONObject postDataParams = new JSONObject();
@@ -737,7 +737,7 @@ public void onConnected(Bundle bundle) {
 
                     jsonObject = new JSONObject(result);
                     String res = jsonObject.getString("responce");
-                    Toast.makeText(After_service.this, "res+ "+res, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(After_service.this, "res+ "+res, Toast.LENGTH_SHORT).show();
 
                     if (res.equals("false")) {
                         String error=jsonObject.getString("error");
@@ -854,7 +854,7 @@ public void onConnected(Bundle bundle) {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Add_approval");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Add_approval");
                 //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Add_approval");
 
                 JSONObject postDataParams = new JSONObject();

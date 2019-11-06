@@ -163,7 +163,7 @@ public class Login_Constomer extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/login_customer");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/login_customer");
            //     URL url = new URL("https://www.paramgoa.com/cpepsi/api/login_customer");
 
                 JSONObject postDataParams = new JSONObject();
@@ -260,7 +260,8 @@ public class Login_Constomer extends AppCompatActivity {
                     String district = jsonObject1.getString("district");
                     String state = jsonObject1.getString("state");
 
-                   Toast.makeText(Login_Constomer.this, "id is" + id, Toast.LENGTH_LONG).show();
+                  // Toast.makeText(Login_Constomer.this, "id is" + id, Toast.LENGTH_LONG).show();
+                    Log.e("id_is",""+id);
                     AppPreference.setId(Login_Constomer.this, id);
                     AppPreference.setName(Login_Constomer.this, name);
                     AppPreference.setEmail(Login_Constomer.this, email1);
@@ -314,7 +315,7 @@ public class Login_Constomer extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/login_otp");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/login_otp");
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("contact", mobile);
@@ -403,8 +404,9 @@ public class Login_Constomer extends AppCompatActivity {
             else {
                 String msg = jsonObject.getString("massage");
                 if (msg.equals("OTP Sent Successfully")) {
+                    String res1 = jsonObject.getString("responce");
                     Toast.makeText(Login_Constomer.this, ""+msg, Toast.LENGTH_SHORT).show();
-                   // otp_customer.setText(res);
+                    otp_customer.setText(res1);
                     text_et_otp.setVisibility(View.VISIBLE);
                     log_cp.setText("Login");
 

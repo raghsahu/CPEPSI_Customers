@@ -34,7 +34,7 @@ public class PDF_Viewer extends AppCompatActivity {
 
         webview_terms.getSettings().setJavaScriptEnabled(true);
         webview_terms.getSettings().setSupportZoom(true);
-        webview_terms.loadUrl("http://heightsmegamart.com/CPEPSI/term_condition_app.php");
+        webview_terms.loadUrl("http://jntrcpl.com/CPEPSI/term_condition_app.php");
 
        // webview_terms.loadData(term_and_conditions, "text/html; charset=UTF-8", null);
        // webview_terms.loadDataWithBaseURL(null, "<html>...</html>", "text/html", "utf-8", null);

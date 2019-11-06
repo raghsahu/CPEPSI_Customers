@@ -31,8 +31,8 @@ public class Service_NonPro_Adapter extends RecyclerView.Adapter<Service_NonPro_
     private Service_NonPro_Adapter service_nonPro_adapter;
     URL image_download_url;
     int pos_try;
-    private String communStr = "http://heightsmegamart.com/CPEPSI/uploads/";
-    // private String communStr = "http://heightsmegamart.com/CPEPSI/ ";
+    private String communStr = "http://jntrcpl.com/CPEPSI/uploads/";
+    // private String communStr = "http://jntrcpl.com/CPEPSI/ ";
 
     DownloadManager.Request request;
     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

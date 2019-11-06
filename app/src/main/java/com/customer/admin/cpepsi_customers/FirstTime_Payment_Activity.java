@@ -1,7 +1,6 @@
 package com.customer.admin.cpepsi_customers;
 
 import android.app.Activity;
-import instamojo.library.Config;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,9 +14,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
-import com.customer.admin.cpepsi_customers.util.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -190,7 +189,7 @@ public class FirstTime_Payment_Activity extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/Api/first_payment");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/Api/first_payment");
 
                 JSONObject postDataParams = new JSONObject();
 

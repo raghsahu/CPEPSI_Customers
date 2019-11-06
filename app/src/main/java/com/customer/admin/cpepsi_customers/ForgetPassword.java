@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -74,7 +76,7 @@ public class ForgetPassword extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/forgetpassword");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/forgetpassword");
               //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/forgetpassword");
 
                 JSONObject postDataParams = new JSONObject();

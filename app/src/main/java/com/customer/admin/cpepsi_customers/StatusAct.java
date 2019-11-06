@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.NotificationModel;
 
 import org.json.JSONException;
@@ -187,7 +188,7 @@ public class StatusAct extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Cust_approve_decline");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Cust_approve_decline");
             //    URL url = new URL("https://www.paramgoa.com/cpepsi/api/Cust_approve_decline");
 
                 JSONObject postDataParams = new JSONObject();

@@ -1,21 +1,18 @@
 package com.customer.admin.cpepsi_customers;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.customer.admin.cpepsi_customers.Adapters.SearchAdapter;
 import com.customer.admin.cpepsi_customers.Adapters.Service_Recycler_Adapter;
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
-import com.customer.admin.cpepsi_customers.Java_files.SearchModel;
 import com.customer.admin.cpepsi_customers.util.HttpHandler;
 
 import org.json.JSONArray;
@@ -104,7 +101,7 @@ public class Service_Filter_Activity extends AppCompatActivity implements Servic
         protected String doInBackground(String... params) {
 
             try {
-                server_url = "http://heightsmegamart.com/CPEPSI/api/get_service_name?service_name=" + newText;
+                server_url = "http://jntrcpl.com/CPEPSI/api/get_service_name?service_name=" + newText;
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Adapters.NotificationAdapter;
-import com.customer.admin.cpepsi_customers.Connectivity;
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.NotificationModel;
 import com.customer.admin.cpepsi_customers.R;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
@@ -86,7 +86,7 @@ public class decline_fragment extends Fragment implements View.OnClickListener {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Custapprovedecline");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Custapprovedecline");
             //    URL url = new URL("https://www.paramgoa.com/cpepsi/api/Custapprovedecline");
 
                 JSONObject postDataParams = new JSONObject();

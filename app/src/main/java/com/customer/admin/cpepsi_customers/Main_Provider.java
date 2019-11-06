@@ -3,8 +3,6 @@ package com.customer.admin.cpepsi_customers;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -14,14 +12,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,7 +27,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,15 +34,13 @@ import android.widget.Toast;
 import com.customer.admin.cpepsi_customers.Adapters.Service_NonPro_Adapter;
 import com.customer.admin.cpepsi_customers.Adapters.Service_Pro_Adapter;
 import com.customer.admin.cpepsi_customers.Adapters.Service_Recycler_Adapter;
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Fragments.Free_Services;
 import com.customer.admin.cpepsi_customers.Fragments.Non_Professional_Services;
 import com.customer.admin.cpepsi_customers.Fragments.Professional_Services;
 import com.customer.admin.cpepsi_customers.Java_files.ApiModel;
-import com.customer.admin.cpepsi_customers.Java_files.NonProModel;
-import com.customer.admin.cpepsi_customers.Java_files.ProModel;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.SessionManager;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,13 +55,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import okhttp3.Response;
 
 
 public class Main_Provider extends AppCompatActivity implements Service_Recycler_Adapter.Service_Recycler_Adapter_Listener {
@@ -403,7 +393,8 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Get_Services");
+               // URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
 
                 JSONObject postDataParams = new JSONObject();
                 postDataParams.put("type", service_id);
@@ -458,6 +449,8 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
                 try {
 
+                    MainModelArrayList.clear();
+
                     JSONObject jsonObject = new JSONObject(result);
                     boolean response = jsonObject.getBoolean("responce");
                     if (response) {
@@ -475,13 +468,14 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
                         }
 
-                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceList, Main_Provider.this);
-
-                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
-                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
-                        recycler_freeservice.setLayoutManager(manager);
-                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
-                        recycler_freeservice.setAdapter(service_recycler_adapter);
+//                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceList, Main_Provider.this);
+//
+//                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+//
+//                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+//                        recycler_freeservice.setLayoutManager(manager);
+//                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+//                        recycler_freeservice.setAdapter(service_recycler_adapter);
 
                     }
 
@@ -551,7 +545,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
             try {
 
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Get_Services");
                 //   URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
 
                 JSONObject postDataParams = new JSONObject();
@@ -655,13 +649,13 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 //                        ser_list_view_other.setAdapter(service_recycler_adapter);
 //                    }
 
-                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceNonProList, Main_Provider.this);
-
-                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
-                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
-                        recycler_freeservice.setLayoutManager(manager);
-                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
-                        recycler_freeservice.setAdapter(service_recycler_adapter);
+//                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceNonProList, Main_Provider.this);
+//
+//                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+//                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+//                        recycler_freeservice.setLayoutManager(manager);
+//                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+//                        recycler_freeservice.setAdapter(service_recycler_adapter);
 
 
                     }
@@ -704,7 +698,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
             try {
 
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Get_Services");
                 //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
 
                 JSONObject postDataParams = new JSONObject();
@@ -802,18 +796,15 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
                             MainModelArrayList.add(new ApiModel(id, Service, type, image, status));
 
                         }
-                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceProList, Main_Provider.this);
-                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
-                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
-                        recycler_freeservice.setLayoutManager(manager);
-                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
-                        recycler_freeservice.setAdapter(service_recycler_adapter);
+//                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, serviceProList, Main_Provider.this);
+//                        // RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(Main_Provider.this);
+//                        GridLayoutManager manager = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+//                        recycler_freeservice.setLayoutManager(manager);
+//                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+//                        recycler_freeservice.setAdapter(service_recycler_adapter);
 
-                        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, MainModelArrayList, Main_Provider.this);
-                        GridLayoutManager manager2 = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
-                        recycler_freeservice.setLayoutManager(manager2);
-                        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
-                        recycler_freeservice.setAdapter(service_recycler_adapter);
+                        getHeaderListLatter(MainModelArrayList);
+
 
                         // fetchService();
 
@@ -830,6 +821,65 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
     }
 
+    private void  getHeaderListLatter(ArrayList<ApiModel> usersList) {
+        Collections.sort(usersList, new Comparator<ApiModel>() {
+            @Override
+            public int compare(ApiModel user1, ApiModel user2) {
+                return user1.getService()
+                        .compareTo(user2.getService());
+            }
+        });
+
+        service_recycler_adapter = new Service_Recycler_Adapter(Main_Provider.this, MainModelArrayList, Main_Provider.this);
+        GridLayoutManager manager2 = new GridLayoutManager(Main_Provider.this, 3, GridLayoutManager.VERTICAL, false);
+        recycler_freeservice.setLayoutManager(manager2);
+        recycler_freeservice.setItemAnimator(new DefaultItemAnimator());
+        recycler_freeservice.setAdapter(service_recycler_adapter);
+        service_recycler_adapter.notifyDataSetChanged();
+
+    }
+
+    // private ArrayList<ApiModel> addAlphabets(ArrayList<ApiModel> sortList) {
+
+//    ArrayList<ApiModel> addAlphabets(ArrayList<ApiModel> list) {
+//        int i = 0;
+//        ArrayList<ApiModel> customList = new ArrayList<ApiModel>();  ApiModel firstMember =
+//                new ApiModel();
+//        firstMember.getService(String.valueOf(list.get(0).getService().charAt(0)));
+//        firstMember.setType(1);
+//        customList.add(firstMember);
+//        for (i = 0; i < list.size() - 1; i++) {
+//            ApiModel teamMember = new ApiModel();
+//            char name1 = list.get(i).getService().charAt(0);
+//            char name2 = list.get(i + 1).getService().charAt(0);
+//            if (name1 == name2) {
+//                list.get(i).setType(2);
+//                customList.add(list.get(i));
+//            } else {
+//                list.get(i).setType(2);
+//                customList.add(list.get(i));
+//                teamMember.setService(String.valueOf(name2));
+//                teamMember.setType(1);
+//                customList.add(teamMember);
+//            }
+//        }
+//        list.get(i).setType(2);
+//        customList.add(list.get(i));
+//        return customList;
+//    }
+
+
+    //***********sort alpha
+        ArrayList<ApiModel> sortList(ArrayList<ApiModel> list) {
+            Collections.sort(list, new Comparator<ApiModel>() {
+                @Override
+                public int compare(ApiModel teamMember1, ApiModel teamMember2) {
+                    return teamMember1.getService().compareTo(teamMember2.getService());
+                }
+            });
+            return list;
+        }
+
     private class CheckFirstPaymentStatusm extends AsyncTask<String, Void, String> {
 
         ProgressDialog dialog;
@@ -845,7 +895,7 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/Api/first_payment_check");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/Api/first_payment_check");
                 //   URL url = new URL("http://paramgoa.com/cpepsi/Api/first_payment_check");
 
                 JSONObject postDataParams = new JSONObject();
@@ -915,7 +965,8 @@ public class Main_Provider extends AppCompatActivity implements Service_Recycler
 
                     jsonObject = new JSONObject(result);
                     String res = jsonObject.getString("responce");
-                    Toast.makeText(Main_Provider.this, "chk+ "+res, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(Main_Provider.this, "chk+ "+res, Toast.LENGTH_SHORT).show();
+                    Log.e("chk_res",res.toString());
 
                     if (res.equals("false")) {
                         String error=jsonObject.getString("error");

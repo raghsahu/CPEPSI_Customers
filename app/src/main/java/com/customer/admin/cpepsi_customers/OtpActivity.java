@@ -120,7 +120,7 @@ public class OtpActivity extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/CustOtpMatch");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/CustOtpMatch");
            //     URL url = new URL("https://www.paramgoa.com/cpepsi/api/CustOtpMatch");
 
                 JSONObject postDataParams = new JSONObject();

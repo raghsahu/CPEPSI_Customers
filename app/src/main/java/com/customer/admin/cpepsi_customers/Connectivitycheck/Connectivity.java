@@ -1,4 +1,4 @@
-package com.customer.admin.cpepsi_customers;
+package com.customer.admin.cpepsi_customers.Connectivitycheck;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

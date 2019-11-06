@@ -4,10 +4,8 @@ import android.Manifest;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -24,16 +22,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.app.SearchManager;
 import android.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,11 +36,11 @@ import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Adapters.CustomInfoWindowAdapter;
 import com.customer.admin.cpepsi_customers.Adapters.SearchAdapter;
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.PlaceInfo;
 import com.customer.admin.cpepsi_customers.Java_files.Provider_info;
 import com.customer.admin.cpepsi_customers.Java_files.SearchModel;
 import com.customer.admin.cpepsi_customers.LocationUtil.GpsTracker;
-import com.customer.admin.cpepsi_customers.R;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.HttpHandler;
 import com.google.android.gms.common.ConnectionResult;
@@ -77,7 +70,6 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -516,7 +508,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
         protected String doInBackground(String... strings) {
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/GetproviderByservice");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/GetproviderByservice");
                 // URL url = new URL("https://www.paramgoa.com/cpepsi/api/GetproviderByservice");
 
                 JSONObject postDataParams = new JSONObject();
@@ -787,7 +779,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Add_approval");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Add_approval");
                 //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Add_approval");
 
                 JSONObject postDataParams = new JSONObject();
@@ -931,7 +923,7 @@ public class GET_Service_providers extends FragmentActivity implements OnMapRead
         protected String doInBackground(String... params) {
 
             try {
-                server_url = "http://heightsmegamart.com/CPEPSI/api/search?place=" + newText;
+                server_url = "http://jntrcpl.com/CPEPSI/api/search?place=" + newText;
             } catch (Exception e) {
                 e.printStackTrace();
             }

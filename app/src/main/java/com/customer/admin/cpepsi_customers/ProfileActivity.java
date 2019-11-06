@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,11 +19,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 import com.customer.admin.cpepsi_customers.util.CameraUtils;
 import com.customer.admin.cpepsi_customers.util.CommonUtils;
@@ -75,7 +73,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Bundle savedInstanceState;
     int Gallery_view = 2;
     String UserId;
-    private String communStr = "http://heightsmegamart.com/CPEPSI/uploads/";
+    private String communStr = "http://jntrcpl.com/CPEPSI/uploads/";
   //  private String communStr = "https://www.paramgoa.com/cpepsi/uploads/";
     String image;
     CircleImageView profile_image;
@@ -307,7 +305,7 @@ public class ProfileActivity extends AppCompatActivity {
                 entity.addPart("customer_id", new StringBody(AppPreference.getId(ProfileActivity.this)));
 
 
-                result = Utilities.postEntityAndFindJson("http://heightsmegamart.com/CPEPSI/api/Cust_upload_profile", entity);
+                result = Utilities.postEntityAndFindJson("http://jntrcpl.com/CPEPSI/api/Cust_upload_profile", entity);
             //    result = Utilities.postEntityAndFindJson("https://www.paramgoa.com/cpepsi/api/Cust_upload_profile", entity);
 
                 return result;
@@ -482,7 +480,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/CustGet_profile");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/CustGet_profile");
               //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/CustGet_profile");
 
                 JSONObject postDataParams = new JSONObject();
@@ -646,7 +644,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/custmoer_update");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/custmoer_update");
              //   URL url = new URL("https://www.paramgoa.com/cpepsi/api/custmoer_update");
 
                 JSONObject postDataParams = new JSONObject();

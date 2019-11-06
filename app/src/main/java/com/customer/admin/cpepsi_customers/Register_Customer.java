@@ -443,7 +443,7 @@ public void onConnected(Bundle bundle) {
         protected String doInBackground(String... strings) {
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Cust_Ragistration");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Cust_Ragistration");
            //     URL url = new URL("https://www.paramgoa.com/cpepsi/api/Cust_Ragistration");
 
                 JSONObject postDataParams = new JSONObject();
@@ -585,7 +585,7 @@ public void onConnected(Bundle bundle) {
 
         @Override
         protected String doInBackground(String... params) {
-            String sever_url = "http://heightsmegamart.com/CPEPSI/Api/get_state";
+            String sever_url = "http://jntrcpl.com/CPEPSI/Api/get_state";
             // String sever_url = "http://paramgoa.com/cpepsi/Api/get_state";
             //+ AppPreference.getUserid(AddStudentActivity.this);
 
@@ -653,7 +653,7 @@ public void onConnected(Bundle bundle) {
 
         @Override
         protected String doInBackground(String... params) {
-            String sever_url = "http://heightsmegamart.com/CPEPSI/Api/get_district?state_id="+strStateId;
+            String sever_url = "http://jntrcpl.com/CPEPSI/Api/get_district?state_id="+strStateId;
             //  String sever_url = "http://paramgoa.com/cpepsi/Api/get_district?state_id="+strStateId;
 
             output = HttpHandler.makeServiceCall(sever_url);

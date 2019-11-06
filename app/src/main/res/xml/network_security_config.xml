@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<network-security-config xmlns:android="http://schemas.android.com/apk/res/android">
-    <debug-overrides>
-        <trust-anchors>
-            <certificates src="user" overridePins="true"/>
-        </trust-anchors>
-    </debug-overrides>
+<?xml version="1.0" encoding="UTF-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+
+    <base-config cleartextTrafficPermitted="false"/>
+
+    <domain includeSubdomains="true">jntrcpl.com</domain>
+
+</domain-config>
+
 </network-security-config>

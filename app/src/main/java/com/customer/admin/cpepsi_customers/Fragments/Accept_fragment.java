@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.customer.admin.cpepsi_customers.Adapters.NotificationAdapter;
-import com.customer.admin.cpepsi_customers.Connectivity;
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.Java_files.NotificationModel;
 import com.customer.admin.cpepsi_customers.R;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
@@ -89,7 +89,7 @@ public class Accept_fragment extends Fragment implements View.OnClickListener {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Custapprovedecline");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Custapprovedecline");
               //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Custapprovedecline");
 
                 JSONObject postDataParams = new JSONObject();
@@ -153,6 +153,10 @@ public class Accept_fragment extends Fragment implements View.OnClickListener {
                 try {
                     jsonObject = new JSONObject(result);
                     String responce = jsonObject.getString("responce");
+
+                    if (!responce.equalsIgnoreCase("false")){
+
+
                     JSONArray dataArray = jsonObject.getJSONArray("data");
                     for (int i = 0; i < dataArray.length(); i++) {
                         JSONObject dataObj = dataArray.getJSONObject(i);
@@ -192,11 +196,17 @@ public class Accept_fragment extends Fragment implements View.OnClickListener {
                         }
                     }
 
+
+
+
                     notificationAdapter = new NotificationAdapter(getContext(), noti_list);
                     RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                     recyclerNotification.setLayoutManager(mLayoutManager);
                     recyclerNotification.setItemAnimator(new DefaultItemAnimator());
                     recyclerNotification.setAdapter(notificationAdapter);
+
+
+                }
 
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.customer.admin.cpepsi_customers.Connectivitycheck.Connectivity;
 import com.customer.admin.cpepsi_customers.util.AppPreference;
 
 import org.json.JSONException;
@@ -32,7 +33,6 @@ import java.util.Iterator;
 
 import instamojo.library.InstapayListener;
 import instamojo.library.InstamojoPay;
-import instamojo.library.Config;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -196,7 +196,7 @@ public class FeedbackForm extends AppCompatActivity {
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Add_feedback");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Add_feedback");
            //     URL url = new URL("https://www.paramgoa.com/cpepsi/api/Add_feedback");
 
                 JSONObject postDataParams = new JSONObject();
@@ -382,10 +382,10 @@ public class FeedbackForm extends AppCompatActivity {
             try {
 
                 if (Btn_Cash==1){
-                    url = new URL("http://heightsmegamart.com/CPEPSI/api/insert_payment_cash");
+                    url = new URL("http://jntrcpl.com/CPEPSI/api/insert_payment_cash");
                 }
                 if (Btn_Online==1){
-                     url = new URL("http://heightsmegamart.com/CPEPSI/Api/insert_payment");
+                     url = new URL("http://jntrcpl.com/CPEPSI/Api/insert_payment");
                 }
             //    URL url = new URL("http://paramgoa.com/cpepsi/Api/insert_payment");
 

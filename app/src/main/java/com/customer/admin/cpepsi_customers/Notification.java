@@ -127,7 +127,7 @@ public class Notification extends AppCompatActivity implements TabLayout.BaseOnT
 
             try {
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Custapprovedecline");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Custapprovedecline");
                // URL url = new URL("https://www.paramgoa.com/cpepsi/api/Custapprovedecline");
 
                 JSONObject postDataParams = new JSONObject();

@@ -116,7 +116,7 @@ public class Professional_Services extends Fragment implements Service_Recycler_
             try {
 
 
-                URL url = new URL("http://heightsmegamart.com/CPEPSI/api/Get_Services");
+                URL url = new URL("http://jntrcpl.com/CPEPSI/api/Get_Services");
               //  URL url = new URL("https://www.paramgoa.com/cpepsi/api/Get_Services");
 
                 JSONObject postDataParams = new JSONObject();

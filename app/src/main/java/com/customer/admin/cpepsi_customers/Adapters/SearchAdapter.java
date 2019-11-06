@@ -24,7 +24,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     private static final String TAG = "SearchAdapter";
     private ArrayList<SearchModel> serchlist;
     public Context context;
-    private String communStr = "http://heightsmegamart.com/CPEPSI/uploads/";
+    private String communStr = "http://jntrcpl.com/CPEPSI/uploads/";
    // private String communStr = "https://paramgoa.com/satsung//uploads/";
 
     public class ViewHolder extends RecyclerView.ViewHolder {

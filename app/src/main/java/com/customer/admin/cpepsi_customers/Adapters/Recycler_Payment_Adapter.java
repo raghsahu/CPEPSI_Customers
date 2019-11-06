@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class Recycler_Payment_Adapter extends RecyclerView.Adapter<Recycler_Payment_Adapter.MyViewHolder> {
     private Context mContext;
     private Recycler_Payment_Adapter recycler_payment_adapter;
-    private String communStr = "http://heightsmegamart.com/CPEPSI/uploads/";
+    private String communStr = "http://jntrcpl.com/CPEPSI/uploads/";
 
     public ArrayList<Pay_History_Model> Payment_list;
     private String Image;

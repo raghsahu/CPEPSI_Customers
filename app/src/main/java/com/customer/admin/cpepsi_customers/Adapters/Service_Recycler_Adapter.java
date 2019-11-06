@@ -36,8 +36,8 @@ public class Service_Recycler_Adapter extends RecyclerView.Adapter<Service_Recyc
     private Service_Recycler_Adapter service_recycler_adapter;
     Service_Recycler_Adapter_Listener listener;
 
-    private String communStr = "http://heightsmegamart.com/CPEPSI/uploads/";
-   // private String communStr = "http://heightsmegamart.com/CPEPSI/ ";
+    private String communStr = "http://jntrcpl.com/CPEPSI/uploads/";
+   // private String communStr = "http://jntrcpl.com/CPEPSI/ ";
 
     DownloadManager.Request request;
     StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();

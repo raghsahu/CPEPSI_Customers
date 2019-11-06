@@ -18,6 +18,10 @@ public class ApiModel implements Serializable {
         this.status = status;
     }
 
+    public ApiModel(String header, boolean b) {
+       // this.service=header;
+    }
+
     public String getId() {
         return id;
     }
